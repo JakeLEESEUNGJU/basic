@@ -1,6 +1,8 @@
 package view;
 
-public class TicketPerformanceView {
+import javax.swing.JPanel;
+
+public class TicketPerformanceView extends JPanel{
 
 	public TicketPerformanceView() {
 		addLayout();

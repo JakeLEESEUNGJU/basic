@@ -1,6 +1,8 @@
 package view;
 
-public class TicketExhibitionView {
+import javax.swing.JPanel;
+
+public class TicketExhibitionView extends JPanel{
 
 	public TicketExhibitionView() {
 		addLayout();

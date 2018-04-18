@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ import view.ArtCenterView;
 import view.TicketExhibitionView;
 import view.TicketPerformanceView;
 
+
 public class ArtCenter extends JFrame{
 	
 	
@@ -23,32 +26,31 @@ public class ArtCenter extends JFrame{
 	
 	public ArtCenter(){
 		
-		artCenter = new ArtCenterView();
+		artCenter = new ArtCenterView(this);
 		ticketExhibition = new TicketExhibitionView();
 		ticketPerformance = new TicketPerformanceView();
 		
 		card = new CardLayout();
 		background.setLayout( card );
 		background.add("main", artCenter );
-		background.add("exhibitionscreen", ticketExhibition );
-		background.add("performancescreen", ticketPerformance );
+		background.add("exhibitioncard", ticketExhibition );
+		background.add("performancecard", ticketPerformance );
 		add(background);
 		
 		
-		setSize( 300, 400 );
+		setSize( 800, 900 );
 		setVisible( true );
 		
 	
-		btn.addActionListener( new ActionListener() 
-		{public void actionPerformed( ActionEvent ev )
-			{card.show(background , "exhibitionscreen");
-				
-			}
-		}
-							);
+		
+		
+		
 	}
 
-
+	public void movecard(String text){
+		System.out.println("받아따");
+		card.show(background,text);
+	}
 	
 	
 	
