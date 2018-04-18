@@ -27,7 +27,7 @@ public class ArtCenter extends JFrame{
 	public ArtCenter(){
 		
 		artCenter = new ArtCenterView(this);
-		ticketExhibition = new TicketExhibitionView();
+		ticketExhibition = new TicketExhibitionView(this);
 		ticketPerformance = new TicketPerformanceView();
 		
 		card = new CardLayout();
