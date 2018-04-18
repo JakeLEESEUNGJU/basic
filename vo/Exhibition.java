@@ -11,8 +11,8 @@ public class Exhibition extends Event {
 	}
 
 	public Exhibition(int exiNo, int evtNo, String exiDir, String evtTitle, String evtStart, String evtEnd,
-			String evtRating, int evt_price, String evtDetail, int locNo) {
-		super(evtNo, evtTitle, evtStart, evtEnd, evtRating, evt_price, evtDetail, locNo);
+			String evtRating, int evtPrice, String evtDetail, int locNo) {
+		super(evtNo, evtTitle, evtStart, evtEnd, evtRating, evtPrice, evtDetail, locNo);
 		this.exiNo = exiNo;
 		this.evtNo = evtNo;
 		this.exiDir = exiDir;

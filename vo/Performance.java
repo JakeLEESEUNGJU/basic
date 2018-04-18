@@ -15,9 +15,9 @@ public class Performance extends Event {
 	}
 	
 	public Performance(int perNo, int evtNo, String perActor, String perDir, String perStart, String perEnd,
-			String perReady,String evtTitle, String evtStart, String evtEnd, String evtRating, int evt_price,
+			String perReady,String evtTitle, String evtStart, String evtEnd, String evtRating, int evtPrice,
 			String evtDetail, int locNo) {
-		super( evtNo,  evtTitle,  evtStart,  evtEnd,  evtRating,  evt_price,
+		super( evtNo,  evtTitle,  evtStart,  evtEnd,  evtRating,  evtPrice,
 				 evtDetail,  locNo);
 		this.perNo = perNo;
 		this.evtNo = evtNo;
