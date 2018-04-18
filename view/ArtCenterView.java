@@ -49,14 +49,16 @@ public class ArtCenterView extends JPanel implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Object ev= e.getSource();
-		if(ev == bSalesMgr){
+		Object ev = e.getSource();
+		if (ev == bSalesMgr) {
 			ac.movecard("exhibitioncard");
-		}else if(ev==bEmpMgr){
-			
-		}else if (ev==bEvtMgr) {
-			
+		} else if (ev == bEmpMgr) {
+			ac.movecard("employeecard");
+			ac.changeFrame();
+		} else if (ev == bEvtMgr) {
+			ac.movecard("eventcard");
 		}
+
 		
 	}
 	/**
