@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -25,10 +27,10 @@ import javax.swing.table.TableColumn;
 
 import main.ArtCenter;
 
-public class TicketExhibitionView extends JPanel {
+public class TicketExhibitionView extends JPanel implements ActionListener{
 	private Font font1 = new Font("Serif", Font.BOLD, 20);
 	private Font font2 = new Font("Serif", Font.BOLD, 30);
-	JButton bDateOk, bGoNext;
+	JButton bDateOk, bGoNext,bHome;
 	ButtonGroup bg = new ButtonGroup();
 	TitledBorder taboTitle, taboSelDate,taboSelEvt,taboInfoList;
 	
@@ -39,26 +41,12 @@ public class TicketExhibitionView extends JPanel {
 	String[] strY = new String[11]; // year의 갯수만큼 콤보박스에 넣기 위해 만든 배열이지만 본인은 사용 안함
 	String[] strM = new String[12];// Month 의 값을 저장해서 콤보 박스에 넣기 위한 배열
 	int[] lastDay = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; // 각
-																			// 월
-																			// 마다
-																			// 일수가
-																			// 다르기
-																			// 때문에
-																			// 배열로
-																			// 관리,(맨
-																			// 앞
-																			// 0
-																			// 은
-																			// for문을
-																			// 위해
-																			// 생성)
-	//////
 	JComboBox cbPeople;// 어린이 성인 우대 콤보박스 인원 체크
 	JRadioButton rbPerf, rbExhibi;// 공연 및 전시 라디오 버튼
 	JTable tbEvtList, tbReciept;
 	EvtListTableModel evTbModel;
 	TopriTableModel topTbModel;
-
+	
 	ArtCenter ac;
 
 	
@@ -92,7 +80,21 @@ public class TicketExhibitionView extends JPanel {
 		connectDB();
 		eventProc();
 	}
-
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object evt = e.getSource();
+		if(evt==bHome){
+			ac.movecard("main");
+		}else if(evt== bGoNext){
+			ac.movecard("");
+		}else if(evt==cbPeople){
+			
+		}else if(evt == bDateOk){
+			
+		}
+		
+	}
 	void setDay() {
 
 		int year = (Integer) cbY.getSelectedItem(); // int year 에 cbY 에 선택 되어있는
@@ -120,7 +122,11 @@ public class TicketExhibitionView extends JPanel {
 	}
 
 	void eventProc() {
-
+		bGoNext.addActionListener(this);
+		bDateOk.addActionListener(this);
+		cbPeople.addActionListener(this);
+		bHome.addActionListener(this);
+		
 	}
 
 	void addLayout() {
@@ -140,6 +146,9 @@ public class TicketExhibitionView extends JPanel {
 		center.setLayout(new BorderLayout());
 		//센터 노스 생성후에 센터에 붙히기 , 센터 노스의 레이아웃 (보더)
 		JPanel center_north = new JPanel();
+		
+		
+		
 		center.add(center_north,BorderLayout.NORTH);
 		center_north.setLayout(new GridLayout(1,6));
 		taboTitle= new TitledBorder("판매관리-전시");
@@ -147,7 +156,11 @@ public class TicketExhibitionView extends JPanel {
 		center_north.setBorder(new TitledBorder(taboTitle));
 		
 		center_north.add(new JPanel());
+		center_north.add(new JPanel());
+		center_north.add(new JPanel());
+		center_north.add(new JPanel());
 		center_north.add(bGoNext=new JButton("결제"));
+		center_north.add(bHome = new JButton("Home"));
 		
 		//센터 센터 생성 
 		JPanel center_center = new JPanel();
@@ -249,6 +262,8 @@ public class TicketExhibitionView extends JPanel {
 	void selectDate() {
 
 	}
+
+	
 }
 
 class TopriTableModel extends AbstractTableModel {
