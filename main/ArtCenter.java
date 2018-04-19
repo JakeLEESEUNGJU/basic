@@ -50,7 +50,7 @@ public class ArtCenter extends JFrame{
 		setSize( 800, 900 );
 		setVisible( true );
 	
-		
+		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );	
 		
 		
 	}
