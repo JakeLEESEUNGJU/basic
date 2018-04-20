@@ -37,7 +37,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 	// 총가격
 	int totalPrice = 0;
 	// 성인가격
-	int price = 10000; // 하드코딩(수정필수)//인터페이스********
+	int price = 0; // 하드코딩(수정필수)//인터페이스********
 	// 총인원
 	int peopleCnt = 0;
 	// 가격
@@ -57,18 +57,18 @@ public class ReceiptView extends JPanel implements ActionListener {
 	ArrayList priceInfoList;
 	
 	// 인터페이스  arrayList : 인원별 가격정보 *****인터페이스***
-	ArrayList<Integer> interfaceList; //*****인터페이스***
+	ArrayList interfaceList; //*****인터페이스***
 
 	public ReceiptView(ArtCenter ac) {// ArtCenter ac
 		this.ac = ac;
 		connectDB();
-		getPriceInfo();
-		addLayout();
-		setTableInfo();// addLayout후에
-		eventProc();
+//		getPriceInfo();
+//		addLayout();
+//		setTableInfo();// addLayout후에
+		
 
-		drawtable(priceInfoList);
-		tfTotal.setText(totalPrice + "");// 처음 총가격 텍스트필드에 띄우기
+//		drawtable(priceInfoList);
+//		tfTotal.setText(totalPrice + "");// 처음 총가격 텍스트필드에 띄우기
 	}
 
 	void setTableInfo() {
@@ -112,13 +112,17 @@ public class ReceiptView extends JPanel implements ActionListener {
 	}
 
 	// jtable에 들어가는 정보 arraylist 설정
-	void getPriceInfo() {
+	void getPriceInfo(ArrayList abc) {
+		
+		price = Integer.parseInt(abc.get(3).toString());
 		// 인터페이스 arrayalist (수정필요) 넘어오는 변수**************
+		System.out.println(abc.get(0)+"/"+abc.get(1)+"/"+abc.get(2)+"/"+abc.get(3));
 		interfaceList = new ArrayList<>();
 		//add안 변수 수정
-		interfaceList.add(0);// 성인 명수 //*****인터페이스 **수정필수***
-		interfaceList.add(20);//어린이 명수 //*****인터페이스 **수정필수***
-		interfaceList.add(0); //우대 명수 // *****인터페이스 **수정필수***
+		
+		interfaceList.add(abc.get(0));// 성인 명수 //*****인터페이스 **수정필수***
+		interfaceList.add(abc.get(1));//어린이 명수 //*****인터페이스 **수정필수***
+		interfaceList.add(abc.get(2)); //우대 명수 // *****인터페이스 **수정필수***
 		// 명수
 		adultCnt = Integer.parseInt(interfaceList.get(0).toString());
 		childCnt = Integer.parseInt(interfaceList.get(1).toString());
@@ -126,7 +130,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		// 명수별 가격
 		totalAdultPrice = (int) (price * adultCnt);
 		totalChildPrice = (int) (price * 0.5 * childCnt);
-		totalOldPrice = (int) (price * 0.8 * oldCnt);
+		totalOldPrice = (int) (price * 0.75 * oldCnt);
 		// 총명수
 		peopleCnt = adultCnt + childCnt + oldCnt;
 		// 할인 전 총 가격
@@ -322,7 +326,16 @@ public class ReceiptView extends JPanel implements ActionListener {
 		}
 
 	}
-	void getList(ArrayList temp)
+	public void settempList(ArrayList temp){
+		
+		getPriceInfo(temp);
+		addLayout();
+		setTableInfo();
+		eventProc();
+		
+		drawtable(priceInfoList);
+		tfTotal.setText(totalPrice + "");// 처음 총가격 텍스트필드에 띄우기
+	}
 	
 	
 	

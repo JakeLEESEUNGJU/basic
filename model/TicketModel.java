@@ -77,14 +77,14 @@ public class TicketModel {
 		ResultSet result = st.executeQuery();
 		System.out.println(result);
 		if (result.next()) {
-			itemList.add(result.getString("pno"));
-			itemList.add(result.getString("eno"));
-			itemList.add(result.getString("title"));
-			itemList.add(result.getString("map"));
-			itemList.add(result.getString("price"));
-			itemList.add(result.getString("stime"));
-			itemList.add(result.getString("endtime"));
-			itemList.add(date);
+				itemList.add(result.getString("pno"));
+				itemList.add(result.getString("eno"));
+				itemList.add(result.getString("title"));
+				itemList.add(result.getString("map"));
+				itemList.add(result.getString("price"));
+				itemList.add(result.getString("stime"));
+				itemList.add(result.getString("endtime"));
+				itemList.add(date);
 		}
 		
 		result.close();

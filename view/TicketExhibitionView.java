@@ -31,13 +31,16 @@ import model.TicketModel;
 import vo.Event;
 
 public class TicketExhibitionView extends JPanel implements ActionListener {
-	private Font font1 = new Font("Serif", Font.BOLD, 20);
-	private Font font2 = new Font("Serif", Font.BOLD, 30);
-	JButton bDateOk, bGoNext, bHome;
-	ButtonGroup bg = new ButtonGroup();
-	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList;
-	JPanel center_center_one_center, center_north;
-	String[] jTableTitle = { "성인", "어린이", "우대(노인,장애인", "총계" };
+	private Font font1 = new Font("Serif", Font.BOLD, 20); //중간 크기 폰트설정
+	private Font font2 = new Font("Serif", Font.BOLD, 30); //대문 폰트
+	JButton bDateOk, bGoNext, bHome; //날짜 확인 버튼 //결제 혹은 좌석선택 버튼 //초기화면 버튼
+	ButtonGroup bg = new ButtonGroup();//라디오 버튼의 중복 선택 방지를 위한 버튼 그룹
+	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList; // 제목이 달린 보더 클래스
+	/*
+	 * 각각 타이틀,날짜선택,이벤트 선택, 인원 및 가격
+	 */
+	JPanel center_center_one_center, center_north; // 그냥 JPanel ... ㅋㅋ
+	String[] jTableTitle = { "성인", "어린이", "우대(노인,장애인", "총계" }; //JTable 컬럼 제목
 
 	// 인원 및 가격 라벨
 	JLabel laKind, laPep, laCash, laAdult, laChild, laAdv, laTotal, laToPep, laToCash, laToAduC, laToChC, laToAdvC;
@@ -165,21 +168,26 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 
 	void searchForSend() { //결제 뷰에 사용하기위한 아이템을 모아주는 메서드
 		
-		ArrayList forTable = new ArrayList();
-		forTable.add(tfAdult.getText());
-		forTable.add(tfChild.getText());
-		forTable.add(tfAdv.getText());
-		ac.temp=forTable;
+		ArrayList forTableE = new ArrayList();
+		ArrayList forTableP = new ArrayList();
+		
+		
 		String date = String.valueOf(cbY.getSelectedItem()) + "/" + String.valueOf(cbM.getSelectedItem()) + "/"
 				+ String.valueOf(cbD.getSelectedItem());
 		if (rbExhibi.isSelected()) {
 			int row = tbExhiList.getSelectedRow();
 			int col = 0;
+			forTableE = new ArrayList();
+			forTableE.add(tfAdult.getText());
+			forTableE.add(tfChild.getText());
+			forTableE.add(tfAdv.getText());
+			forTableE.add((String)tbExhiList.getValueAt(row, 2) );
 			String title = (String) tbExhiList.getValueAt(row, col);
 			try {
 				ArrayList forSql;
 				forSql = model.searchItems(title,"e",date);
 				ac.setTempList(forSql);
+				ac.setTemp(forTableE);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
@@ -188,13 +196,18 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		} else if (rbPerf.isSelected()) {
 			int row = tbPerfList.getSelectedRow();
 			int col = 0;
+			forTableP = new ArrayList();
+			forTableP.add(tfAdult.getText());
+			forTableP.add(tfChild.getText());
+			forTableP.add(tfAdv.getText());
+			forTableE.add((String)tbExhiList.getValueAt(row, 2) );
 			String title = (String) tbPerfList.getValueAt(row, col);
 			
 			try {
 				ArrayList forSql;
 				forSql = model.searchItems(title,"p",date);
 				ac.setTempList(forSql);
-				
+				ac.setTemp(forTableP);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());

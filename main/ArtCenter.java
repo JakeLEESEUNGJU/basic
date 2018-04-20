@@ -42,7 +42,8 @@ public class ArtCenter extends JFrame{
         event = new EventView(this);
         seat = new SeatView(this);
         receipt = new ReceiptView(this);
-        
+        tempList = new ArrayList<>();
+        temp = new ArrayList<>();
 		card = new CardLayout();
 		background.setLayout( card );
 		background.add("main", artCenter );
@@ -94,8 +95,8 @@ public class ArtCenter extends JFrame{
  */
 	public void setTempList(ArrayList temp) {
 		tempList = temp;
-		System.out.println(tempList.isEmpty());
-		
+//		System.out.println(tempList.isEmpty());
+//		receipt.settempList(tempList);
 		
 //		receipt.setTemp(tempList);
 	}
@@ -104,8 +105,10 @@ public ArrayList getTemp() {
 	return temp;
 }
 
-public void setTemp(ArrayList temp) {
-	this.temp = temp;
+public void setTemp(ArrayList itemp) {
+	temp = itemp;
+	receipt.settempList(temp);
+	
 }
 
 }
