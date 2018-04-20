@@ -24,8 +24,8 @@ public class SeatView extends JFrame implements ActionListener{
 
 	Hall hall = new Hall(this);		// 좌석표
 	
-	public SeatView() {//ArtCenter ac
-		//this.ac = ac;
+	public SeatView(ArtCenter ac) {//ArtCenter ac
+		this.ac = ac;
 		addLayout();
 		connectDB();
 		eventProc();
@@ -80,7 +80,7 @@ public class SeatView extends JFrame implements ActionListener{
 		this.add(p_center, BorderLayout.CENTER);
 		setSize(800, 900);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	// 홀별 좌석도 가져오는 메서드
@@ -92,10 +92,10 @@ public class SeatView extends JFrame implements ActionListener{
 
 	}
 
-	 public static void main(String[] args) {
-	 SeatView view = new SeatView();
-	
-	 }
+//	 public static void main(String[] args) {
+//	 SeatView view = new SeatView();
+//	
+//	 }
 
 	
 }

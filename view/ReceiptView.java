@@ -22,7 +22,7 @@ import javax.swing.table.AbstractTableModel;
 
 import main.ArtCenter;
 
-public class ReceiptView extends JFrame implements ActionListener {
+public class ReceiptView extends JPanel implements ActionListener {
 	JLabel laTitle, laRating, laPayMethod, laTotal;
 	JTextField tfTotal;
 	JComboBox<String> cbRating, cbPayMethod;
@@ -59,8 +59,8 @@ public class ReceiptView extends JFrame implements ActionListener {
 	ArrayList priceInfoList;
 	ArrayList<Integer> interList;
 
-	public ReceiptView() {// ArtCenter ac
-		// this.ac = ac;
+	public ReceiptView(ArtCenter ac) {// ArtCenter ac
+		 this.ac = ac;
 		connectDB();
 		getPriceInfo();
 		addLayout();
@@ -288,7 +288,7 @@ public class ReceiptView extends JFrame implements ActionListener {
 		this.add(p_center, BorderLayout.CENTER);
 		this.setSize(800, 900);
 		this.setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	class priceTableModel extends AbstractTableModel {
@@ -315,8 +315,8 @@ public class ReceiptView extends JFrame implements ActionListener {
 
 	}
 
-	public static void main(String[] args) {
-		ReceiptView view = new ReceiptView();
-	}
+//	public static void main(String[] args) {
+//		ReceiptView view = new ReceiptView();
+//	}
 
 }
