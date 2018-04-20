@@ -200,7 +200,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			forTableP.add(tfAdult.getText());
 			forTableP.add(tfChild.getText());
 			forTableP.add(tfAdv.getText());
-			forTableE.add((String)tbExhiList.getValueAt(row, 2) );
+			forTableP.add((String)tbPerfList.getValueAt(row, 2) );
 			String title = (String) tbPerfList.getValueAt(row, col);
 			
 			try {
