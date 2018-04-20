@@ -322,7 +322,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		}
 
 	}
-
+	void getList(ArrayList temp)
 	
 	
 	

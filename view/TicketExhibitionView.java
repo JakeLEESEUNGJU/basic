@@ -166,21 +166,9 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	void searchForSend() { //결제 뷰에 사용하기위한 아이템을 모아주는 메서드
 		
 		ArrayList forTable = new ArrayList();
-		forTable.add(laKind.getText());
-		forTable.add(laPep.getText());
-		forTable.add(laCash.getText());
-		forTable.add(laAdult.getText());
 		forTable.add(tfAdult.getText());
-		forTable.add(laToAduC.getText());
-		forTable.add(laChild.getText());
 		forTable.add(tfChild.getText());
-		forTable.add(laToCash.getText());
-		forTable.add(laAdv.getText());
 		forTable.add(tfAdv.getText());
-		forTable.add(laToAdvC.getText());
-		forTable.add(laTotal.getText());
-		forTable.add(laToPep.getText());
-		forTable.add(laToCash.getText());
 		ac.temp=forTable;
 		String date = String.valueOf(cbY.getSelectedItem()) + "/" + String.valueOf(cbM.getSelectedItem()) + "/"
 				+ String.valueOf(cbD.getSelectedItem());

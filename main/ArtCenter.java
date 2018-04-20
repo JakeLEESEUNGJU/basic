@@ -88,7 +88,10 @@ public class ArtCenter extends JFrame{
 	public ArrayList getTempList() {
 		return tempList;
 	}
-
+/** 
+ * 	settemp메서드로 ArrayList 가져오기
+ * @param temp
+ */
 	public void setTempList(ArrayList temp) {
 		tempList = temp;
 		System.out.println(tempList.isEmpty());
@@ -96,5 +99,13 @@ public class ArtCenter extends JFrame{
 		
 //		receipt.setTemp(tempList);
 	}
+
+public ArrayList getTemp() {
+	return temp;
+}
+
+public void setTemp(ArrayList temp) {
+	this.temp = temp;
+}
 
 }
