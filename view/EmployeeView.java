@@ -16,6 +16,7 @@ import javax.swing.border.TitledBorder;
 
 import main.ArtCenter;
 import model.EmployeeModel;
+import vo.Employee;
 
 
 
@@ -39,9 +40,14 @@ public class EmployeeView extends JPanel{
 		addLayout();
 		connectDB();
 		eventProc();
+		initStyle(); 
 		
 	}
 	
+	private void initStyle() {
+		tfEmpNo.setEditable(false);
+	}
+
 	void addLayout() {
 		bfont = new Font("맑은고딕", Font.BOLD, 20);
 		titlefont = new Font("Serif", Font.BOLD, 40);
@@ -267,22 +273,86 @@ public class EmployeeView extends JPanel{
 	
 // 버튼 메소드들 
 	
-	//조회
+	//조회 -- 완성
 	void selectEmp() {
-
+		String tel = tfEmpTel.getText();
+		
+		try {
+			Employee vo = model.selectEmp(tel);
+			tfEmpNo.setText(String.valueOf(vo.getEmpNo()));
+			tfEmpName.setText(vo.getEmpName());
+			tfEmpTel.setText(vo.getEmpTel());
+			tfEmpEmail.setText(vo.getEmpEmail());
+			
+		} catch (Exception e) {
+			System.out.println("사원조회 실패");
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
-	//입력
+	//입력 -- 완성
 	void insertEmp() {
-
+		Employee vo = new Employee();
+		
+		vo.setEmpName(tfEmpName.getText());
+		vo.setEmpTel(tfEmpTel.getText());
+		vo.setEmpEmail(tfEmpEmail.getText());
+		
+		try {
+			model.insertEmp(vo);
+			JOptionPane.showMessageDialog(null, "입력성공");
+		} catch (Exception e) {
+			System.out.println("사원입력실패");
+			e.printStackTrace();
+		}
+		
+		tfEmpName.setText(null);
+		tfEmpTel.setText(null);
+		tfEmpEmail.setText(null);
+		
 	}
-	
-	//수정
+
+	//수정 -- 완성
 	void modifyEmp() {
-
+		Employee vo = new Employee();
+		vo.setEmpNo(Integer.parseInt(tfEmpNo.getText()));
+		vo.setEmpName(tfEmpName.getText());
+		vo.setEmpTel(tfEmpTel.getText());
+		vo.setEmpEmail(tfEmpEmail.getText());
+		
+		try {
+			model.modifyEmp(vo);
+			JOptionPane.showMessageDialog(null, "수정완료");
+			tfEmpNo.setText(null);
+			tfEmpName.setText(null);
+			tfEmpTel.setText(null);
+			tfEmpEmail.setText(null);
+		} catch (Exception e) {
+			System.out.println("사원수정성공");
+			e.printStackTrace();
+		}
 	}
-	//삭제
+	//삭제 -- 완성
 	void deleteEmp() {
-
+		Employee vo = new Employee();
+		vo.setEmpNo(Integer.parseInt(tfEmpNo.getText()));
+		vo.setEmpName(tfEmpName.getText());
+		vo.setEmpTel(tfEmpTel.getText());
+		vo.setEmpEmail(tfEmpEmail.getText());
+		
+		try {
+			model.deleteEmp(vo);
+			JOptionPane.showMessageDialog(null, "삭제성공");
+			tfEmpNo.setText(null);
+			tfEmpName.setText(null);
+			tfEmpTel.setText(null);
+			tfEmpEmail.setText(null);
+		} catch (Exception e) {
+			System.out.println("사원삭제실패");
+			e.printStackTrace();
+		}
 	}
 
 	
