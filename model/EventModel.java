@@ -69,8 +69,8 @@ public class EventModel {
 		PreparedStatement psExi = con.prepareStatement(sqlExi);
 		psExi.setString(1, vo.getExiDir());
 		
-		psEvt.executeQuery();
-		psExi.executeQuery();
+		psEvt.executeUpdate();
+		psExi.executeUpdate();
 		
 		psEvt.close();
 		psExi.close();
@@ -103,12 +103,15 @@ public class EventModel {
 		PreparedStatement psPer = con.prepareStatement(sqlPer);
 		psPer.setString(1, vo.getPerActor());
 		psPer.setString(2, vo.getPerDir());
-		psPer.setString(3, vo.getEvtStart() + vo.getPerStart()); 
-		psPer.setString(4, vo.getEvtEnd() + vo.getPerEnd());  
+		psPer.setString(3, vo.getEvtStart()  + " " + vo.getPerStart()); 
+		psPer.setString(4, vo.getEvtEnd()  + " " + vo.getPerEnd());  
 		
 		
-		psEvt.executeQuery();
-		psPer.executeQuery();
+		System.out.println(vo.getEvtStart() + vo.getPerStart() + "/");
+		
+		psEvt.executeUpdate();
+		System.out.println(vo.getEvtEnd() + vo.getPerEnd() +"/");
+		psPer.executeUpdate();
 		
 		psEvt.close();
 		psPer.close();

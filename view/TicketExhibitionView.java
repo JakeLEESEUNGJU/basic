@@ -177,7 +177,18 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	private void serchByDate() {
 		Event ev= new Event();
 		if(rbExhibi.isSelected()){
+			String date =String.valueOf(cbY.getSelectedItem())+"/"+String.valueOf(cbM.getSelectedItem())+"/"+String.valueOf(cbD.getSelectedItem());
 			
+			
+			try {
+				model.selectByDate(date, "e");
+				
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "날짜검색 실패"+e.getMessage());
+				e.printStackTrace();
+			}
 			
 		}else if(rbPerf.isSelected()){
 			
@@ -254,17 +265,33 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		tbExhiList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				int row = tbExhiList.getSelectedRow();
-				int col =2;
+				int col =0;
 				String data= (String)tbExhiList.getValueAt(row, col);
 				int price= Integer.parseInt(data);
-				
+				selectByTitle(price);
 			
+			}
+
+			
+		});
+		tbPerfList.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				int row = tbPerfList.getSelectedRow();
+				int col =0;
+				String data= (String)tbPerfList.getValueAt(row, col);
+				int price= Integer.parseInt(data);
+				
+				
 			}
 		});
 		
 		
 	}
-
+	void selectByTitle(int price) {
+		int item=price;
+		
+		
+	}
 	void addLayout() {
 		exhiTbModel = new ExhibListTableModel();
 		tbExhiList = new JTable(exhiTbModel);
@@ -371,41 +398,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		add(north, BorderLayout.NORTH);
 		add(center, BorderLayout.CENTER);
 	}
-	// void change() {
-	// Vector data= new Vector();
-	// data.removeAllElements();
-	//
-	// for (int i = 0; i < 4; i++) {
-	// Vector<String> temp = new Vector<String>();
-	// for (int j = 0; j < 3; j++) {
-	// if( j== 0) {
-	// temp.add(jTableTitle[i]);
-	// }else {
-	// temp.add("0");
-	// }
-	// }
-	// data.add(temp);
-	// }
-
-	// TableColumn taCol = tbReciept.getColumnModel().getColumn(1);
-	// cbPeople = new JComboBox();
-	//
-	// cbPeople.addItem("0");
-	// cbPeople.addItem("1");
-	// cbPeople.addItem("2");
-	// cbPeople.addItem("3");
-
-	// cbPeople.addItem("4");
-
-	// taCol.setCellEditor(new DefaultCellEditor(cbPeople));
-
-	// topTbModel.data = data;
-	// tbReciept.setModel(topTbModel);
-	//
-	// topTbModel.fireTableDataChanged();
-	//
-	// tbReciept.setRowHeight(50);
-	// }
+	
 	void connectDB() {
 		try {
 			model = new TicketModel();
@@ -422,52 +415,6 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 
 }
 
-// class TopriTableModel extends AbstractTableModel {
-//
-// Vector data = new Vector();
-// String[] columnNames = { "구분", "인원", "가격" };
-//
-// @Override
-// public int getRowCount() {
-// // TODO Auto-generated method stub
-// return data.size();
-// }
-//
-// @Override
-// public int getColumnCount() {
-// // TODO Auto-generated method stub
-// return columnNames.length;
-// }
-//
-// @Override
-// public Object getValueAt(int rowIndex, int columnIndex) {
-// Vector temp = (Vector) data.elementAt(rowIndex);
-// return temp.elementAt(columnIndex);
-// }
-//
-// public String getColumnName(int col) {
-// return columnNames[col];
-//
-// }
-// public Class getColumnClass(int c) {
-// return getValueAt(0, c).getClass();
-// }
-// public boolean isCellEditable(int row, int col){
-// if((row >=0 &&row<=2 )&&col == 1 ) return true;
-// else return false;
-// }
-//
-// public void setValueAt(Object value, int row, int col){
-// Vector temp = (Vector)data.get(row);
-// temp.set(col, value);
-// fireTableCellUpdated(row, col);
-//
-//
-//
-// }
-//
-//
-// }
 class ExhibListTableModel extends AbstractTableModel {
 
 	Vector data = new Vector();
