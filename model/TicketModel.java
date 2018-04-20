@@ -61,4 +61,61 @@ public class TicketModel {
 		return tableList;
 	}
 
+	public ArrayList searchItems(String item ,String kind, String date) throws Exception{
+		ArrayList itemList = new ArrayList();
+		System.out.println("전송해볼까요~");
+		if(kind.equals("p")){
+		String sql =  "SELECT p.PER_NO as pno, e.EVT_NO as eno,  e.EVT_TITLE title,l.LOC_MAP as map ,e.evt_price as price , "
+				+ " to_char(p.PER_START,'hh24:mi') as stime,to_char(p.PER_end,'hh24:mi') as endtime "
+				+ " FROM event e inner join location l "
+				+ " on e.loc_no = l.loc_no inner join PERFORMANCE p on e.evt_no = p.evt_no "
+				+ " where e.evt_title=?";
+		//System.out.println(date + "/" + kind);	
+		System.out.println(sql);
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setString(1, item);
+		ResultSet result = st.executeQuery();
+		System.out.println(result);
+		if (result.next()) {
+			itemList.add(result.getString("pno"));
+			itemList.add(result.getString("eno"));
+			itemList.add(result.getString("title"));
+			itemList.add(result.getString("map"));
+			itemList.add(result.getString("price"));
+			itemList.add(result.getString("stime"));
+			itemList.add(result.getString("endtime"));
+			itemList.add(date);
+		}
+		
+		result.close();
+		st.close();
+		}else if(kind.equals("e")){
+			String sql = "SELECT ex.EXI_NO as exno, e.EVT_NO as eno, e.EVT_TITLE title,l.LOC_MAP as map ,e.evt_price as price "
+					+ " FROM event e inner join location l "
+					+ " on e.loc_no = l.loc_no inner join EXHIBITION ex "
+					+ " on e.evt_no = ex.evt_no "
+					+ " where e.evt_title=?";
+			//System.out.println(date + "/" + kind);	
+			System.out.println(sql);
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, item);
+			ResultSet result = st.executeQuery();
+			System.out.println(result);
+			if (result.next()) {
+				itemList.add(result.getString("exno"));
+				itemList.add(result.getString("eno"));
+				itemList.add(result.getString("title"));
+				itemList.add(result.getString("map"));
+				itemList.add(result.getString("price"));
+				itemList.add(date);
+			}
+			
+			result.close();
+			st.close();
+		}
+		
+		return itemList;
+		
+	}
+
 }

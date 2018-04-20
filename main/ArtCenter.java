@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,7 +32,7 @@ public class ArtCenter extends JFrame{
 	CardLayout card;
 	JButton btn = new JButton("확인");
 	JPanel background = new JPanel();
-	
+	public ArrayList tempList,temp=null;
 	
 	public ArtCenter(){
 		
@@ -80,6 +81,20 @@ public class ArtCenter extends JFrame{
 	
 	public static void main(String[] args) {
 		new ArtCenter();
+	}
+
+	
+
+	public ArrayList getTempList() {
+		return tempList;
+	}
+
+	public void setTempList(ArrayList temp) {
+		tempList = temp;
+		System.out.println(tempList.isEmpty());
+		
+		
+//		receipt.setTemp(tempList);
 	}
 
 }

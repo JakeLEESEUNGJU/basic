@@ -133,8 +133,15 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		if (evt == bHome) {
 			ac.movecard("main");
 		} else if (evt == bGoNext) {
+			if(laToCash.equals("0")){
+				JOptionPane.showMessageDialog(null, "전시와 인원을 선택해주세요. ");
+				return;
+			}
+			searchForSend();
 			if(rbExhibi.isSelected()){
 				ac.movecard("receiptcard");
+				
+				
 			}else if(rbPerf.isSelected()){
 				ac.movecard("seatcard");
 			}
@@ -156,7 +163,59 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 
 	}
 
-	private void showFrame() {
+	void searchForSend() { //결제 뷰에 사용하기위한 아이템을 모아주는 메서드
+		
+		ArrayList forTable = new ArrayList();
+		forTable.add(laKind.getText());
+		forTable.add(laPep.getText());
+		forTable.add(laCash.getText());
+		forTable.add(laAdult.getText());
+		forTable.add(tfAdult.getText());
+		forTable.add(laToAduC.getText());
+		forTable.add(laChild.getText());
+		forTable.add(tfChild.getText());
+		forTable.add(laToCash.getText());
+		forTable.add(laAdv.getText());
+		forTable.add(tfAdv.getText());
+		forTable.add(laToAdvC.getText());
+		forTable.add(laTotal.getText());
+		forTable.add(laToPep.getText());
+		forTable.add(laToCash.getText());
+		ac.temp=forTable;
+		String date = String.valueOf(cbY.getSelectedItem()) + "/" + String.valueOf(cbM.getSelectedItem()) + "/"
+				+ String.valueOf(cbD.getSelectedItem());
+		if (rbExhibi.isSelected()) {
+			int row = tbExhiList.getSelectedRow();
+			int col = 0;
+			String title = (String) tbExhiList.getValueAt(row, col);
+			try {
+				ArrayList forSql;
+				forSql = model.searchItems(title,"e",date);
+				ac.setTempList(forSql);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
+				e.printStackTrace();
+			}
+		} else if (rbPerf.isSelected()) {
+			int row = tbPerfList.getSelectedRow();
+			int col = 0;
+			String title = (String) tbPerfList.getValueAt(row, col);
+			
+			try {
+				ArrayList forSql;
+				forSql = model.searchItems(title,"p",date);
+				ac.setTempList(forSql);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
+				e.printStackTrace();
+			}
+		}		
+	}
+
+	void showFrame() {
 		if (rbExhibi.isSelected()) {
 			bGoNext.setText("결제");
 			taboTitle.setTitle("판매관리-전시");
@@ -177,7 +236,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 
 	}
 
-	private void serchByDate() {
+	void serchByDate() {
 		if (rbExhibi.isSelected()) {
 			String date = String.valueOf(cbY.getSelectedItem()) + "/" + String.valueOf(cbM.getSelectedItem()) + "/"
 					+ String.valueOf(cbD.getSelectedItem());
@@ -186,7 +245,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 				table = model.selectByDate(date, "e");
 				exhiTbModel.data = table;
 				tbExhiList.setModel(exhiTbModel);
-				exhiTbModel.fireTableDataChanged();
+				exhiTbModel.fireTableDataChanged(); 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "날짜검색 실패" + e.getMessage());
@@ -209,7 +268,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void settotal() {
+	void settotal() {
 		int totalAdu = 0;
 		int totalAdv = 0;
 		int totalChild = 0;
@@ -320,11 +379,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 
 	}
 
-	void selectByTitle(int price) {
-		int item = price;
-
-	}
-
+	
 	void addLayout() {
 		exhiTbModel = new ExhibListTableModel();
 		tbExhiList = new JTable(exhiTbModel);
@@ -445,7 +500,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 
 }
 
-class ExhibListTableModel extends AbstractTableModel {
+class ExhibListTableModel extends AbstractTableModel { //전시 테이블 모델
 
 	ArrayList data = new ArrayList();
 	String[] columnNames = { "제목", "장소", "가격" };
@@ -474,7 +529,7 @@ class ExhibListTableModel extends AbstractTableModel {
 	}
 }
 
-class PerfListTableModel extends AbstractTableModel {
+class PerfListTableModel extends AbstractTableModel { //공연 테이블 모델
 
 	ArrayList data = new ArrayList();
 	String[] columnNames = { "제목", "장소", "가격", "시작시간", "종료시간" };
