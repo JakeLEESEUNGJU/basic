@@ -16,17 +16,27 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 public class Hall extends JPanel implements ActionListener {
-	JButton[][] seats ;			//좌석버튼
-	int w,h;					//좌석 갯수 설정 변수 
-	SeatView parent;			// 좌석선택화면 변수
-	int seatCnt = 3;//하드코딩 인터페이스(수정필요)*** //인원수
-	String seatChoice="" ; //  선택한 좌석
+	JButton[][] seats; // 좌석버튼
+	int w, h; // 좌석 갯수 설정 변수
+	SeatView parent; // 좌석선택화면 변수
+	int seatCnt = 5;// 하드코딩 인터페이스(수정필요)*** //인원수
+	int cnt = seatCnt;
+	String defaultText ="총인원 " + seatCnt + ": ";
+	StringBuffer seatChoice = new StringBuffer(defaultText); // 선택한좌석
+
+	JButton[] temp; // 선택한 버튼 저장하는 배열
+
 	public Hall(SeatView parent) {
 		this.parent = parent;
-		
+		// 하드코딩 인터페이스(수정필요)*** //인원수
+		temp = new JButton[seatCnt];
+		//seatChoice = new StringBuffer("총인원 " + seatCnt + ": ");
+		//parent.test("선택할 총 인원 " + seatCnt+"");
+		 
 	}
-	
-	public void setHall(String HallType, JPanel p_south, GridBagConstraints cbc){
+
+	//홀(장소) 선택하는 메서드
+	public void setHall(String HallType, JPanel p_south, GridBagConstraints cbc) {
 		switch (HallType) {
 		case "A":
 			getHallA(p_south, cbc);
@@ -37,15 +47,18 @@ public class Hall extends JPanel implements ActionListener {
 		case "C":
 			getHallC(p_south, cbc);
 			break;
-		default:		
+		default:
 		}
-		
+
 		eventProc();
 	}
 
+	//홀A 좌석도 그리는 메서드
 	public void getHallA(JPanel p_south, GridBagConstraints cbc) {
-		 w = 10;
-		 h = 10;
+		// 홀크기 설정
+		w = 10;
+		h = 10;
+		// 버튼배열 설정
 		seats = new JButton[h][w];
 
 		char row = 'A';
@@ -62,7 +75,7 @@ public class Hall extends JPanel implements ActionListener {
 		cbc.weightx = 1;
 		cbc.weighty = 1;
 		cbc.fill = GridBagConstraints.BOTH;
-
+		// stage 영역
 		cbc.gridx = 1;
 		cbc.gridy = 0;
 		cbc.gridwidth = 11;
@@ -71,7 +84,7 @@ public class Hall extends JPanel implements ActionListener {
 		JLabel laStage = new JLabel("stage", JLabel.CENTER);
 		laStage.setBorder(border);
 		p_south.add(laStage, cbc);
-
+		// stage와 좌석사이 복도 영역
 		cbc.gridx = 0;
 		cbc.gridy = 1;
 		cbc.gridwidth = 11;
@@ -102,9 +115,12 @@ public class Hall extends JPanel implements ActionListener {
 		}
 	}
 
+	//홀B 좌석도 그리는 메서드
 	public void getHallB(JPanel p_south, GridBagConstraints cbc) {
-		 w = 12;
-		 h = 10;
+		// 홀크기 설정
+		w = 12;
+		h = 10;
+		// 버튼 배열 설정
 		seats = new JButton[h][w];
 		char row = 'A';
 		for (int i = 0; i < h; i++, row = (char) (row + 1)) {
@@ -123,6 +139,7 @@ public class Hall extends JPanel implements ActionListener {
 		cbc.weightx = 1;
 		cbc.weighty = 1;
 		cbc.fill = GridBagConstraints.BOTH;
+		// stage 영역
 		cbc.gridx = 1;
 		cbc.gridy = 0;
 		cbc.gridwidth = 12;
@@ -131,7 +148,7 @@ public class Hall extends JPanel implements ActionListener {
 		JLabel laStage = new JLabel("stage", JLabel.CENTER);
 		laStage.setBorder(border);
 		p_south.add(laStage, cbc);
-
+		// stage와 좌석사이 복도 영역
 		cbc.gridx = 0;
 		cbc.gridy = 1;
 		cbc.gridwidth = 11;
@@ -171,6 +188,7 @@ public class Hall extends JPanel implements ActionListener {
 		}
 	}
 
+	//홀C 좌석도 그리는 메서드
 	public void getHallC(JPanel p_south, GridBagConstraints cbc) {
 		// 홀크기 설정
 		w = 12;
@@ -254,38 +272,56 @@ public class Hall extends JPanel implements ActionListener {
 			}
 		}
 	}
-	// System.out.println(">>" + seatCnt);
-	// parent.test(seatChoice.append(seats[i][j].getText()));
-	// System.out.println(">>");
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
-		//버튼 누를 때 
-		for (int i = 0; i < w; i++) {
+		
+		END: for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
+				// 버튼 누를 때
 				if (evt == seats[i][j]) {
-					if (seatCnt > 0) {
-						if(seatCnt == 0){
-							seatChoice += seats[i][j].getText();
+					for (int k = 0; k < seatCnt; k++) {
+						for (int l = 0; l < seatCnt; l++) {
+							if (seats[i][j] == temp[l]) {// 같은버튼 누르면
+								temp[l] = null;
+								seats[i][j].setBackground(null);
+								seatChoice = new StringBuffer(defaultText);
+								appendText(temp);
+								break END;
+							}
+						}
+						if (temp[k] == null) {// 비어있으면
+							temp[k] = seats[i][j];
+							seats[i][j].setBackground(Color.yellow);
+							seatChoice = new StringBuffer(defaultText);
+							appendText(temp);
 							break;
 						}
-						seatChoice += seats[i][j].getText()+"/";
-						System.out.println(seatChoice);
-						seats[i][j].setBackground(Color.BLUE);
-						seatCnt--;
 					}
 				}
 			}
-
-			}
-
 		}
-	
-	
-	public void choiceSeat(int seatCnt){
+		
 		
 	}
+	
+	//StringBuffer에 텍스트 붙이는 메서드
+	void appendText(JButton[] temp) {
+		for (int i = 0; i < temp.length; i++) {
+			if (i == 0) {
+				if (temp[i] != null) {
+					seatChoice.append(temp[i].getText());
+				}
+			} else if (i < temp.length) {
+				if (temp[i] != null) {
+					seatChoice.append(" ").append(temp[i].getText());
+				}
+			}
+		}
+		parent.getTaString(seatChoice.toString());
+	}
+
+	
 }
-	
-	
