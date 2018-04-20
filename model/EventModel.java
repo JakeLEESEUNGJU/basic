@@ -18,7 +18,7 @@ public class EventModel {
 		con = DBCon.getConnection();
 	}
 
-	//장소 받아오는 메소드
+//장소 받아오는 메소드
 	public ArrayList setLocation(int flag) throws Exception {
 		
 		String sql = null;
@@ -43,7 +43,7 @@ public class EventModel {
 		return temp;
 	}
 	
-	//전시입력메소드
+//전시입력메소드
 	public void insertExi(Exhibition vo, String loc) throws Exception {
 		
 		String sqlEvt = "INSERT INTO event"
@@ -74,6 +74,7 @@ public class EventModel {
 		psExi.close();
 		
 	}
+
 // 공연입력 메소드
 	public void insertPer(Performance vo, String loc) throws Exception {
 		
