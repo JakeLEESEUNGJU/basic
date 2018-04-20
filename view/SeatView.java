@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 
 import main.ArtCenter;
 
-public class SeatView extends JFrame implements ActionListener{
+public class SeatView extends JPanel implements ActionListener{
 	JLabel laTitle;					//화면 타이틀 라벨
 	JButton bBack, bCancel, bNext;	//공연선택 ,취소, 결제 버튼
 	JTextArea taSeat;				//선택한좌석 보여주는 textArea
@@ -75,11 +75,6 @@ public class SeatView extends JFrame implements ActionListener{
 		p_center.add(p_center_north, BorderLayout.NORTH);
 		p_center.add(p_center_center, BorderLayout.CENTER);
 
-		this.setLayout(new BorderLayout());
-		this.add(p_north, BorderLayout.NORTH);
-		this.add(p_center, BorderLayout.CENTER);
-		setSize(800, 900);
-		setVisible(true);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 

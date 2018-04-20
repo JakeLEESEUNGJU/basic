@@ -37,7 +37,6 @@ public class ArtCenter extends JFrame{
 		
 		artCenter = new ArtCenterView(this);
 		ticketExhibition = new TicketExhibitionView(this);
-		ticketPerformance = new TicketPerformanceView();
 		employee = new EmployeeView(this);
         event = new EventView(this);
         seat = new SeatView(this);
@@ -47,7 +46,6 @@ public class ArtCenter extends JFrame{
 		background.setLayout( card );
 		background.add("main", artCenter );
 		background.add("exhibitioncard", ticketExhibition );
-		background.add("performancecard", ticketPerformance );
 		background.add("employeecard", employee);
         background.add("eventcard", event);
         background.add("seatcard", seat);

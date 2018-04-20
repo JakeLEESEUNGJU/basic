@@ -133,8 +133,11 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		if (evt == bHome) {
 			ac.movecard("main");
 		} else if (evt == bGoNext) {
-
-			ac.movecard("");
+			if(rbExhibi.isSelected()){
+				ac.movecard("receiptcard");
+			}else if(rbPerf.isSelected()){
+				ac.movecard("seatcard");
+			}
 		} else if (evt == tfAdult) {
 			settotal();
 		} else if (evt == bDateOk) {
@@ -333,7 +336,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		rbPerf = new JRadioButton("공연");
 		bg.add(rbExhibi);
 		bg.add(rbPerf);
-
+		rbExhibi.setSelected(true);
 		setLayout(new BorderLayout());
 		JPanel north = new JPanel();
 		north.add(new JPanel());
