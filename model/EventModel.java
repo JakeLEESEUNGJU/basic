@@ -104,19 +104,9 @@ public class EventModel {
 		psPer.setString(3, vo.getEvtStart() +" "+ vo.getPerStart()); 
 		psPer.setString(4, vo.getEvtEnd() +" "+ vo.getPerEnd());  
 		
-//		System.out.println(sqlEvt  + "/" + sqlPer);
-		psEvt.executeUpdate();
-//		System.out.println("이벤트:" + sqlPer );
-		psPer.executeUpdate();
-		System.out.println("퍼포먼스");
-		psPer.setString(3, vo.getEvtStart()  + " " + vo.getPerStart()); 
-		psPer.setString(4, vo.getEvtEnd()  + " " + vo.getPerEnd());  
-		
-		
-		System.out.println(vo.getEvtStart() + vo.getPerStart() + "/");
+ 
 		
 		psEvt.executeUpdate();
-		System.out.println(vo.getEvtEnd() + vo.getPerEnd() +"/");
 		psPer.executeUpdate();
 		
 		psEvt.close();
