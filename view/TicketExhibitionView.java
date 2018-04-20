@@ -36,26 +36,26 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	JButton bDateOk, bGoNext, bHome;
 	ButtonGroup bg = new ButtonGroup();
 	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList;
-	JPanel center_center_one_center,center_north;
+	JPanel center_center_one_center, center_north;
 	String[] jTableTitle = { "성인", "어린이", "우대(노인,장애인", "총계" };
 
 	// 인원 및 가격 라벨
 	JLabel laKind, laPep, laCash, laAdult, laChild, laAdv, laTotal, laToPep, laToCash, laToAduC, laToChC, laToAdvC;
 	// 구성원 텍스트필드
 	JTextField tfAdult, tfChild, tfAdv;
-	
+
 	//////
 	JComboBox<Integer> cbY, cbM, cbD; // 연월일 체크
 	String[] strY = new String[11]; // year의 갯수만큼 콤보박스에 넣기 위해 만든 배열이지만 본인은 사용 안함
 	String[] strM = new String[12];// Month 의 값을 저장해서 콤보 박스에 넣기 위한 배열
 	int[] lastDay = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; // 각
-//	JComboBox<Integer> cbPeople;// 어린이 성인 우대 콤보박스 인원 체크
+	// JComboBox<Integer> cbPeople;// 어린이 성인 우대 콤보박스 인원 체크
 	JRadioButton rbPerf, rbExhibi;// 공연 및 전시 라디오 버튼
-	JTable tbExhiList,tbPerfList;
+	JTable tbExhiList, tbPerfList;
 	// , tbReciept
 	ExhibListTableModel exhiTbModel;
 	PerfListTableModel perfTbModel;
-	
+
 	// TopriTableModel topTbModel;
 	TicketModel model;
 	ArtCenter ac;
@@ -133,7 +133,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		if (evt == bHome) {
 			ac.movecard("main");
 		} else if (evt == bGoNext) {
-			
+
 			ac.movecard("");
 		} else if (evt == tfAdult) {
 			settotal();
@@ -143,18 +143,18 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			settotal();
 		} else if (evt == tfChild) {
 			settotal();
-		} else if (evt == rbExhibi){
+		} else if (evt == rbExhibi) {
 			showFrame();
-		} else if (evt == rbPerf){
+		} else if (evt == rbPerf) {
 			showFrame();
-		} else if(evt == cbY||evt == cbM){
-			setDay(); //setDat 메소드 출력
+		} else if (evt == cbY || evt == cbM) {
+			setDay(); // setDat 메소드 출력
 		} 
 
 	}
 
 	private void showFrame() {
-		if(rbExhibi.isSelected()){
+		if (rbExhibi.isSelected()) {
 			bGoNext.setText("결제");
 			taboTitle.setTitle("판매관리-전시");
 			center_north.setBorder(new TitledBorder(taboTitle));
@@ -162,7 +162,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			center_center_one_center.removeAll();
 			center_center_one_center.setBorder(new TitledBorder(taboSelEvt));
 			center_center_one_center.add(new JScrollPane(tbExhiList), BorderLayout.CENTER);
-		}else if(rbPerf.isSelected()){
+		} else if (rbPerf.isSelected()) {
 			bGoNext.setText("좌석선택");
 			taboTitle.setTitle("판매관리-공연");
 			center_north.setBorder(new TitledBorder(taboTitle));
@@ -171,56 +171,88 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			center_center_one_center.setBorder(new TitledBorder(taboSelEvt));
 			center_center_one_center.add(new JScrollPane(tbPerfList), BorderLayout.CENTER);
 		}
-		
+
 	}
 
 	private void serchByDate() {
-		Event ev= new Event();
-		if(rbExhibi.isSelected()){
-			String date =String.valueOf(cbY.getSelectedItem())+"/"+String.valueOf(cbM.getSelectedItem())+"/"+String.valueOf(cbD.getSelectedItem());
-			
-			
+		if (rbExhibi.isSelected()) {
+			String date = String.valueOf(cbY.getSelectedItem()) + "/" + String.valueOf(cbM.getSelectedItem()) + "/"
+					+ String.valueOf(cbD.getSelectedItem());
 			try {
-				model.selectByDate(date, "e");
-				
-				
+				ArrayList table;
+				table = model.selectByDate(date, "e");
+				exhiTbModel.data = table;
+				tbExhiList.setModel(exhiTbModel);
+				exhiTbModel.fireTableDataChanged();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, "날짜검색 실패"+e.getMessage());
+				JOptionPane.showMessageDialog(null, "날짜검색 실패" + e.getMessage());
 				e.printStackTrace();
 			}
-			
-		}else if(rbPerf.isSelected()){
-			
+		} else if (rbPerf.isSelected()) {
+			String date = String.valueOf(cbY.getSelectedItem()) + "/" + String.valueOf(cbM.getSelectedItem()) + "/"
+					+ String.valueOf(cbD.getSelectedItem());
+			try {
+				ArrayList table;
+				table = model.selectByDate(date, "p");
+				perfTbModel.data = table;
+				tbPerfList.setModel(perfTbModel);
+				perfTbModel.fireTableDataChanged();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "날짜검색 실패" + e.getMessage());
+				e.printStackTrace();
+			}
 		}
-		
 	}
 
 	private void settotal() {
-		int totalAdu=0;
-		int totalAdv=0;
-		int totalChild=0;
+		int totalAdu = 0;
+		int totalAdv = 0;
+		int totalChild = 0;
+		if(rbExhibi.isSelected()){
 		int row = tbExhiList.getSelectedRow();
-		int col =2;
-		try{
-		String data= (String)tbExhiList.getValueAt(row, col);
-		int price= Integer.parseInt(data);
+		int col = 2;
+		try {
+			String data = (String) tbExhiList.getValueAt(row, col);
+			int price = Integer.parseInt(data);
 			totalAdu = (Integer.parseInt(tfAdult.getText())) * price;
-			totalAdv =  (int)(Integer.parseInt(tfAdv.getText()) * price *0.5);
-			totalChild = (int)(Integer.parseInt(tfChild.getText()) * price*0.75);
-		
+			totalAdv = (int) (Integer.parseInt(tfAdv.getText()) * price * 0.5);
+			totalChild = (int) (Integer.parseInt(tfChild.getText()) * price * 0.75);
+
 			laToAduC.setText(String.valueOf(totalAdu));
 			laToAdvC.setText(String.valueOf(totalAdv));
 			laToChC.setText(String.valueOf(totalChild));
-		int total = totalAdu + totalAdv + totalChild;
-		laToCash.setText(String.valueOf(total));
-		laToPep.setText(String.valueOf((Integer.parseInt(tfAdult.getText())) + (Integer.parseInt(tfAdv.getText()))
-				+ (Integer.parseInt(tfChild.getText()))));
-		}catch(Exception e){
+			int total = totalAdu + totalAdv + totalChild;
+			laToCash.setText(String.valueOf(total));
+			laToPep.setText(String.valueOf((Integer.parseInt(tfAdult.getText())) + (Integer.parseInt(tfAdv.getText()))
+					+ (Integer.parseInt(tfChild.getText()))));
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "이벤트를 선택하지 않았습니다.");
 			System.out.println(e.getMessage());
-			
-		}
+
+		}}else if(rbPerf.isSelected()){
+			int row = tbPerfList.getSelectedRow();
+			int col = 2;
+			try {
+				String data = (String) tbPerfList.getValueAt(row, col);
+				int price = Integer.parseInt(data);
+				totalAdu = (Integer.parseInt(tfAdult.getText())) * price;
+				totalAdv = (int) (Integer.parseInt(tfAdv.getText()) * price * 0.5);
+				totalChild = (int) (Integer.parseInt(tfChild.getText()) * price * 0.75);
+				
+				laToAduC.setText(String.valueOf(totalAdu));
+				laToAdvC.setText(String.valueOf(totalAdv));
+				laToChC.setText(String.valueOf(totalChild));
+				int total = totalAdu + totalAdv + totalChild;
+				laToCash.setText(String.valueOf(total));
+				laToPep.setText(String.valueOf((Integer.parseInt(tfAdult.getText())) + (Integer.parseInt(tfAdv.getText()))
+						+ (Integer.parseInt(tfChild.getText()))));
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "이벤트를 선택하지 않았습니다.");
+				System.out.println(e.getMessage());
+				
+			}}
 	}
 
 	void setDay() {
@@ -252,6 +284,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	void eventProc() {
 		bGoNext.addActionListener(this);
 		bDateOk.addActionListener(this);
+		
 		// cbPeople.addActionListener(this);
 		bHome.addActionListener(this);
 		tfAdult.addActionListener(this);
@@ -265,33 +298,30 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		tbExhiList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				int row = tbExhiList.getSelectedRow();
-				int col =0;
-				String data= (String)tbExhiList.getValueAt(row, col);
-				int price= Integer.parseInt(data);
-				selectByTitle(price);
-			
+				int col = 2;
+				String data = (String) tbExhiList.getValueAt(row, col);
+				int price = Integer.parseInt(data);
+				System.out.println(data + String.valueOf(price));
 			}
 
-			
 		});
 		tbPerfList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				int row = tbPerfList.getSelectedRow();
-				int col =0;
-				String data= (String)tbPerfList.getValueAt(row, col);
-				int price= Integer.parseInt(data);
-				
-				
+				int col = 2;
+				String data = (String) tbPerfList.getValueAt(row, col);
+				int price = Integer.parseInt(data);
+				System.out.println(data + String.valueOf(price));
 			}
 		});
-		
-		
+
 	}
+
 	void selectByTitle(int price) {
-		int item=price;
-		
-		
+		int item = price;
+
 	}
+
 	void addLayout() {
 		exhiTbModel = new ExhibListTableModel();
 		tbExhiList = new JTable(exhiTbModel);
@@ -398,7 +428,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		add(north, BorderLayout.NORTH);
 		add(center, BorderLayout.CENTER);
 	}
-	
+
 	void connectDB() {
 		try {
 			model = new TicketModel();
@@ -409,67 +439,64 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		}
 	}
 
-	void selectDate() {
-
-	}
 
 }
 
 class ExhibListTableModel extends AbstractTableModel {
 
-	Vector data = new Vector();
+	ArrayList data = new ArrayList();
 	String[] columnNames = { "제목", "장소", "가격" };
 
-	@Override
-	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return data.size();
-	}
+	// =============================================================
+	// 1. 기본적인 TabelModel 만들기
+	// 아래 세 함수는 TabelModel 인터페이스의 추상함수인데
+	// AbstractTabelModel에서 구현되지 않았기에...
+	// 반드시 사용자 구현 필수!!!!
 
-	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
 		return columnNames.length;
 	}
 
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		Vector temp = (Vector) data.elementAt(rowIndex);
-		return temp.elementAt(columnIndex);
+	public int getRowCount() {
+		return data.size();
+	}
+
+	public Object getValueAt(int row, int col) {
+		ArrayList temp = (ArrayList) data.get(row);
+		return temp.get(col);
 	}
 
 	public String getColumnName(int col) {
 		return columnNames[col];
-
 	}
-
 }
+
 class PerfListTableModel extends AbstractTableModel {
-	
-	Vector data = new Vector();
-	String[] columnNames = { "제목", "장소", "가격" ,"시작시간" , "종료시간"};
-	
-	@Override
-	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return data.size();
-	}
-	
-	@Override
+
+	ArrayList data = new ArrayList();
+	String[] columnNames = { "제목", "장소", "가격", "시작시간", "종료시간" };
+
+	// =============================================================
+	// 1. 기본적인 TabelModel 만들기
+	// 아래 세 함수는 TabelModel 인터페이스의 추상함수인데
+	// AbstractTabelModel에서 구현되지 않았기에...
+	// 반드시 사용자 구현 필수!!!!
+
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
 		return columnNames.length;
 	}
-	
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		Vector temp = (Vector) data.elementAt(rowIndex);
-		return temp.elementAt(columnIndex);
+
+	public int getRowCount() {
+		return data.size();
 	}
-	
+
+	public Object getValueAt(int row, int col) {
+		ArrayList temp = (ArrayList) data.get(row);
+		return temp.get(col);
+	}
+
 	public String getColumnName(int col) {
 		return columnNames[col];
-		
 	}
-	
+
 }
