@@ -16,15 +16,36 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 public class Hall extends JPanel implements ActionListener {
-	JButton[][] seats;
-
-	public Hall() {
+	JButton[][] seats ;			//좌석버튼
+	int w,h;					//좌석 갯수 설정 변수 
+	SeatView parent;			// 좌석선택화면 변수
+	int seatCnt = 3;//하드코딩 인터페이스(수정필요)*** //인원수
+	String seatChoice="" ; //  선택한 좌석
+	public Hall(SeatView parent) {
+		this.parent = parent;
+		
+	}
+	
+	public void setHall(String HallType, JPanel p_south, GridBagConstraints cbc){
+		switch (HallType) {
+		case "A":
+			getHallA(p_south, cbc);
+			break;
+		case "B":
+			getHallB(p_south, cbc);
+			break;
+		case "C":
+			getHallC(p_south, cbc);
+			break;
+		default:		
+		}
+		
 		eventProc();
 	}
 
 	public void getHallA(JPanel p_south, GridBagConstraints cbc) {
-		int w = 10;
-		int h = 10;
+		 w = 10;
+		 h = 10;
 		seats = new JButton[h][w];
 
 		char row = 'A';
@@ -82,8 +103,8 @@ public class Hall extends JPanel implements ActionListener {
 	}
 
 	public void getHallB(JPanel p_south, GridBagConstraints cbc) {
-		int w = 12;
-		int h = 10;
+		 w = 12;
+		 h = 10;
 		seats = new JButton[h][w];
 		char row = 'A';
 		for (int i = 0; i < h; i++, row = (char) (row + 1)) {
@@ -152,8 +173,8 @@ public class Hall extends JPanel implements ActionListener {
 
 	public void getHallC(JPanel p_south, GridBagConstraints cbc) {
 		// 홀크기 설정
-		int w = 12;
-		int h = 12;
+		w = 12;
+		h = 12;
 		// 버튼 설정
 		seats = new JButton[h][w];
 		char row = 'A';
@@ -226,13 +247,45 @@ public class Hall extends JPanel implements ActionListener {
 	}
 
 	void eventProc() {
+		for (int i = 0; i < w; i++) {
+			for (int j = 0; j < h; j++) {
+				seats[i][j].addActionListener(this);
 
+			}
+		}
 	}
+	// System.out.println(">>" + seatCnt);
+	// parent.test(seatChoice.append(seats[i][j].getText()));
+	// System.out.println(">>");
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Object evt = e.getSource();
+		//버튼 누를 때 
+		for (int i = 0; i < w; i++) {
+			for (int j = 0; j < h; j++) {
+				if (evt == seats[i][j]) {
+					if (seatCnt > 0) {
+						if(seatCnt == 0){
+							seatChoice += seats[i][j].getText();
+							break;
+						}
+						seatChoice += seats[i][j].getText()+"/";
+						System.out.println(seatChoice);
+						seats[i][j].setBackground(Color.BLUE);
+						seatCnt--;
+					}
+				}
+			}
 
+			}
+
+		}
+	
+	
+	public void choiceSeat(int seatCnt){
+		
 	}
-	
-	
 }
+	
+	

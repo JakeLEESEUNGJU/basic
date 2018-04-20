@@ -10,13 +10,17 @@ public class Event {
 	private int evtPrice; // 행사가격
 	private String evtDetail; // 행사설명
 	private int locNo; // 장소번호
+	private String evtKind;//행사종류  p:공연 e:전시
+	private String evt_flag;//행사 종료 여부
+	private Location location; //장소객체
 
 	public Event() {
 		super();
+		location = new Location();
 	}
-
+	
 	public Event(int evtNo, String evtTitle, String evtStart, String evtEnd, String evtRating, int evtPrice,
-			String evtDetail, int locNo) {
+			String evtDetail, int locNo,String evtKind,String evt_flag) {
 		super();
 		this.evtNo = evtNo;
 		this.evtTitle = evtTitle;
@@ -26,7 +30,29 @@ public class Event {
 		this.evtPrice = evtPrice;
 		this.evtDetail = evtDetail;
 		this.locNo = locNo;
+		this.evtKind = evtKind;
+		this.evt_flag = evt_flag;
+		location = new Location();
 	}
+
+	
+	public String getEvt_flag() {
+		return evt_flag;
+	}
+
+	public void setEvt_flag(String evt_flag) {
+		this.evt_flag = evt_flag;
+	}
+
+	public String getEvtKind() {
+		return evtKind;
+	}
+
+
+	public void setEvtKind(String evtKind) {
+		this.evtKind = evtKind;
+	}
+
 
 	public int getEvtNo() {
 		return evtNo;

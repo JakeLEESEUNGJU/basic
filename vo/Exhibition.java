@@ -10,9 +10,16 @@ public class Exhibition extends Event {
 		super();
 	}
 
+	public Exhibition(int exiNo, int evtNo, String exiDir) {
+		super();
+		this.exiNo = exiNo;
+		this.evtNo = evtNo;
+		this.exiDir = exiDir;
+	}
+
 	public Exhibition(int exiNo, int evtNo, String exiDir, String evtTitle, String evtStart, String evtEnd,
-			String evtRating, int evtPrice, String evtDetail, int locNo) {
-		super(evtNo, evtTitle, evtStart, evtEnd, evtRating, evtPrice, evtDetail, locNo);
+			String evtRating, int evtPrice, String evtDetail, int locNo,String evtKind,String evtFlag) {
+		super(evtNo, evtTitle, evtStart, evtEnd, evtRating, evtPrice, evtDetail, locNo, evtKind, evtFlag);
 		this.exiNo = exiNo;
 		this.evtNo = evtNo;
 		this.exiDir = exiDir;

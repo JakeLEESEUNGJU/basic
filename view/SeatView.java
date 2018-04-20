@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,22 +16,33 @@ import javax.swing.JTextArea;
 
 import main.ArtCenter;
 
-public class SeatView extends JPanel {
-	JLabel laTitle;
-	JButton bBack, bCancel, bNext;
-	JTextArea taSeat;
-	ArtCenter ac;
-	
+public class SeatView extends JFrame implements ActionListener{
+	JLabel laTitle;					//화면 타이틀 라벨
+	JButton bBack, bCancel, bNext;	//공연선택 ,취소, 결제 버튼
+	JTextArea taSeat;				//선택한좌석 보여주는 textArea
+	ArtCenter ac;					//아트센터 객체
 
-	public SeatView(ArtCenter ac) {
-		this.ac = ac;
+	Hall hall = new Hall(this);		// 좌석표
+	
+	public SeatView() {//ArtCenter ac
+		//this.ac = ac;
 		addLayout();
 		connectDB();
 		eventProc();
 	}
 
 	void eventProc() {
-
+		
+	}
+	
+	public void test(StringBuffer seatNum){
+		System.out.println("좌석버튼 이벤트:" + seatNum.toString());
+		taSeat.append(seatNum.toString());
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object evt = e.getSource();
+		
 	}
 
 	void addLayout() {
@@ -67,33 +80,22 @@ public class SeatView extends JPanel {
 		this.add(p_center, BorderLayout.CENTER);
 		setSize(800, 900);
 		setVisible(true);
-
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	// 홀별 좌석도 가져오는 메서드
 	void getHall(String loc, JPanel p_south, GridBagConstraints cbc) {
-		Hall hall = new Hall();
-		switch (loc) {
-		case "A":
-			hall.getHallA(p_south, cbc);
-			break;
-		case "B":
-			hall.getHallB(p_south, cbc);
-			break;
-		case "C":
-			hall.getHallC(p_south, cbc);
-			break;
-		default:
-			break;
-		}
+		hall.setHall(loc, p_south, cbc);		
 	}
 
 	void connectDB() {
 
 	}
 
-//	 public static void main(String[] args) {
-//	 SeatView view = new SeatView();
-//	
-//	 }
+	 public static void main(String[] args) {
+	 SeatView view = new SeatView();
+	
+	 }
+
+	
 }
