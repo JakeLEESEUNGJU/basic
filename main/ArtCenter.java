@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import view.ArtCenterView;
 import view.EmployeeView;
 import view.EventView;
+import view.ReceiptView;
+import view.SeatView;
 import view.TicketExhibitionView;
 import view.TicketPerformanceView;
 
@@ -24,6 +26,8 @@ public class ArtCenter extends JFrame{
 	TicketPerformanceView ticketPerformance;
 	EmployeeView employee;
     EventView event;
+    SeatView seat;
+    ReceiptView receipt;
 	CardLayout card;
 	JButton btn = new JButton("확인");
 	JPanel background = new JPanel();
@@ -36,6 +40,8 @@ public class ArtCenter extends JFrame{
 		ticketPerformance = new TicketPerformanceView();
 		employee = new EmployeeView(this);
         event = new EventView(this);
+        seat = new SeatView(this);
+        receipt = new ReceiptView(this);
         
 		card = new CardLayout();
 		background.setLayout( card );
@@ -44,6 +50,8 @@ public class ArtCenter extends JFrame{
 		background.add("performancecard", ticketPerformance );
 		background.add("employeecard", employee);
         background.add("eventcard", event);
+        background.add("seatcard", seat);
+        background.add("receiptcard", receipt);
 		add(background);
 		
 		
