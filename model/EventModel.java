@@ -43,9 +43,7 @@ public class EventModel {
 		return temp;
 	}
 	
-	//전시입력메소
-
-
+	//전시입력메소드
 	public void insertExi(Exhibition vo, String loc) throws Exception {
 		
 		String sqlEvt = "INSERT INTO event"
@@ -69,14 +67,14 @@ public class EventModel {
 		PreparedStatement psExi = con.prepareStatement(sqlExi);
 		psExi.setString(1, vo.getExiDir());
 		
-		psEvt.executeQuery();
-		psExi.executeQuery();
+		psEvt.executeUpdate();
+		psExi.executeUpdate();
 		
 		psEvt.close();
 		psExi.close();
 		
 	}
-
+// 공연입력 메소드
 	public void insertPer(Performance vo, String loc) throws Exception {
 		
 		String sqlEvt = "INSERT INTO event"
@@ -103,12 +101,14 @@ public class EventModel {
 		PreparedStatement psPer = con.prepareStatement(sqlPer);
 		psPer.setString(1, vo.getPerActor());
 		psPer.setString(2, vo.getPerDir());
-		psPer.setString(3, vo.getEvtStart() + vo.getPerStart()); 
-		psPer.setString(4, vo.getEvtEnd() + vo.getPerEnd());  
+		psPer.setString(3, vo.getEvtStart() +" "+ vo.getPerStart()); 
+		psPer.setString(4, vo.getEvtEnd() +" "+ vo.getPerEnd());  
 		
-		
-		psEvt.executeQuery();
-		psPer.executeQuery();
+//		System.out.println(sqlEvt  + "/" + sqlPer);
+		psEvt.executeUpdate();
+//		System.out.println("이벤트:" + sqlPer );
+		psPer.executeUpdate();
+		System.out.println("퍼포먼스");
 		
 		psEvt.close();
 		psPer.close();
