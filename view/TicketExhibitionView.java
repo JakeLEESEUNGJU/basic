@@ -3,22 +3,21 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,10 +25,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
 
 import main.ArtCenter;
-import model.EmployeeModel;
 import model.TicketModel;
 import vo.Event;
 
@@ -46,17 +43,19 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	JLabel laKind, laPep, laCash, laAdult, laChild, laAdv, laTotal, laToPep, laToCash, laToAduC, laToChC, laToAdvC;
 	// 구성원 텍스트필드
 	JTextField tfAdult, tfChild, tfAdv;
-
+	
 	//////
 	JComboBox<Integer> cbY, cbM, cbD; // 연월일 체크
 	String[] strY = new String[11]; // year의 갯수만큼 콤보박스에 넣기 위해 만든 배열이지만 본인은 사용 안함
 	String[] strM = new String[12];// Month 의 값을 저장해서 콤보 박스에 넣기 위한 배열
 	int[] lastDay = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; // 각
-	JComboBox cbPeople;// 어린이 성인 우대 콤보박스 인원 체크
+//	JComboBox<Integer> cbPeople;// 어린이 성인 우대 콤보박스 인원 체크
 	JRadioButton rbPerf, rbExhibi;// 공연 및 전시 라디오 버튼
-	JTable tbEvtList;
+	JTable tbExhiList,tbPerfList;
 	// , tbReciept
-	EvtListTableModel evTbModel;
+	ExhibListTableModel exhiTbModel;
+	PerfListTableModel perfTbModel;
+	
 	// TopriTableModel topTbModel;
 	TicketModel model;
 	ArtCenter ac;
@@ -148,7 +147,9 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			showFrame();
 		} else if (evt == rbPerf){
 			showFrame();
-		}
+		} else if(evt == cbY||evt == cbM){
+			setDay(); //setDat 메소드 출력
+		} 
 
 	}
 
@@ -158,14 +159,17 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			taboTitle.setTitle("판매관리-전시");
 			center_north.setBorder(new TitledBorder(taboTitle));
 			taboSelEvt.setTitle("전시 선택");
+			center_center_one_center.removeAll();
 			center_center_one_center.setBorder(new TitledBorder(taboSelEvt));
-			
+			center_center_one_center.add(new JScrollPane(tbExhiList), BorderLayout.CENTER);
 		}else if(rbPerf.isSelected()){
 			bGoNext.setText("좌석선택");
 			taboTitle.setTitle("판매관리-공연");
 			center_north.setBorder(new TitledBorder(taboTitle));
 			taboSelEvt.setTitle("공연선택");
+			center_center_one_center.removeAll();
 			center_center_one_center.setBorder(new TitledBorder(taboSelEvt));
+			center_center_one_center.add(new JScrollPane(tbPerfList), BorderLayout.CENTER);
 		}
 		
 	}
@@ -185,14 +189,27 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		int totalAdu=0;
 		int totalAdv=0;
 		int totalChild=0;
-			totalAdu = (Integer.parseInt(tfAdult.getText())) * (Integer.parseInt(laToAduC.getText()));
-			totalAdv = (Integer.parseInt(tfAdv.getText())) * (Integer.parseInt(laToAdvC.getText()));
-			totalChild = (Integer.parseInt(tfChild.getText())) * (Integer.parseInt(laToChC.getText()));
+		int row = tbExhiList.getSelectedRow();
+		int col =2;
+		try{
+		String data= (String)tbExhiList.getValueAt(row, col);
+		int price= Integer.parseInt(data);
+			totalAdu = (Integer.parseInt(tfAdult.getText())) * price;
+			totalAdv =  (int)(Integer.parseInt(tfAdv.getText()) * price *0.5);
+			totalChild = (int)(Integer.parseInt(tfChild.getText()) * price*0.75);
 		
+			laToAduC.setText(String.valueOf(totalAdu));
+			laToAdvC.setText(String.valueOf(totalAdv));
+			laToChC.setText(String.valueOf(totalChild));
 		int total = totalAdu + totalAdv + totalChild;
 		laToCash.setText(String.valueOf(total));
 		laToPep.setText(String.valueOf((Integer.parseInt(tfAdult.getText())) + (Integer.parseInt(tfAdv.getText()))
 				+ (Integer.parseInt(tfChild.getText()))));
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "이벤트를 선택하지 않았습니다.");
+			System.out.println(e.getMessage());
+			
+		}
 	}
 
 	void setDay() {
@@ -231,11 +248,28 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		tfAdv.addActionListener(this);
 		rbExhibi.addActionListener(this);
 		rbPerf.addActionListener(this);
+		cbD.addActionListener(this);
+		cbY.addActionListener(this);
+		cbM.addActionListener(this);
+		tbExhiList.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				int row = tbExhiList.getSelectedRow();
+				int col =2;
+				String data= (String)tbExhiList.getValueAt(row, col);
+				int price= Integer.parseInt(data);
+				
+			
+			}
+		});
+		
+		
 	}
 
 	void addLayout() {
-		evTbModel = new EvtListTableModel();
-		tbEvtList = new JTable(evTbModel);
+		exhiTbModel = new ExhibListTableModel();
+		tbExhiList = new JTable(exhiTbModel);
+		perfTbModel = new PerfListTableModel();
+		tbPerfList = new JTable(perfTbModel);
 		// topTbModel = new TopriTableModel();
 		// tbReciept = new JTable(topTbModel);
 		rbExhibi = new JRadioButton("전시");
@@ -314,7 +348,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		taboSelEvt.setTitleFont(font1);
 		center_center_one_center.setBorder(taboSelEvt);
 		center_center_one_center.setLayout(new BorderLayout());
-		center_center_one_center.add(new JScrollPane(tbEvtList), BorderLayout.CENTER);
+		center_center_one_center.add(new JScrollPane(tbExhiList), BorderLayout.CENTER);
 
 		// 날짜 선택 화면
 		center_center_one_west.setLayout(new GridLayout(2, 1));
@@ -434,7 +468,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 //
 //
 // }
-class EvtListTableModel extends AbstractTableModel {
+class ExhibListTableModel extends AbstractTableModel {
 
 	Vector data = new Vector();
 	String[] columnNames = { "제목", "장소", "가격" };
@@ -462,4 +496,33 @@ class EvtListTableModel extends AbstractTableModel {
 
 	}
 
+}
+class PerfListTableModel extends AbstractTableModel {
+	
+	Vector data = new Vector();
+	String[] columnNames = { "제목", "장소", "가격" ,"시작시간" , "종료시간"};
+	
+	@Override
+	public int getRowCount() {
+		// TODO Auto-generated method stub
+		return data.size();
+	}
+	
+	@Override
+	public int getColumnCount() {
+		// TODO Auto-generated method stub
+		return columnNames.length;
+	}
+	
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		Vector temp = (Vector) data.elementAt(rowIndex);
+		return temp.elementAt(columnIndex);
+	}
+	
+	public String getColumnName(int col) {
+		return columnNames[col];
+		
+	}
+	
 }
