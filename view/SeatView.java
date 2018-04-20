@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -75,6 +74,9 @@ public class SeatView extends JPanel implements ActionListener{
 		p_center.add(p_center_north, BorderLayout.NORTH);
 		p_center.add(p_center_center, BorderLayout.CENTER);
 
+		this.setLayout(new BorderLayout());
+		this.add(p_north, BorderLayout.NORTH);
+		this.add(p_center, BorderLayout.CENTER);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 

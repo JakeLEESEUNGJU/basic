@@ -220,8 +220,8 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			String data = (String) tbExhiList.getValueAt(row, col);
 			int price = Integer.parseInt(data);
 			totalAdu = (Integer.parseInt(tfAdult.getText())) * price;
-			totalAdv = (int) (Integer.parseInt(tfAdv.getText()) * price * 0.5);
-			totalChild = (int) (Integer.parseInt(tfChild.getText()) * price * 0.75);
+			totalAdv = (int) (Integer.parseInt(tfAdv.getText()) * price * 0.75);
+			totalChild = (int) (Integer.parseInt(tfChild.getText()) * price * 0.5);
 
 			laToAduC.setText(String.valueOf(totalAdu));
 			laToAdvC.setText(String.valueOf(totalAdv));
