@@ -176,11 +176,11 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 		}else if(evt == bBack){
 			System.out.println(">>뒤로");
+			ac.movecard("exhibitioncard");
 			/*if(){//공연이면 좌석선택화면으로
 				
 			}else if(){//전시면 전시선택화면으로
 				
-			ac.movecard("exhibitioncard");
 			}*/
 		} else if (evt == bCancel) {
 			System.out.println(">>결제취소");

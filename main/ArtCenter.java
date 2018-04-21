@@ -85,6 +85,7 @@ public class ArtCenter extends JFrame {
 	 * @param temp
 	 */
 	public void setTempList(ArrayList temp) {
+		tempList.clear();
 		tempList = temp;
 		// System.out.println(tempList.isEmpty());
 		// receipt.settempList(tempList);
@@ -92,10 +93,12 @@ public class ArtCenter extends JFrame {
 	}
 
 	public ArrayList getTemp() {
+		
 		return temp;
 	}
 
 	public void setTemp(ArrayList itemp) {
+		temp.clear();
 		temp = itemp;
 		receipt.settempList(temp);
 
