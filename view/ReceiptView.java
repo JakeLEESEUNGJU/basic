@@ -12,6 +12,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,16 +25,16 @@ import main.ArtCenter;
 
 public class ReceiptView extends JPanel implements ActionListener {
 	JLabel laTitle, laRating, laPayMethod, laTotal;//타이틀,등급,결제수단,총결제금액 Label
-	JTextField tfTotal; 							//총결제금액 TextArea
+	JTextField tfTotal, tfDiscount; 				//총결제금액 TextArea
 	JComboBox<String> cbRating, cbPayMethod;		//등급,결제수단 ComboBox
-	JButton bPayment, bCancel, bBack;				//결제하기,예매취소,뒤로가기 Button
+	JButton bPayment, bCancel, bBack;						//결제하기,예매취소,뒤로가기 Button
 	JCheckBox cbGroup;								//단체 선택 CheckBox
 	JTable tbPriceInfo;								//인원,가격정보 보여주는 Table
 	priceTableModel priceModel;						//JTableModel
 	ArtCenter ac;									//아트센터 객체
-
+	
 	// 할인가격
-	int discountPrice = 0;
+	int afterDiscountPrice = 0;
 	// 총가격
 	int totalPrice = 0;
 	// 성인가격
@@ -41,9 +42,9 @@ public class ReceiptView extends JPanel implements ActionListener {
 	// 총인원
 	int peopleCnt = 0;
 	// 가격
-	int adultPrice = price;
-	int childPrice = (int) (price * 0.5);
-	int oldPrice = (int) (price * 0.8);
+	int adultPrice;
+	int childPrice;
+	int oldPrice ;
 	// 명수
 	int adultCnt = 0;
 	int childCnt = 0;
@@ -52,7 +53,6 @@ public class ReceiptView extends JPanel implements ActionListener {
 	int totalAdultPrice = 0;
 	int totalChildPrice = 0;
 	int totalOldPrice = 0;
-	
 
 	ArrayList priceInfoList;
 	
@@ -61,17 +61,14 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 	public ReceiptView(ArtCenter ac) {// ArtCenter ac
 		this.ac = ac;
+		addLayout();
+		eventProc();//이벤트는 생성자에서 호출되어야함 순서 꼬임 ***
 		connectDB();
-//		getPriceInfo();
-//		addLayout();
-//		setTableInfo();// addLayout후에
-		
 
-//		drawtable(priceInfoList);
-//		tfTotal.setText(totalPrice + "");// 처음 총가격 텍스트필드에 띄우기
 	}
 
 	void setTableInfo() {
+		
 		// jtable에 담을 리스트
 		priceInfoList = new ArrayList();
 
@@ -113,10 +110,13 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 	// jtable에 들어가는 정보 arraylist 설정
 	void getPriceInfo(ArrayList abc) {
-		
+		//기준 가격(성인) 설정
 		price = Integer.parseInt(abc.get(3).toString());
+		//가격 설정
+		adultPrice = price;
+		childPrice = (int) (price * 0.5);
+		oldPrice = (int) (price * 0.8);
 		// 인터페이스 arrayalist (수정필요) 넘어오는 변수**************
-		System.out.println(abc.get(0)+"/"+abc.get(1)+"/"+abc.get(2)+"/"+abc.get(3));
 		interfaceList = new ArrayList<>();
 		//add안 변수 수정
 		
@@ -137,6 +137,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		totalPrice = totalAdultPrice + totalChildPrice + totalOldPrice;
 		//
 
+		setTableInfo();
 	}
 
 	void connectDB() {
@@ -160,11 +161,34 @@ public class ReceiptView extends JPanel implements ActionListener {
 		//콤보박스 이벤트 등록
 		if (evt == cbRating) {				
 			setPriceByrating(cbRating.getSelectedItem().toString());
-			tfTotal.setText(discountPrice + "");
+			tfTotal.setText(afterDiscountPrice + "");
+			tfDiscount.setText(String.valueOf((totalPrice-afterDiscountPrice)));
 		} else if (evt == cbGroup) {		
 			cbRating.setEnabled(!cbGroup.isSelected());
-			tfTotal.setText(((int) (totalPrice * 0.9)) + "");
+			if(cbGroup.isSelected()){
+				System.out.println(">>체크");
+				tfDiscount.setText(((int)(totalPrice*0.1)+""));
+				tfTotal.setText((  (int)(totalPrice * 0.9)  ) + "");
+			}else{
+				tfTotal.setText(((totalPrice)) + "");
+				
+			}
 
+		}else if(evt == bBack){
+			System.out.println(">>뒤로");
+			/*if(){//공연이면 좌석선택화면으로
+				
+			}else if(){//전시면 전시선택화면으로
+				
+			ac.movecard("exhibitioncard");
+			}*/
+		} else if (evt == bCancel) {
+			System.out.println(">>결제취소");
+			ac.movecard("main");
+		} else if (evt == bPayment) {
+			System.out.println(">>결제하기");
+			JOptionPane.showMessageDialog(null, "결제 버튼 누름!");
+			// 결제메서드 호출 추가 ***
 		}
 
 	}
@@ -174,26 +198,27 @@ public class ReceiptView extends JPanel implements ActionListener {
 		switch (rating) {
 		case "그린":
 			if (adultCnt > 1) {
-				discountPrice = (int) (adultPrice * 2 * 0.9 + adultPrice * (adultCnt - 2) + childPrice * childCnt
+				afterDiscountPrice = (int) (adultPrice * 2 * 0.9 + adultPrice * (adultCnt - 2) + childPrice * childCnt
 						+ oldPrice * oldCnt);
 			} else {
-				discountPrice = (int) (adultPrice * adultCnt * 0.9 + childPrice * childCnt + oldPrice * oldCnt);
+				afterDiscountPrice = (int) (adultPrice * adultCnt * 0.9 + childPrice * childCnt + oldPrice * oldCnt);
 			}
+			
 			break;
 		case "블루":
 			if (adultCnt > 1) {
-				discountPrice = (int) (adultPrice * 2 * 0.75 + adultPrice * (adultCnt - 2) + childPrice * childCnt
+				afterDiscountPrice = (int) (adultPrice * 2 * 0.75 + adultPrice * (adultCnt - 2) + childPrice * childCnt
 						+ oldPrice * oldCnt);
 			} else {
-				discountPrice = (int) (adultPrice * adultCnt * 0.75 + childPrice * childCnt + oldPrice * oldCnt);
+				afterDiscountPrice = (int) (adultPrice * adultCnt * 0.75 + childPrice * childCnt + oldPrice * oldCnt);
 			}
 			break;
 		case "골드":
 			if (adultCnt > 1) {
-				discountPrice = (int) (adultPrice * 2 * 0.6 + adultPrice * (adultCnt - 2) + childPrice * childCnt
+				afterDiscountPrice = (int) (adultPrice * 2 * 0.6 + adultPrice * (adultCnt - 2) + childPrice * childCnt
 						+ oldPrice * oldCnt);
 			} else {
-				discountPrice = (int) (adultPrice * adultCnt * 0.6 + childPrice * childCnt + oldPrice * oldCnt);
+				afterDiscountPrice = (int) (adultPrice * adultCnt * 0.6 + childPrice * childCnt + oldPrice * oldCnt);
 			}
 			break;
 
@@ -203,14 +228,14 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 		case "싹틔우미":
 			if (adultCnt > 1) {
-				discountPrice = (int) (adultPrice * 2 * 0.5 + adultPrice * (adultCnt - 2) + childPrice * childCnt
+				afterDiscountPrice = (int) (adultPrice * 2 * 0.5 + adultPrice * (adultCnt - 2) + childPrice * childCnt
 						+ oldPrice * oldCnt);
 			} else {
-				discountPrice = (int) (adultPrice * adultCnt * 0.5 + childPrice * childCnt + oldPrice * oldCnt);
+				afterDiscountPrice = (int) (adultPrice * adultCnt * 0.5 + childPrice * childCnt + oldPrice * oldCnt);
 			}
 			break;
 		default:
-			discountPrice = totalPrice;
+			afterDiscountPrice = totalPrice;
 			break;
 		}
 	}
@@ -224,9 +249,6 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 	void addLayout() {
 		laTitle = new JLabel("결제");
-		bBack = new JButton("<뒤로");
-		bPayment = new JButton("결제하기>");
-		bCancel = new JButton("예매 취소");
 		priceModel = new priceTableModel();
 		tbPriceInfo = new JTable(priceModel);
 		tbPriceInfo.setRowHeight(50);
@@ -243,6 +265,13 @@ public class ReceiptView extends JPanel implements ActionListener {
 			cbGroup.setEnabled(false);
 
 		}
+		tfDiscount =new JTextField();
+		tfDiscount.setEditable(false);
+		tfDiscount.setText("0");
+		
+		bBack = new JButton("<뒤로");
+		bPayment = new JButton("결제하기>");
+		bCancel = new JButton("예매 취소");
 
 		cbRating = new JComboBox<String>();
 		cbRating.addItem("==선택==");
@@ -275,13 +304,15 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 		JPanel p_center_south = new JPanel();
 		p_center_south.setBorder(new TitledBorder("결제 정보"));
-		p_center_south.setLayout(new GridLayout(4, 2));
+		p_center_south.setLayout(new GridLayout(5, 2));
 		p_center_south.add(new JLabel(""));
 		p_center_south.add(cbGroup);
 		p_center_south.add(laRating);
 		p_center_south.add(cbRating);
 		p_center_south.add(laPayMethod);
 		p_center_south.add(cbPayMethod);
+		p_center_south.add(new JLabel("할인 가격"));
+		p_center_south.add(tfDiscount);
 		p_center_south.add(laTotal);
 		p_center_south.add(tfTotal);
 		p_center.add(p_center_south, BorderLayout.CENTER);
@@ -327,12 +358,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 	}
 	public void settempList(ArrayList temp){
-		
 		getPriceInfo(temp);
-		addLayout();
-		setTableInfo();
-		eventProc();
-		
 		drawtable(priceInfoList);
 		tfTotal.setText(totalPrice + "");// 처음 총가격 텍스트필드에 띄우기
 	}

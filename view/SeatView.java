@@ -19,11 +19,10 @@ import javax.swing.JTextArea;
 import main.ArtCenter;
 
 public class SeatView extends JPanel implements ActionListener{
-	JLabel laTitle;					//화면 타이틀 라벨
+	JLabel laTitle, laSeat;			//화면 타이틀,선택한 좌석 보여주는 라벨
 	JButton bBack, bCancel, bNext;	//공연선택 ,취소, 결제 버튼
 	JTextArea taSeat;				//선택한좌석 보여주는 textArea
 	ArtCenter ac;					//아트센터 객체
-
 	Hall hall = new Hall(this);		// 좌석 객체
 	
 	public SeatView(ArtCenter ac) {//ArtCenter ac
@@ -51,12 +50,22 @@ public class SeatView extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
 		if (evt == bNext) {
-			if (hall.temp != null) {
-				JOptionPane.showMessageDialog(null, "좌석수 확인");
-
-			} else {
+			if (hall.temp != null) {//***
+				for(int i=0; i<hall.temp.length;i++){
+					System.out.println(">>");
+					System.out.println(hall.temp[i]);
+				}
+				JOptionPane.showMessageDialog(null, "좌석수 확인완료");
 				// 결제 완료 db insert
+				ac.movecard("receiptcard");
+			} else {
+				JOptionPane.showMessageDialog(null, "좌석수 확인요망");
 			}
+		}else if(evt == bBack){
+			ac.movecard("exhibitioncard");
+			
+		}else if(evt == bCancel){
+			ac.movecard("main");
 		}
 		
 	}
@@ -66,6 +75,9 @@ public class SeatView extends JPanel implements ActionListener{
 		bBack = new JButton("<공연선택");
 		bCancel = new JButton("예매취소");
 		bNext = new JButton("결제>");
+		/*laSeat = new JLabel(">>");
+		laSeat.setEnabled(false);*/
+		
 		taSeat = new JTextArea(10, 10);
 		taSeat.setEditable(false);
 		//taSeat.setText(t);
@@ -83,13 +95,14 @@ public class SeatView extends JPanel implements ActionListener{
 		JPanel p_center_north = new JPanel();
 		p_center_north.setLayout(new BorderLayout());
 		p_center_north.add(taSeat);
+		//p_center_north.add(laSeat);
 
 		JPanel p_center_center = new JPanel();
 		p_center_center.setLayout(new GridBagLayout());
 		GridBagConstraints cbc = new GridBagConstraints();
 		
 		// 홀 레이아웃 가져오기 *****홀(장소) 인터페이스**수정필수****
-		getHall("C", p_center_center, cbc);
+		getHall("A", p_center_center, cbc);
 
 		p_center.add(p_center_north, BorderLayout.NORTH);
 		p_center.add(p_center_center, BorderLayout.CENTER);
@@ -97,9 +110,9 @@ public class SeatView extends JPanel implements ActionListener{
 		this.setLayout(new BorderLayout());
 		this.add(p_north, BorderLayout.NORTH);
 		this.add(p_center, BorderLayout.CENTER);
-		//setSize(800, 900);
-		//setVisible(true);
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setSize(800, 900);
+//		setVisible(true);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	// 홀별 좌석도 가져오는 메서드
