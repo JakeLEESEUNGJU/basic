@@ -185,9 +185,9 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			String title = (String) tbExhiList.getValueAt(row, col);
 			try {
 				ArrayList forSql;
-				forSql = model.searchItems(title,"e",date);
-				ac.setTempList(forSql);
-				ac.setTemp(forTableE);
+				forSql = model.searchItems(title,"e",date);//sql 문을 통해서 얻어온 데이터들을 변수에 저장
+				ac.setTempList(forSql);   // forsql을 아트센터 (tempList)에 저장
+				ac.setTemp(forTableE);   // forTableE -> 전시 구성인원을 어레이리스트에 저장해서 전송~~~
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
@@ -206,8 +206,8 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			try {
 				ArrayList forSql;
 				forSql = model.searchItems(title,"p",date);
-				ac.setTempList(forSql);
-				ac.setTemp(forTableP);
+				ac.setTempList(forSql);// forsql을 아트센터 (tempList)에 저장
+				ac.setTemp(forTableP);// forTableP -> 공연 구성인원을 어레이리스트에 저장해서 전송~~~
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());

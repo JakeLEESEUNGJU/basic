@@ -77,16 +77,16 @@ public class TicketModel {
 		ResultSet result = st.executeQuery();
 		System.out.println(result);
 		if (result.next()) {
-				itemList.add(result.getString("pno"));
-				itemList.add(result.getString("eno"));
-				itemList.add(result.getString("title"));
-				itemList.add(result.getString("map"));
-				itemList.add(result.getString("price"));
-				itemList.add(result.getString("stime"));
-				itemList.add(result.getString("endtime"));
-				itemList.add(date);
-		}
-		
+				itemList.add(result.getString("pno")); //공연번호
+				itemList.add(result.getString("eno")); //이벤트 번호
+				itemList.add(result.getString("title"));//이벤트 제목
+				itemList.add(result.getString("map"));//위치
+				itemList.add(result.getString("price")); // 가격
+				itemList.add(result.getString("stime"));//시작시간
+				itemList.add(result.getString("endtime"));//종료시간
+				itemList.add(date); //관람할 날짜 YYYY/MM/DD
+				itemList.add(kind); // p
+		}		
 		result.close();
 		st.close();
 		}else if(kind.equals("e")){
@@ -102,12 +102,13 @@ public class TicketModel {
 			ResultSet result = st.executeQuery();
 			System.out.println(result);
 			if (result.next()) {
-				itemList.add(result.getString("exno"));
-				itemList.add(result.getString("eno"));
-				itemList.add(result.getString("title"));
-				itemList.add(result.getString("map"));
-				itemList.add(result.getString("price"));
-				itemList.add(date);
+				itemList.add(result.getString("exno")); //전시번호
+				itemList.add(result.getString("eno")); //이벤트 번호
+				itemList.add(result.getString("title"));//제목
+				itemList.add(result.getString("map")); // 위 치
+				itemList.add(result.getString("price")); //가격
+				itemList.add(date); //관람할 날짜 YYYY/MM/DD
+				itemList.add(kind); //관람할 이벤트 종류  e
 			}
 			
 			result.close();
