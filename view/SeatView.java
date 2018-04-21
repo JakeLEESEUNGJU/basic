@@ -45,25 +45,29 @@ public class SeatView extends JPanel implements ActionListener{
 	public void setTextArea(String str){
 		taSeat.setText(str);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
 		if (evt == bNext) {
-			if (hall.temp != null) {//***
-				for(int i=0; i<hall.temp.length;i++){
-					System.out.println(">>");
-					System.out.println(hall.temp[i]);
+			int cnt = 0;
+			for (int i = 0; i < hall.temp.length; i++) {
+				if (hall.temp[i] != null) {
+					// System.out.println(">>카운트 ++ "+cnt);
+					cnt++;
 				}
-				JOptionPane.showMessageDialog(null, "좌석수 확인완료");
-				// 결제 완료 db insert
+			}
+			if (hall.temp.length == cnt) {
+				System.out.println(">>좌석수 확인 다음페이지 이동");
 				ac.movecard("receiptcard");
 			} else {
-				JOptionPane.showMessageDialog(null, "좌석수 확인요망");
+				// System.out.println(">>>좌석수 채워지지 않음 다시 확인 요망");
+				JOptionPane.showMessageDialog(null, "선택한 좌석수 확인하세요");
 			}
-		}else if(evt == bBack){
+
+		} else if (evt == bBack) {
 			ac.movecard("exhibitioncard");
-			
+
 		}else if(evt == bCancel){
 			ac.movecard("main");
 		}

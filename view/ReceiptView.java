@@ -106,6 +106,9 @@ public class ReceiptView extends JPanel implements ActionListener {
 		d.setSize(d.getWidth(), 200);
 		tbPriceInfo.setPreferredScrollableViewportSize(d);
 
+		
+		//
+		
 	}
 
 	// jtable에 들어가는 정보 arraylist 설정
@@ -136,7 +139,14 @@ public class ReceiptView extends JPanel implements ActionListener {
 		// 할인 전 총 가격
 		totalPrice = totalAdultPrice + totalChildPrice + totalOldPrice;
 		//
-
+		
+		//단체여부확인
+		if (peopleCnt >= 20) {
+			cbGroup.setEnabled(true);
+		} else {
+			cbGroup.setEnabled(false);
+		}	
+		
 		setTableInfo();
 	}
 
@@ -166,11 +176,11 @@ public class ReceiptView extends JPanel implements ActionListener {
 		} else if (evt == cbGroup) {		
 			cbRating.setEnabled(!cbGroup.isSelected());
 			if(cbGroup.isSelected()){
-				System.out.println(">>체크");
-				tfDiscount.setText(((int)(totalPrice*0.1)+""));
-				tfTotal.setText((  (int)(totalPrice * 0.9)  ) + "");
+				tfDiscount.setText(((int)(totalPrice*0.1)+""));//단체 10퍼 할인가격으로 셋팅
+				tfTotal.setText((  (int)(totalPrice * 0.9)  ) + "");//단체 할인받은 가격으로 셋팅
 			}else{
-				tfTotal.setText(((totalPrice)) + "");
+				tfDiscount.setText("0");//할인가격 0으로 셋팅
+				tfTotal.setText(((totalPrice)) + "");//총가격 원래 가격으로 셋팅
 				
 			}
 
@@ -259,12 +269,11 @@ public class ReceiptView extends JPanel implements ActionListener {
 		tfTotal = new JTextField(15);
 		tfTotal.setEditable(false);
 		cbGroup = new JCheckBox("단체 여부(10% 할인,20인 이상)");
-		if (peopleCnt >= 20) {
+		/*if (peopleCnt >= 20) {
 			cbGroup.setEnabled(true);
 		} else {
 			cbGroup.setEnabled(false);
-
-		}
+		}*/
 		tfDiscount =new JTextField();
 		tfDiscount.setEditable(false);
 		tfDiscount.setText("0");
