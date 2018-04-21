@@ -16,45 +16,39 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 public class Hall extends JPanel implements ActionListener {
-	JButton[][] seats; // 좌석버튼
-	int w, h; // 좌석 갯수 설정 변수
-	SeatView parent; // 좌석선택화면 변수
-	int seatCnt = 5;// 하드코딩 인터페이스(수정필요)*** //인원수
+	JButton[][] seats; 										// 좌석버튼
+	int w, h; 												// 좌석 갯수 설정 변수
+	SeatView parent; 										// 좌석선택화면 변수
+	int seatCnt = 5;// 하드코딩 인터페이스(수정필요)*** 				//인원수
 	int cnt = seatCnt;
-	String defaultText ="총인원 " + seatCnt + ": ";
-	StringBuffer seatChoice = new StringBuffer(defaultText); // 선택한좌석
-
-	JButton[] temp; // 선택한 버튼 저장하는 배열
+	String defaultText ="총인원 " + seatCnt + ": ";			//textarea에 뜨는 기본 문자열
+	StringBuffer seatChoice = new StringBuffer(defaultText);// 선택한좌석
+	JButton[] temp; 										// 선택한 버튼 저장하는 배열
 	String[] saledSeatArray;
-	
 	String saledSeat ="A1 A2 A3";//이미 팔린 좌석 ***인터페이스 *** 수정해야함
+
+	
+	public Hall() {
+	}
 
 	public Hall(SeatView parent) {
 		this.parent = parent;
 		// 하드코딩 인터페이스(수정필요)*** //인원수
 		temp = new JButton[seatCnt];
-		//seatChoice = new StringBuffer("총인원 " + seatCnt + ": ");
-		//parent.test("선택할 총 인원 " + seatCnt+"");
-
-		 
 	}
+	
+	//이미 예매된 좌석 enable 시키는 메서드
 	void setSaledSeat(){
 		saledSeatArray = saledSeat.split(" ");
-		
-		//디버깅
 		for(int k=0; k< saledSeatArray.length;k++){
 			for(int i=0; i<w;i++){
 				for(int j=0; j<h;j++){
-					//System.out.println(seats[i][j].getText()+">>>"+i+" "+j);
-					//System.out.println("w:"+w+"h:"+h);
 					if(seats[i][j].getText().equals(saledSeatArray[k] )){
-						//System.out.println(">"+saledSeatArray[k]);
 						seats[i][j].setEnabled(false);
 					}
 				}
 			}
 		}
-		
 	}
 	
 
@@ -72,7 +66,6 @@ public class Hall extends JPanel implements ActionListener {
 			break;
 		default:
 		}
-
 		eventProc();
 	}
 
@@ -210,7 +203,7 @@ public class Hall extends JPanel implements ActionListener {
 				p_south.add(new JLabel(""), cbc);
 			}
 		}
-		setSaledSeat();//***
+		setSaledSeat();
 	}
 
 	//홀C 좌석도 그리는 메서드
@@ -287,7 +280,7 @@ public class Hall extends JPanel implements ActionListener {
 
 			}
 		}
-		setSaledSeat();//***
+		setSaledSeat();
 	}
 
 	void eventProc() {
@@ -298,7 +291,6 @@ public class Hall extends JPanel implements ActionListener {
 			}
 		}
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -332,7 +324,7 @@ public class Hall extends JPanel implements ActionListener {
 		}
 	}
 	
-	
+	//디버깅용 temp배열 출력 메서드
 	void printTemp(JButton[] array){
 		System.out.println("??");
 		for (int p = 0; p < array.length; p++) {

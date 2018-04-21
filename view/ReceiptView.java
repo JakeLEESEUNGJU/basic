@@ -24,10 +24,10 @@ import javax.swing.table.AbstractTableModel;
 import main.ArtCenter;
 
 public class ReceiptView extends JPanel implements ActionListener {
-	JLabel laTitle, laRating, laPayMethod, laTotal;//타이틀,등급,결제수단,총결제금액 Label
+	JLabel laTitle, laRating, laPayMethod, laTotal; //타이틀,등급,결제수단,총결제금액 Label
 	JTextField tfTotal, tfDiscount; 				//총결제금액 TextArea
 	JComboBox<String> cbRating, cbPayMethod;		//등급,결제수단 ComboBox
-	JButton bPayment, bCancel, bBack;						//결제하기,예매취소,뒤로가기 Button
+	JButton bPayment, bCancel, bBack;				//결제하기,예매취소,뒤로가기 Button
 	JCheckBox cbGroup;								//단체 선택 CheckBox
 	JTable tbPriceInfo;								//인원,가격정보 보여주는 Table
 	priceTableModel priceModel;						//JTableModel
@@ -366,15 +366,15 @@ public class ReceiptView extends JPanel implements ActionListener {
 		}
 
 	}
+	
 	public void settempList(ArrayList temp){
 		getPriceInfo(temp);
 		drawtable(priceInfoList);
 		tfTotal.setText(totalPrice + "");// 처음 총가격 텍스트필드에 띄우기
 	}
 	
-	
-	
 //	public static void main(String[] args) {
 //		ReceiptView view = new ReceiptView();
 //	}
+	
 }

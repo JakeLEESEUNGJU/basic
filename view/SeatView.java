@@ -25,6 +25,9 @@ public class SeatView extends JPanel implements ActionListener{
 	ArtCenter ac;					//아트센터 객체
 	Hall hall = new Hall(this);		// 좌석 객체
 	
+	public SeatView() {
+	}
+
 	public SeatView(ArtCenter ac) {//ArtCenter ac
 		this.ac = ac;
 		addLayout();
@@ -53,15 +56,12 @@ public class SeatView extends JPanel implements ActionListener{
 			int cnt = 0;
 			for (int i = 0; i < hall.temp.length; i++) {
 				if (hall.temp[i] != null) {
-					// System.out.println(">>카운트 ++ "+cnt);
 					cnt++;
 				}
 			}
 			if (hall.temp.length == cnt) {
-				System.out.println(">>좌석수 확인 다음페이지 이동");
 				ac.movecard("receiptcard");
 			} else {
-				// System.out.println(">>>좌석수 채워지지 않음 다시 확인 요망");
 				JOptionPane.showMessageDialog(null, "선택한 좌석수 확인하세요");
 			}
 
@@ -117,6 +117,7 @@ public class SeatView extends JPanel implements ActionListener{
 //		setSize(800, 900);
 //		setVisible(true);
 //		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 	}
 
 	// 홀별 좌석도 가져오는 메서드
