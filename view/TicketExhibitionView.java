@@ -35,7 +35,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	private Font font2 = new Font("Serif", Font.BOLD, 30); //대문 폰트
 	JButton bDateOk, bGoNext, bHome; //날짜 확인 버튼 //결제 혹은 좌석선택 버튼 //초기화면 버튼
 	ButtonGroup bg = new ButtonGroup();//라디오 버튼의 중복 선택 방지를 위한 버튼 그룹
-	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList; // 제목이 달린 보더 클래스
+	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList,taboPerValue; // 제목이 달린 보더 클래스
 	/*
 	 * 각각 타이틀,날짜선택,이벤트 선택, 인원 및 가격
 	 */
@@ -46,7 +46,9 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	JLabel laKind, laPep, laCash, laAdult, laChild, laAdv, laTotal, laToPep, laToCash, laToAduC, laToChC, laToAdvC;
 	// 구성원 텍스트필드
 	JTextField tfAdult, tfChild, tfAdv;
-
+	//( 성인 , 어린이 , 우대 ) 1인당 가격 표시할 라벨들
+	JLabel laPerAdu, laPerChild, laPerAdv ,laPerAduCash,laPerChildCash,laPerAdvCash;
+	
 	//////
 	JComboBox<Integer> cbY, cbM, cbD; // 연월일 체크
 	String[] strY = new String[11]; // year의 갯수만큼 콤보박스에 넣기 위해 만든 배열이지만 본인은 사용 안함
@@ -99,7 +101,21 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		tfAdult = new JTextField("0");
 		tfChild = new JTextField("0");
 		tfAdv = new JTextField("0");
-
+		laPerAdu = new JLabel("성인");
+		laPerAdu.setBorder(eborder);
+		laPerAdv = new JLabel("우대");
+		laPerAdv.setBorder(eborder);
+		laPerChild = new JLabel("어린이");
+		laPerChild.setBorder(eborder);
+		laPerAduCash = new JLabel("0");
+		laPerAduCash.setBorder(eborder);
+		laPerAdvCash = new JLabel("0");
+		laPerAdvCash.setBorder(eborder);
+		laPerChildCash = new JLabel("0");
+		laPerChildCash.setBorder(eborder);
+		
+		
+		
 		this.ac = ac;
 		Calendar c = Calendar.getInstance();
 		// int date = c.get(Calendar.DATE);
@@ -162,9 +178,23 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			showFrame();
 		} else if (evt == cbY || evt == cbM) {
 			setDay(); // setDat 메소드 출력
-		} 
-
+		}
 	}
+
+//	private void setPerPrice() {
+//			if (rbExhibi.isSelected()) {
+//				int row = tbExhiList.getSelectedRow();
+//				int col = 2;
+//				
+//				laPerAduCash.setText((String) tbExhiList.getValueAt(row, col));
+//				laPerAdvCash.setText((String) tbExhiList.getValueAt(row, col));
+//				laPerChildCash.setText((String) tbExhiList.getValueAt(row, col));
+//			}else if(rbPerf.isSelected()){
+//				int row = tbPerfList.getSelectedRow();
+//				int col = 2;
+//				
+//			}
+//	}
 
 	void searchForSend() { //결제 뷰에 사용하기위한 아이템을 모아주는 메서드
 		
@@ -364,7 +394,10 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 				int col = 2;
 				String data = (String) tbExhiList.getValueAt(row, col);
 				int price = Integer.parseInt(data);
-				System.out.println(data + String.valueOf(price));
+				laPerAduCash.setText(String.valueOf(price));
+				laPerAdvCash.setText(String.valueOf((int)(price*0.5)));
+				laPerChildCash.setText(String.valueOf((int)(price*0.75)));
+				
 			}
 
 		});
@@ -374,7 +407,10 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 				int col = 2;
 				String data = (String) tbPerfList.getValueAt(row, col);
 				int price = Integer.parseInt(data);
-				System.out.println(data + String.valueOf(price));
+				
+				laPerAduCash.setText(String.valueOf(price));
+				laPerAdvCash.setText(String.valueOf((int)(price*0.5)));
+				laPerChildCash.setText(String.valueOf((int)(price*0.75)));
 			}
 		});
 
@@ -480,9 +516,24 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		center_center_one_west_one.add(cbM);
 		center_center_one_west_one.add(cbD);
 		center_center_one_west_one.add(bDateOk = new JButton("확인"));
-
-		center_center_one_west_two.add(rbExhibi);
-		center_center_one_west_two.add(rbPerf);
+		center_center_one_west_two.setLayout(new BorderLayout());
+		JPanel center_center_one_west_two_north = new JPanel();
+		center_center_one_west_two.add(center_center_one_west_two_north, BorderLayout.NORTH);
+		center_center_one_west_two_north.add(rbExhibi);
+		center_center_one_west_two_north.add(rbPerf);
+		JPanel center_center_one_west_two_center = new JPanel();
+		center_center_one_west_two.add(center_center_one_west_two_center,BorderLayout.CENTER);
+		center_center_one_west_two_center.setLayout(new GridLayout(3, 2));
+		taboPerValue = new TitledBorder("1인당 가격");
+		taboPerValue.setTitleFont(font1);
+		center_center_one_west_two_center.setBorder(taboPerValue);
+		center_center_one_west_two_center.add(laPerAdu);
+		center_center_one_west_two_center.add(laPerAduCash);
+		center_center_one_west_two_center.add(laPerChild);
+		center_center_one_west_two_center.add(laPerChildCash);
+		center_center_one_west_two_center.add(laPerAdv);
+		center_center_one_west_two_center.add(laPerAdvCash);
+		
 
 		add(north, BorderLayout.NORTH);
 		add(center, BorderLayout.CENTER);
