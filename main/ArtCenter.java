@@ -143,5 +143,10 @@ public class ArtCenter  {
 		receipt.settempList(temp);
 
 	}
+	//직원DB에서 부서 이름을 가져오는 메서드
+	public void empInfoSending(ArrayList<String> info) {
+		String dept = info.get(2);
+		artCenter.setbtn(dept);
+	}
 
 }

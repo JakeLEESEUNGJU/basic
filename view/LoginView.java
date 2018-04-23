@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -46,10 +47,10 @@ public class LoginView extends JPanel implements ActionListener{
 		JPanel center = new JPanel();
 		center.setLayout(new GridLayout(2, 3));
 		center.add(laID);
-		center.add(new JTextField());
+		center.add(tfLog = new JTextField());
 		center.add(bOk);
 		center.add(laPW);
-		center.add(new JTextField());
+		center.add(tfPW = new JTextField());
 		center.add(bReset);
 		
 		
@@ -78,11 +79,15 @@ public class LoginView extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object ev= (Object)e.getSource();
 		
-		if( ev == bOk){
-			if(tfLog.getText().equals(null)||tfPW.getText().equals(null)){
+		if( ev == bOk || ev == tfLog || ev == tfPW){
+			if(tfLog.getText().equals("")||tfPW.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "아이디 혹은 이름이 없습니다.");
 			}else{
-				login();
+				
+				login(tfLog.getText(),tfPW.getText());
+				
+				
+								
 			}
 		}else if(ev == bReset){
 			tfLog.setText("");
@@ -90,9 +95,25 @@ public class LoginView extends JPanel implements ActionListener{
 		}
 	}
 
-	private void login() {
-		model.login();
+	void login(String ID, String PW) {
+		try{
+			ArrayList<String> temp = new ArrayList<String>();
+			temp = model.loginDB(ID,PW); // 0 = empno , 1= empname , 2 = empdept
+			JOptionPane.showMessageDialog(null, temp.get(1)+"님 접속("+temp.get(2)+")");
+			
+			tfLog.setText("");
+			tfPW.setText("");
+			ac.empInfoSending(temp);
+			ac.changeFrame(900, 950);
+			ac.movecard("main");
+			
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "로그인 실패" + e.getMessage());
+		}
 	}
+		
+	
+}
 	
 
-}
+

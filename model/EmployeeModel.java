@@ -3,6 +3,7 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -78,4 +79,22 @@ public class EmployeeModel {
 		ps.close();
 	}
 
+	public ArrayList<String> loginDB(String ID, String PW) throws Exception{
+		ArrayList<String> temp = new ArrayList<String>();
+		String sql= "SELECT EMP_NO ,EMP_NAME,EMP_DEPT"
+				+ " FROM EMPLOYEE "
+				+ " WHERE EMP_EMAIL =? AND EMP_PW=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, ID);
+		ps.setString(2, PW);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()){
+			temp.add(rs.getString("EMP_NO"));
+			temp.add(rs.getString("EMP_NAME"));
+			temp.add(rs.getString("EMP_DEPT"));
+		}
+		return temp;
+		
+	}
+	
 }

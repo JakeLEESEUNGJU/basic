@@ -146,4 +146,38 @@ public class ArtCenterView extends JPanel implements ActionListener {
 
 	}
 
+	public void setbtn(String dept) {
+		if (dept.equals("개발부")){
+			bSalesMgr.setEnabled(true);
+			bSalesMgr.setVisible(true);
+			bEvtMgr.setEnabled(true);
+			bEvtMgr.setVisible(true);
+			bEmpMgr.setEnabled(true);
+			bEmpMgr.setVisible(true);
+		}else if(dept.equals("판매부")){
+			bSalesMgr.setEnabled(true);
+			bSalesMgr.setVisible(true);
+			bEvtMgr.setEnabled(false);
+			bEvtMgr.setVisible(false);
+			bEmpMgr.setEnabled(false);
+			bEmpMgr.setVisible(false);
+		}else if(dept.equals("인사부")){
+			bSalesMgr.setEnabled(true);
+			bSalesMgr.setVisible(true);
+			bEvtMgr.setEnabled(false);
+			bEvtMgr.setVisible(false);
+			bEmpMgr.setEnabled(true);
+			bEmpMgr.setVisible(true);
+		}else if(dept.equals("기획부")){
+			bSalesMgr.setEnabled(false);
+			bSalesMgr.setVisible(false);
+			bEvtMgr.setEnabled(true);
+			bEvtMgr.setVisible(true);
+			bEmpMgr.setEnabled(false);
+			bEmpMgr.setVisible(false);
+			
+		}
+			
+	}
+
 }
