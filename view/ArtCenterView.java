@@ -17,7 +17,7 @@ import main.ArtCenter;
 
 public class ArtCenterView extends JPanel implements ActionListener {
 
-	private Font font2 = new Font("Serif", Font.BOLD, 40);
+	private Font font2 = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
 	JButton bSalesMgr, bEmpMgr, bEvtMgr;
 	ButtonGroup bg = new ButtonGroup();
 	JLabel laArt = new JLabel(new ImageIcon("src\\image\\title.png"));
