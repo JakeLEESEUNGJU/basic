@@ -128,9 +128,8 @@ public class ArtCenter  {
 	public void setTempList(ArrayList temp) {
 		tempList.clear();
 		tempList = temp;
-		// System.out.println(tempList.isEmpty());
-		// receipt.settempList(tempList);
-		// receipt.setTemp(tempList);
+
+		seat.setTempList(tempList);
 	}
 
 	public ArrayList getTemp() {
@@ -142,6 +141,7 @@ public class ArtCenter  {
 		temp.clear();
 		temp = itemp;
 		receipt.settempList(temp);
+		seat.setPersonCnt(temp);
 
 	}
 	//직원DB에서 부서 이름을 가져오는 메서드
