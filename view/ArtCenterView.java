@@ -23,7 +23,7 @@ public class ArtCenterView extends JPanel implements ActionListener {
 	ButtonGroup bg = new ButtonGroup();
 	JLabel laArt = new JLabel(new ImageIcon("src\\image\\newtitle.png"));
 	ArtCenter ac;
-
+	Font bfont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
 	public ArtCenterView(ArtCenter ac) {
 		this.ac = ac;
 		addLayout();
@@ -67,8 +67,11 @@ public class ArtCenterView extends JPanel implements ActionListener {
 	void addLayout() {
 
 		bSalesMgr = new JButton("판매관리");
+		bSalesMgr.setFont(bfont);
 		bEmpMgr = new JButton("사원관리");
+		bEmpMgr.setFont(bfont);
 		bEvtMgr = new JButton("행사관리");
+		bEvtMgr.setFont(bfont);
 		laArt.setFont(font2);
 		laArt.setHorizontalAlignment((int) CENTER_ALIGNMENT);
 		// 회원가입 부분 붙이기
