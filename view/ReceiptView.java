@@ -38,7 +38,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 	// 총가격
 	int totalPrice = 0;
 	// 성인가격
-	int price = 0; // 하드코딩(수정필수)//인터페이스********
+	int price = 0; 
 	// 총인원
 	int peopleCnt = 0;
 	// 가격
@@ -56,8 +56,13 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 	ArrayList priceInfoList;
 	
-	// 인터페이스  arrayList : 인원별 가격정보 *****인터페이스***
-	ArrayList interfaceList; //*****인터페이스***
+	// 인터페이스  arrayList : 인원별 가격정보 
+	ArrayList interfaceList; 
+
+	
+	public ReceiptView() {
+		super();
+	}
 
 	public ReceiptView(ArtCenter ac) {// ArtCenter ac
 		this.ac = ac;
@@ -67,6 +72,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 	}
 
+	//테이블에 들어가는 데이터 arraylist 설정하는 메서드
 	void setTableInfo() {
 		
 		// jtable에 담을 리스트
@@ -105,13 +111,10 @@ public class ReceiptView extends JPanel implements ActionListener {
 		Dimension d = tbPriceInfo.getPreferredSize();
 		d.setSize(d.getWidth(), 200);
 		tbPriceInfo.setPreferredScrollableViewportSize(d);
-
-		
-		//
-		
 	}
 
-	// jtable에 들어가는 정보 arraylist 설정
+	
+	// jtable에 들어가는 정보의 변수 설정
 	void getPriceInfo(ArrayList abc) {
 		//기준 가격(성인) 설정
 		price = Integer.parseInt(abc.get(3).toString());
@@ -119,13 +122,13 @@ public class ReceiptView extends JPanel implements ActionListener {
 		adultPrice = price;
 		childPrice = (int) (price * 0.5);
 		oldPrice = (int) (price * 0.8);
-		// 인터페이스 arrayalist (수정필요) 넘어오는 변수**************
+		// 인터페이스 arrayalist 
 		interfaceList = new ArrayList<>();
 		//add안 변수 수정
 		
-		interfaceList.add(abc.get(0));// 성인 명수 //*****인터페이스 **수정필수***
-		interfaceList.add(abc.get(1));//어린이 명수 //*****인터페이스 **수정필수***
-		interfaceList.add(abc.get(2)); //우대 명수 // *****인터페이스 **수정필수***
+		interfaceList.add(abc.get(0));// 성인 명수 
+		interfaceList.add(abc.get(1));//어린이 명수 
+		interfaceList.add(abc.get(2)); //우대 명수
 		// 명수
 		adultCnt = Integer.parseInt(interfaceList.get(0).toString());
 		childCnt = Integer.parseInt(interfaceList.get(1).toString());
@@ -146,14 +149,16 @@ public class ReceiptView extends JPanel implements ActionListener {
 		} else {
 			cbGroup.setEnabled(false);
 		}	
-		
+		//arraylist 설정하는 메서드 호출
 		setTableInfo();
 	}
 
+	//디비 연결하는 메서드
 	void connectDB() {
 
 	}
 
+	//엑션리스너 등록하는 메서드
 	void eventProc() {
 		//콤보박스 액션리스너 등록
 		cbRating.addActionListener(this);
@@ -173,7 +178,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 			setPriceByrating(cbRating.getSelectedItem().toString());
 			tfTotal.setText(afterDiscountPrice + "");
 			tfDiscount.setText(String.valueOf((totalPrice-afterDiscountPrice)));
-		} else if (evt == cbGroup) {		
+		} else if (evt == cbGroup) {		//단체 체크박스 선택시
 			cbRating.setEnabled(!cbGroup.isSelected());
 			if(cbGroup.isSelected()){
 				tfDiscount.setText(((int)(totalPrice*0.1)+""));//단체 10퍼 할인가격으로 셋팅
@@ -184,7 +189,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 				
 			}
 
-		}else if(evt == bBack){
+		}else if(evt == bBack){//뒤로 버튼 클릭시
 			System.out.println(">>뒤로");
 			ac.movecard("exhibitioncard");
 			/*if(){//공연이면 좌석선택화면으로
@@ -192,10 +197,10 @@ public class ReceiptView extends JPanel implements ActionListener {
 			}else if(){//전시면 전시선택화면으로
 				
 			}*/
-		} else if (evt == bCancel) {
+		} else if (evt == bCancel) {//예매 취소 버튼 클릭시
 			System.out.println(">>결제취소");
 			ac.movecard("main");
-		} else if (evt == bPayment) {
+		} else if (evt == bPayment) {//결제 버튼 클릭시
 			System.out.println(">>결제하기");
 			JOptionPane.showMessageDialog(null, "결제 버튼 누름!");
 			// 결제메서드 호출 추가 ***
@@ -257,6 +262,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		priceModel.fireTableDataChanged();
 	}
 
+	//레이아웃 그리는 메서드
 	void addLayout() {
 		laTitle = new JLabel("결제");
 		priceModel = new priceTableModel();
@@ -343,6 +349,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	//테이블모델 클래스
 	class priceTableModel extends AbstractTableModel {
 
 		ArrayList data = new ArrayList();
@@ -367,9 +374,10 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 	}
 	
+	//성인,아동,우대 인원수 정보가 담긴 arraylist가 넘어오는 메서드(인터페이스)
 	public void settempList(ArrayList temp){
-		getPriceInfo(temp);
-		drawtable(priceInfoList);
+		getPriceInfo(temp); //price 정보 arraylist 설정하는 메서드 호출
+		drawtable(priceInfoList);//테이블 그리는 메서드 호출
 		tfTotal.setText(totalPrice + "");// 처음 총가격 텍스트필드에 띄우기
 	}
 	

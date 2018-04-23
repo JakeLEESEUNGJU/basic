@@ -34,17 +34,20 @@ public class SeatView extends JPanel implements ActionListener{
 		connectDB();
 		eventProc();
 	}
-
+	
+	//엑션리스너 등록하는 메서드
 	void eventProc() {
 		bNext.addActionListener(this);
 		bBack.addActionListener(this);
 		bCancel.addActionListener(this);
 	}
 	
+	//textarea에 쓸 문자열 받아오는 메서드
 	public void getTaString(String seatNum){
 		setTextArea(seatNum);
 	}
 	
+	//textarea에 텍스틑 쓰는 메서드
 	public void setTextArea(String str){
 		taSeat.setText(str);
 	}
@@ -52,28 +55,29 @@ public class SeatView extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
-		if (evt == bNext) {
+		if (evt == bNext) {//다음 버튼 클릭시
 			int cnt = 0;
 			for (int i = 0; i < hall.temp.length; i++) {
 				if (hall.temp[i] != null) {
 					cnt++;
 				}
 			}
-			if (hall.temp.length == cnt) {
+			if (hall.temp.length == cnt) {//선택한 좌석수와 인원수가 같을때
 				ac.movecard("receiptcard");
 			} else {
 				JOptionPane.showMessageDialog(null, "선택한 좌석수 확인하세요");
 			}
 
-		} else if (evt == bBack) {
+		} else if (evt == bBack) {//뒤로 버튼 클릭시
 			ac.movecard("exhibitioncard");
 
-		}else if(evt == bCancel){
+		}else if(evt == bCancel){//예매취소 버튼 클릭시
 			ac.movecard("main");
 		}
 		
 	}
 
+	//레이아웃 그리는 메서드
 	void addLayout() {
 		laTitle = new JLabel("판매관리-공연-세부-좌석선택");
 		bBack = new JButton("<공연선택");
@@ -125,6 +129,7 @@ public class SeatView extends JPanel implements ActionListener{
 		hall.setHall(loc, p_south, cbc);		
 	}
 
+	//디비 연결 메서드
 	void connectDB() {
 
 	}
