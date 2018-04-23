@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +24,9 @@ public class SeatView extends JPanel implements ActionListener{
 	JButton bBack, bCancel, bNext;	//공연선택 ,취소, 결제 버튼
 	JTextArea taSeat;				//선택한좌석 보여주는 textArea
 	ArtCenter ac;					//아트센터 객체
-	Hall hall = new Hall(this);		// 좌석 객체
+	Hall hall ;		// 좌석 객체
+	GridBagConstraints cbc;
+	JPanel  p_center_center;
 	
 	public SeatView() {
 	}
@@ -32,7 +35,7 @@ public class SeatView extends JPanel implements ActionListener{
 		this.ac = ac;
 		addLayout();
 		connectDB();
-		eventProc();
+		//eventProc();
 	}
 	
 	//엑션리스너 등록하는 메서드
@@ -105,12 +108,12 @@ public class SeatView extends JPanel implements ActionListener{
 		p_center_north.add(taSeat);
 		//p_center_north.add(laSeat);
 
-		JPanel p_center_center = new JPanel();
+		p_center_center = new JPanel();
 		p_center_center.setLayout(new GridBagLayout());
-		GridBagConstraints cbc = new GridBagConstraints();
+		cbc = new GridBagConstraints();
 		
 		// 홀 레이아웃 가져오기 *****홀(장소) 인터페이스**수정필수****
-		getHall("A", p_center_center, cbc);
+		//getHall("piggy홀", p_center_center, cbc);
 
 		p_center.add(p_center_north, BorderLayout.NORTH);
 		p_center.add(p_center_center, BorderLayout.CENTER);
@@ -126,12 +129,42 @@ public class SeatView extends JPanel implements ActionListener{
 
 	// 홀별 좌석도 가져오는 메서드
 	void getHall(String loc, JPanel p_south, GridBagConstraints cbc) {
+		p_south.removeAll();
 		hall.setHall(loc, p_south, cbc);		
 	}
 
 	//디비 연결 메서드
 	void connectDB() {
 
+	}
+	
+	
+	public void setTempList(ArrayList temp){
+		//System.out.println( temp.get(3));
+		System.out.println(temp.get(2)+"세번째 확인");
+		System.out.println(temp.get(3)+"세번째 확인");
+		String locvar = temp.get(3).toString();
+		
+		System.out.println(">>>두번째");
+		System.out.println(locvar+"!");
+		getHall(locvar, p_center_center, cbc);
+
+	}
+	
+	// 인원수 가져오기 아트센터에서 호출하는 메서드
+	public void setPersonCnt(ArrayList temp) { // temp(성인수 , 아동수, 우대수, 성인기준가격)정보 담긴 리스트
+		int cnt = 0;
+		for (int i = 0; i < temp.size() - 1; i++) {
+			// temp.get(i);
+			// System.out.println(temp.get(i)+">>?");
+			cnt += Integer.parseInt(temp.get(i).toString());
+		}
+
+		hall = new Hall(this, cnt);
+		// System.out.println(">>seatview :"+hall.seatCnt);
+//		addLayout();
+		System.out.println(">>>첫번째");
+		eventProc();
 	}
 
 //	 public static void main(String[] args) {

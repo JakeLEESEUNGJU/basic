@@ -349,7 +349,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	//테이블모델 클래스
+	//테이블 모델 클래스
 	class priceTableModel extends AbstractTableModel {
 
 		ArrayList data = new ArrayList();

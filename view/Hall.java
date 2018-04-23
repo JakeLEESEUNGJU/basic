@@ -17,33 +17,39 @@ import javax.swing.border.Border;
 
 public class Hall extends JPanel implements ActionListener {
 	JButton[][] seats; 										// 좌석버튼
-	int w, h; 												// 좌석 갯수 설정 변수
+	int height, width; 										// 좌석 갯수 설정 변수 eventProc전용변수
 	SeatView parent; 										// 좌석선택화면 변수
-	int seatCnt = 5;// 하드코딩 인터페이스(수정필요)*** 				//인원수
-	int cnt = seatCnt;
-	String defaultText ="총인원 " + seatCnt + ": ";			//textarea에 뜨는 기본 문자열
-	StringBuffer seatChoice = new StringBuffer(defaultText);// 선택한좌석
+	int peopleCnt = 0;// 하드코딩 인터페이스(수정필요)*** 				//인원수
+	int cnt = peopleCnt;										
+	String defaultText="";		//textarea에 뜨는 기본 문자열
+	StringBuffer choicedSeats = new StringBuffer(defaultText);// 선택한 좌석
 	JButton[] temp; 										// 선택한 버튼 저장하는 배열
-	String[] saledSeatArray;
-	String saledSeat ="A1 A2 A3";//이미 팔린 좌석 ***인터페이스 *** 수정해야함
+	String[] soldSeatsArray;
+	String soldSeat ="A1 A2 A3";//이미 팔린 좌석 ***인터페이스 *** 수정해야함
 
 	
 	public Hall() {
 	}
 
-	public Hall(SeatView parent) {
+	public Hall(SeatView parent, int peopleCnt) {
 		this.parent = parent;
+		this.peopleCnt = peopleCnt;
+		defaultText = "총인원 " + peopleCnt + ": ";
+
 		// 하드코딩 인터페이스(수정필요)*** //인원수
-		temp = new JButton[seatCnt];
+		temp = new JButton[peopleCnt];
 	}
-	
-	//이미 예매된 좌석 enable 시키는 메서드
-	void setSaledSeat(){
-		saledSeatArray = saledSeat.split(" ");
-		for(int k=0; k< saledSeatArray.length;k++){
-			for(int i=0; i<w;i++){
-				for(int j=0; j<h;j++){
-					if(seats[i][j].getText().equals(saledSeatArray[k] )){
+
+	// 이미 예매된 좌석 enable 시키는 메서드
+	void setSaledSeat(int w , int h) {
+		soldSeatsArray = soldSeat.split(" ");
+		for (int k = 0; k < soldSeatsArray.length; k++) {
+			//System.out.println(soldSeatsArray[k]);
+			//System.out.println(soldSeatsArray.length+"!");
+			for (int i = 0; i < h; i++) {
+				for (int j = 0; j < w; j++) {
+					//System.out.println(i+" "+j+" "+k);
+					if (seats[i][j].getText().equals(soldSeatsArray[k])) {
 						seats[i][j].setEnabled(false);
 					}
 				}
@@ -51,29 +57,32 @@ public class Hall extends JPanel implements ActionListener {
 		}
 	}
 	
-
-	//홀(장소) 선택하는 메서드
+	// 홀(장소) 선택하는 메서드
 	public void setHall(String HallType, JPanel p_south, GridBagConstraints cbc) {
 		switch (HallType) {
-		case "A":
+		case "CharilPuth홀":
+			// 
 			getHallA(p_south, cbc);
 			break;
-		case "B":
+		case "Ariana홀":
 			getHallB(p_south, cbc);
 			break;
-		case "C":
+		case "Piggy홀":
 			getHallC(p_south, cbc);
 			break;
 		default:
 		}
-		eventProc();
+		eventProc(HallType);
 	}
 
 	//홀A 좌석도 그리는 메서드
 	public void getHallA(JPanel p_south, GridBagConstraints cbc) {
 		// 홀크기 설정
-		w = 10;
-		h = 10;
+		//10*10
+		int w = 10;
+		int h = 10;
+		height = 10;
+		width= 10;
 		// 버튼배열 설정
 		seats = new JButton[h][w];
 
@@ -129,14 +138,17 @@ public class Hall extends JPanel implements ActionListener {
 				p_south.add(new JLabel(""), cbc);
 			}
 		}
-		setSaledSeat();
+		setSaledSeat(w ,h);//
 	}
 
 	//홀B 좌석도 그리는 메서드
 	public void getHallB(JPanel p_south, GridBagConstraints cbc) {
 		// 홀크기 설정
-		w = 12;
-		h = 10;
+		//10*10
+		int w = 12;
+		int h = 10;
+		height = 10;
+		width= 12;
 		// 버튼 배열 설정
 		seats = new JButton[h][w];
 		char row = 'A';
@@ -203,14 +215,17 @@ public class Hall extends JPanel implements ActionListener {
 				p_south.add(new JLabel(""), cbc);
 			}
 		}
-		setSaledSeat();
+		setSaledSeat(w ,h);
 	}
 
 	//홀C 좌석도 그리는 메서드
 	public void getHallC(JPanel p_south, GridBagConstraints cbc) {
 		// 홀크기 설정
-		w = 12;
-		h = 12;
+		//10*12
+		int w = 12;
+		int h = 12;
+		height = 12;
+		width= 12;
 		// 버튼 설정
 		seats = new JButton[h][w];
 		char row = 'A';
@@ -280,12 +295,24 @@ public class Hall extends JPanel implements ActionListener {
 
 			}
 		}
-		setSaledSeat();
+		setSaledSeat(w ,h);
 	}
 
-	void eventProc() {
-		for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h; j++) {
+	void eventProc(String hallType) {
+/*		switch (hallType) {
+		case "CharilPuth홀":
+			// 
+			break;
+		case "Ariana홀":
+			break;
+		case "Piggy홀":
+			break;
+		default:
+			
+
+		}*/
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
 				seats[i][j].addActionListener(this);
 
 			}
@@ -296,16 +323,16 @@ public class Hall extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
 		
-		END: for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h; j++) {
+		END: for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
 				// 버튼 누를 때
 				if (evt == seats[i][j]) {
-					for (int k = 0; k < seatCnt; k++) {
-						for (int l = 0; l < seatCnt; l++) {
+					for (int k = 0; k < peopleCnt; k++) {
+						for (int l = 0; l < peopleCnt; l++) {
 							if (seats[i][j] == temp[l]) {// 같은버튼 누르면
 								temp[l] = null;
 								seats[i][j].setBackground(null);
-								seatChoice = new StringBuffer(defaultText);
+								choicedSeats = new StringBuffer(defaultText);
 								appendText(temp);
 								break END;
 							}
@@ -313,7 +340,7 @@ public class Hall extends JPanel implements ActionListener {
 						if (temp[k] == null) {// 비어있으면
 							temp[k] = seats[i][j];
 							seats[i][j].setBackground(Color.yellow);
-							seatChoice = new StringBuffer(defaultText);
+							choicedSeats = new StringBuffer(defaultText);
 							appendText(temp);
 							break;
 						}
@@ -326,7 +353,6 @@ public class Hall extends JPanel implements ActionListener {
 	
 	//디버깅용 temp배열 출력 메서드
 	void printTemp(JButton[] array){
-		System.out.println("??");
 		for (int p = 0; p < array.length; p++) {
 			if(temp[p] != null)
 				System.out.println(array[p].getText());
@@ -339,15 +365,15 @@ public class Hall extends JPanel implements ActionListener {
 		for (int i = 0; i < temp.length; i++) {
 			if (i == 0) {
 				if (temp[i] != null) {
-					seatChoice.append(temp[i].getText());
+					choicedSeats.append(temp[i].getText());
 				}
 			} else if (i < temp.length) {
 				if (temp[i] != null) {
-					seatChoice.append(" ").append(temp[i].getText());
+					choicedSeats.append(" ").append(temp[i].getText());
 				}
 			}
 		}
-		parent.getTaString(seatChoice.toString());
+		parent.getTaString(choicedSeats.toString());
 	}
 
 	
