@@ -153,8 +153,8 @@ public class EventView extends JPanel{
 
 	void addLayout() {
 
-		bfont = new Font("맑은고딕", Font.BOLD, 20);
-		titlefont = new Font("Serif", Font.BOLD, 40);
+		bfont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
+		titlefont = new Font("210 타임라인 R", Font.BOLD, 30);
 		
 		rbExi = new JRadioButton("전시");
 		rbPer = new JRadioButton("공연");
@@ -737,7 +737,8 @@ public class EventView extends JPanel{
 		rbPer.setSelected(false);
 		
 		tfExiDir.setText(null);
-		cbLocation.setSelectedIndex(0);
+		if(cbLocation.getItemCount() > 0)
+			cbLocation.setSelectedIndex(0);
 		tfPerActor.setText(null);
 		tfPerDir.setText(null);
 		

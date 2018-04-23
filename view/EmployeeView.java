@@ -50,19 +50,24 @@ public class EmployeeView extends JPanel{
 	}
 
 	void addLayout() {
-		bfont = new Font("맑은고딕", Font.BOLD, 20);
-		titlefont = new Font("Serif", Font.BOLD, 40);
-		
+		bfont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
+		titlefont = new Font("210 타임라인 R", Font.BOLD, 30);
+		lafont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 15);
 		tfEmpNo = new JTextField(30);
 		tfEmpName = new JTextField(30);
 		tfEmpTel = new JTextField(30);
 		tfEmpEmail = new JTextField(30);
 		
 		laEmpNo = new JLabel("직원번호", JLabel.CENTER);
+		laEmpNo.setFont(lafont);
 		laEmpName = new JLabel("이름", JLabel.CENTER);
+		laEmpName.setFont(lafont);
 		laEmpTel = new JLabel("전화번호", JLabel.CENTER);
+		laEmpTel.setFont(lafont);
 		laEmpEmail = new JLabel("이메일", JLabel.CENTER);
+		laEmpEmail.setFont(lafont);
 		laEmpDept = new JLabel("부서", JLabel.CENTER);
+		laEmpDept.setFont(lafont);
 		
 		bSelectEmp = new JButton("조회");
 		bSelectEmp.setFont(bfont);

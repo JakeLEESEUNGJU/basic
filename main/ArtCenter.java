@@ -50,7 +50,7 @@ public class ArtCenter  {
 		login = new LoginView(this);
 		tempList = new ArrayList<>();
 		temp = new ArrayList<>();
-		card = new CardLayout();
+		card = new CardLayout(15,10);
 		background.setLayout(card);
 		background.add("logincard", login);
 		background.add("main", artCenter);

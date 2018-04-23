@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,7 +20,7 @@ public class ArtCenterView extends JPanel implements ActionListener {
 	private Font font2 = new Font("Serif", Font.BOLD, 40);
 	JButton bSalesMgr, bEmpMgr, bEvtMgr;
 	ButtonGroup bg = new ButtonGroup();
-	JLabel laArt = new JLabel("예술의 전당");
+	JLabel laArt = new JLabel(new ImageIcon("src\\image\\title.png"));
 	ArtCenter ac;
 
 	public ArtCenterView(ArtCenter ac) {

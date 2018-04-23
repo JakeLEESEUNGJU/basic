@@ -34,7 +34,7 @@ public class LoginView extends JPanel implements ActionListener{
 		addLayout();
 		connectDB();
 		eventProc();
-		ac.changeFrame(400, 100);
+		ac.changeFrame(500, 150);
 		
 	}
 	
