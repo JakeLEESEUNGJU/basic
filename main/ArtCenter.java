@@ -1,14 +1,13 @@
 package main;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import view.ArtCenterView;
 import view.EmployeeView;
@@ -18,7 +17,7 @@ import view.SeatView;
 import view.TicketExhibitionView;
 import view.TicketPerformanceView;
 
-public class ArtCenter extends JFrame {
+public class ArtCenter  {
 
 	ArtCenterView artCenter;
 	TicketExhibitionView ticketExhibition;
@@ -31,9 +30,11 @@ public class ArtCenter extends JFrame {
 	JButton btn = new JButton("확인");
 	JPanel background = new JPanel();
 	public ArrayList tempList, temp = null;
-
+	JFrame main;
 	public ArtCenter() {
 
+		
+		main = new JFrame("ArtCenter");
 		artCenter = new ArtCenterView(this);
 		ticketExhibition = new TicketExhibitionView(this);
 		employee = new EmployeeView(this);
@@ -50,11 +51,12 @@ public class ArtCenter extends JFrame {
 		background.add("eventcard", event);
 		background.add("seatcard", seat);
 		background.add("receiptcard", receipt);
-		add(background);
-		setSize(800, 900);
-		setVisible(true);
+		main.add(background);
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		main.setSize(900, 950);
+		main.setVisible(true);
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
 
@@ -64,15 +66,47 @@ public class ArtCenter extends JFrame {
 	}
 
 	public void changeFrame() {
-		this.setSize(700, 800);
+		main.setSize(800, 800);
 	}
 
 	public void originalFrame() {
-		this.setSize(800, 900);
+		main.setSize(900, 950);
 	}
 
 	public static void main(String[] args) {
-		new ArtCenter();
+		
+//		[출처] [Swing] Look and Feel : basic|작성자 신찬
+
+
+		 try {
+	            // Set System L&F
+	        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+	        new ArtCenter();
+	    } 
+	    catch (UnsupportedLookAndFeelException e) {
+	       // handle exception
+	    	
+	    	System.out.println(e.getMessage());
+	    	e.getStackTrace();
+	    }
+	    catch (ClassNotFoundException e) {
+	       // handle exception
+	    	System.out.println(e.getMessage());
+	    	e.getStackTrace();
+	    }
+	    catch (InstantiationException e) {
+	       // handle exception
+	    	System.out.println(e.getMessage());
+	    	e.getStackTrace();
+	    }
+	    catch (IllegalAccessException e) {
+	       // handle exception
+	    	System.out.println(e.getMessage());
+	    	e.getStackTrace();
+	    }
+
+	
+		   
 	}
 
 	public ArrayList getTempList() {
