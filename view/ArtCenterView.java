@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,7 +21,7 @@ public class ArtCenterView extends JPanel implements ActionListener {
 	private Font font2 = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
 	JButton bSalesMgr, bEmpMgr, bEvtMgr;
 	ButtonGroup bg = new ButtonGroup();
-	JLabel laArt = new JLabel(new ImageIcon("src\\image\\title.png"));
+	JLabel laArt = new JLabel(new ImageIcon("src\\image\\newtitle.png"));
 	ArtCenter ac;
 
 	public ArtCenterView(ArtCenter ac) {
@@ -140,6 +141,7 @@ public class ArtCenterView extends JPanel implements ActionListener {
 		add(new JPanel(), BorderLayout.EAST);
 		add(new JPanel(), BorderLayout.NORTH);
 		add(new JPanel(), BorderLayout.SOUTH);
+		
 
 	}
 

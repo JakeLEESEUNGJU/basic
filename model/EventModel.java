@@ -86,7 +86,7 @@ public class EventModel {
 			vo.setEvtNo(rs.getInt("EVT_NO"));
 			vo.setEvtTitle(rs.getString("EVT_TITLE"));
 			vo.setEvtStart(rs.getString("EVT_START"));
-			vo.setEvtEnd(rs.getString("EVT_END"));
+//			vo.setEvtEnd(rs.getString("EVT_END"));
 			vo.setEvtPrice(rs.getInt("EVT_PRICE"));
 			vo.setEvtRating(rs.getString("EVT_RATING"));
 			vo.setEvtDetail(rs.getString("EVT_DETAIL"));
@@ -197,7 +197,7 @@ public class EventModel {
 		PreparedStatement psEvt = con.prepareStatement(sqlEvt);
 		psEvt.setString(1, vo.getEvtTitle());
 		psEvt.setString(2, vo.getEvtStart());
-		psEvt.setString(3, vo.getEvtEnd());
+		psEvt.setString(3, vo.getEvtStart());
 		psEvt.setString(4, vo.getEvtRating());
 		psEvt.setInt(5, vo.getEvtPrice());
 		psEvt.setString(6, vo.getEvtDetail());
@@ -206,7 +206,7 @@ public class EventModel {
 		psPer.setString(1, vo.getPerActor());
 		psPer.setString(2, vo.getPerDir());
 		psPer.setString(3, vo.getEvtStart() +" "+ vo.getPerStart()); 
-		psPer.setString(4, vo.getEvtEnd() +" "+ vo.getPerEnd());  
+		psPer.setString(4, vo.getEvtStart() +" "+ vo.getPerEnd());  
 		
 		int r1 = psEvt.executeUpdate();
 		int r2 = psPer.executeUpdate();
@@ -269,13 +269,13 @@ public class EventModel {
 		ps1.setString(1, vo.getPerActor());
 		ps1.setString(2, vo.getPerDir());
 		ps1.setString(3, vo.getEvtStart() + " " + vo.getPerStart());
-		ps1.setString(4, vo.getEvtEnd() +" "+ vo.getPerEnd());
+		ps1.setString(4, vo.getEvtStart() +" "+ vo.getPerEnd());
 		ps1.setInt(5, vo.getEvtNo());
 		
 		PreparedStatement ps2 = con.prepareStatement(sql2);
 		ps2.setString(1, vo.getEvtTitle());
 		ps2.setString(2, vo.getEvtStart());
-		ps2.setString(3, vo.getEvtEnd());
+		ps2.setString(3, vo.getEvtStart());
 		ps2.setString(4, vo.getEvtRating());
 		ps2.setString(5, vo.getEvtDetail());
 		ps2.setInt(6, vo.getEvtPrice());

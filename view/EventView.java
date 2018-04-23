@@ -158,7 +158,9 @@ public class EventView extends JPanel{
 		lafont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 15);
 		
 		rbExi = new JRadioButton("전시");
+		rbExi.setFont(lafont);
 		rbPer = new JRadioButton("공연");
+		rbPer.setFont(lafont);
 		bg = new ButtonGroup();
 		bg.add(rbExi);
 		bg.add(rbPer);
@@ -184,7 +186,7 @@ public class EventView extends JPanel{
 		laEvtRating = new JLabel("등급", JLabel.CENTER);
 		laEvtRating.setFont(lafont);
 		laEvtPrice = new JLabel("가격", JLabel.CENTER);
-		laEvtPeriod.setFont(lafont);
+		laEvtPrice.setFont(lafont);
 		labt = new JLabel("~", JLabel.CENTER);
 		labt.setFont(lafont);
 		
@@ -197,7 +199,10 @@ public class EventView extends JPanel{
 		tfEvtTitle = new JTextField();
 		tfEvtPrice = new JTextField();
 		taEvtDetail = new JTextArea(20,70);
-		taEvtDetail.setBorder(new TitledBorder("설명"));
+		TitledBorder tb = new TitledBorder("설명");
+		tb.setTitleFont(lafont);
+		taEvtDetail.setBorder(tb);
+		
 		
 		bSelectEvt = new JButton("조회");
 		bSelectEvt.setFont(bfont);
@@ -336,9 +341,9 @@ public class EventView extends JPanel{
 		
 		// 전체 패널에 붙이기
 		setLayout(new BorderLayout());
-		TitledBorder tb = new TitledBorder("행사관리");
-		tb.setTitleFont(titlefont);
-		setBorder(tb);
+		TitledBorder tb1 = new TitledBorder("행사관리");
+		tb1.setTitleFont(titlefont);
+		setBorder(tb1);
 		add("North", ptitle);
 		add("Center", ptf);
 		add("South", pb);
@@ -501,7 +506,7 @@ public class EventView extends JPanel{
 			tfEvtPrice.setText(String.valueOf(vo.getEvtPrice()));
 			tfPerActor.setText(vo.getPerActor());
 			tfPerDir.setText(vo.getPerDir());
-			taEvtDetail.setText(vo.getEvtDetail() );
+			taEvtDetail.setText(vo.getEvtDetail());
 			cbRating.setSelectedItem(vo.getEvtRating());
 			cbLocation.setSelectedItem(list.get(1));
 			
@@ -509,9 +514,9 @@ public class EventView extends JPanel{
 			cbStartDateY.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(0, 4))); 
 			cbStartDateM.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(5,7)));
 			cbStartDateD.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(8,10)));
-			cbEndDateY.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(0, 4))); 
-			cbEndDateM.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(5,7)));
-			cbEndDateD.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(8,10)));
+//			cbEndDateY.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(0, 4))); 
+//			cbEndDateM.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(5,7)));
+//			cbEndDateD.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(8,10)));
 			
 			// 시간셋팅
 			// 시작시간
@@ -582,10 +587,10 @@ public class EventView extends JPanel{
 				 		 (cbStartDateM.getSelectedItem())+" "+
 				 		 (cbStartDateD.getSelectedItem());
 		
-		String endDate=(cbEndDateY.getSelectedItem())+" "+
-		 	   		   (cbEndDateM.getSelectedItem())+" "+
-		 	   		   (cbEndDateD.getSelectedItem());
-		
+//		String endDate=(cbEndDateY.getSelectedItem())+" "+
+//		 	   		   (cbEndDateM.getSelectedItem())+" "+
+//		 	   		   (cbEndDateD.getSelectedItem());
+	
 
 		String loc = (String) cbLocation.getSelectedItem();
 		vo.setPerActor(tfPerActor.getText());
@@ -597,7 +602,7 @@ public class EventView extends JPanel{
 		vo.setEvtRating((String) cbRating.getSelectedItem());
 		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
 		vo.setEvtStart(startDate);
-		vo.setEvtEnd(endDate);
+		vo.setEvtEnd(startDate);
 		vo.setEvtDetail(taEvtDetail.getText());
 		
 		try {
@@ -651,9 +656,9 @@ public class EventView extends JPanel{
 				 		 (cbStartDateM.getSelectedItem())+" "+
 				 		 (cbStartDateD.getSelectedItem());
 		
-		String endDate=(cbEndDateY.getSelectedItem())+" "+
-		 	   		   (cbEndDateM.getSelectedItem())+" "+
-		 	   		   (cbEndDateD.getSelectedItem());
+//		String endDate=(cbEndDateY.getSelectedItem())+" "+
+//		 	   		   (cbEndDateM.getSelectedItem())+" "+
+//		 	   		   (cbEndDateD.getSelectedItem());
 		
 
 		String loc = (String) cbLocation.getSelectedItem();
@@ -666,7 +671,7 @@ public class EventView extends JPanel{
 		vo.setEvtRating((String) cbRating.getSelectedItem());
 		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
 		vo.setEvtStart(startDate);
-		vo.setEvtEnd(endDate);
+		vo.setEvtEnd(startDate);
 		vo.setEvtDetail(taEvtDetail.getText());
 		
 		try {
@@ -686,16 +691,16 @@ public class EventView extends JPanel{
 		String startDate = (cbStartDateY.getSelectedItem()) + " " +
 						   (cbStartDateM.getSelectedItem()) + " " + 
 						   (cbStartDateD.getSelectedItem());
-		String endDate = (cbEndDateY.getSelectedItem()) + " " + 
-						 (cbEndDateM.getSelectedItem()) + " " + 
-						 (cbEndDateD.getSelectedItem());
+//		String endDate = (cbEndDateY.getSelectedItem()) + " " + 
+//						 (cbEndDateM.getSelectedItem()) + " " + 
+//						 (cbEndDateD.getSelectedItem());
 		vo.setEvtNo(Integer.parseInt(tfEvtNo.getText()));
 		vo.setEvtTitle(tfEvtTitle.getText());
 		vo.setEvtTitle(tfEvtTitle.getText());
 		vo.setEvtRating((String) cbRating.getSelectedItem());
 		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
 		vo.setEvtStart(startDate);
-		vo.setEvtEnd(endDate);
+		vo.setEvtEnd(startDate);
 		vo.setEvtDetail(taEvtDetail.getText());
 		
 		try {
@@ -788,6 +793,9 @@ public class EventView extends JPanel{
 		cbEndTimeM.setEnabled(false);
 		// 전시정보 true 
 		tfExiDir.setEnabled(true);
+		cbEndDateD.setEnabled(true);
+		cbEndDateM.setEnabled(true);
+		cbEndDateY.setEnabled(true);
 		
 		//전시장소받아오기
 		cbLocation.removeAllItems();
@@ -803,6 +811,9 @@ public class EventView extends JPanel{
 	void choicePer(){
 		// 전시정보 false
 		tfExiDir.setEnabled(false);
+		cbEndDateD.setEnabled(false);
+		cbEndDateM.setEnabled(false);
+		cbEndDateY.setEnabled(false);
 		// 공연정보 true
 		tfPerActor.setEnabled(true);
 		tfPerDir.setEnabled(true);
@@ -1020,12 +1031,14 @@ public class EventView extends JPanel{
 			e.printStackTrace();
 		}
 		// 기존 입력된 데이터에서 종료일 얻어오기 
+		/*
 		try {
 			list2 = model.searchEndDate(loc, evtNo);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "기존 입력된 데이터에서 종료일 얻어오기 실패");
 			e.printStackTrace();
 		}
+		*/
 		
 		String format1 = "%s%s%s";
 		String format2 = "%s%s%s";
@@ -1040,6 +1053,7 @@ public class EventView extends JPanel{
 		}
 		
 		// 지금 입력한 데이터에서 종료일 얻어오기
+		/*
 		if (cbEndDateM.getSelectedIndex() < 9 && cbEndDateD.getSelectedIndex() < 9){
 			format2="%s0%s0%s";
 		}else if(cbEndDateM.getSelectedIndex() < 9 && cbEndDateD.getSelectedIndex() >= 9){
@@ -1047,15 +1061,16 @@ public class EventView extends JPanel{
 		}else if(cbEndDateM.getSelectedIndex() >= 9 && cbEndDateD.getSelectedIndex() < 9 ){
 			format2="%s%s0%s";
 		}
+		*/
 		
 		String startYear = String.format(format1, cbStartDateY.getSelectedItem(), 
 				cbStartDateM.getSelectedItem(), cbStartDateD.getSelectedItem());
 		
-		String endYear = String.format(format2, cbEndDateY.getSelectedItem(), 
-				cbEndDateM.getSelectedItem(), cbEndDateD.getSelectedItem());
+//		String endYear = String.format(format2, cbEndDateY.getSelectedItem(), 
+//				cbEndDateM.getSelectedItem(), cbEndDateD.getSelectedItem());
 		
 		int sy = Integer.parseInt(startYear);
-		int ey = Integer.parseInt(endYear);
+//		int ey = Integer.parseInt(endYear);
 		
 		
 		
@@ -1108,11 +1123,12 @@ public class EventView extends JPanel{
 		
 		for (int i = 0; i < list1.size(); i++) {
 			int s = Integer.parseInt((String) list1.get(i)); // 기존데이터의 시작일
-			int e = Integer.parseInt((String) list2.get(i)); // 기존데이터의 종료일
+//			int e = Integer.parseInt((String) list2.get(i)); // 기존데이터의 종료일
 			int s1 = Integer.parseInt((String) list3.get(i)); // 기존데이터의 시작시간
 			int e1 = Integer.parseInt((String) list4.get(i)); // 기존데이터의 종료시간
 
-			if ((sy >= s && sy <= e) || (ey >= s && ey <= e) || (sy <= s && ey >= e)) { // 기간중복
+			if (/*(sy >= s && sy <= e) || (ey >= s && ey <= e) || (sy <= s && ey >= e)*/
+					sy==s ) { // 기간중복
 				// JOptionPane.showMessageDialog(null, "기간중복, 아직 시간중복아님");
 
 				if ((st >= s1 && st <= e1) || (et >= s1 && et <= e1) || (st <= s1 && et >= e1)) {// 시간중복

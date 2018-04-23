@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
