@@ -79,8 +79,9 @@ public class EmployeeView extends JPanel{
 		bDeleteEmp.setFont(bfont);
 		
 		bHome = new JButton("Home");
+		bHome.setFont(lafont);
 		bClear = new JButton("초기화");
-//		bHome.setSize(6,6);
+		bClear.setFont(lafont);
 	
 //붙이기
 		// title 패널

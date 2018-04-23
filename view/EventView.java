@@ -66,7 +66,7 @@ public class EventView extends JPanel{
 	
 	ArtCenter ac;
 	
-	Font bfont, titlefont;
+	Font bfont, titlefont, lafont;
 	
 	
 	public EventView(ArtCenter ac) {
@@ -155,6 +155,7 @@ public class EventView extends JPanel{
 
 		bfont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
 		titlefont = new Font("210 타임라인 R", Font.BOLD, 30);
+		lafont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 15);
 		
 		rbExi = new JRadioButton("전시");
 		rbPer = new JRadioButton("공연");
@@ -163,18 +164,30 @@ public class EventView extends JPanel{
 		bg.add(rbPer);
 		
 		laExiDir = new JLabel("작가", JLabel.CENTER);
+		laExiDir.setFont(lafont);
 		laLocation = new JLabel("장소", JLabel.CENTER);
+		laLocation.setFont(lafont);
 		laPerActor = new JLabel("출연진", JLabel.CENTER);
+		laPerActor.setFont(lafont);
 		laPerDir = new JLabel("감독", JLabel.CENTER);
+		laPerDir.setFont(lafont);
 		laPerStart = new JLabel("시작시간", JLabel.CENTER);
+		laPerStart.setFont(lafont);
 		laPerEnd = new JLabel("종료시간", JLabel.CENTER);
+		laPerEnd.setFont(lafont);
 		laEvtNo = new JLabel("행사코드", JLabel.CENTER);
+		laEvtNo.setFont(lafont);
 		laEvtTitle = new JLabel("제목", JLabel.CENTER);
+		laEvtTitle.setFont(lafont);
 		laEvtPeriod = new JLabel("기간", JLabel.CENTER);
+		laEvtPeriod.setFont(lafont);
 		laEvtRating = new JLabel("등급", JLabel.CENTER);
+		laEvtRating.setFont(lafont);
 		laEvtPrice = new JLabel("가격", JLabel.CENTER);
+		laEvtPeriod.setFont(lafont);
 		labt = new JLabel("~", JLabel.CENTER);
-		labt.setFont(bfont);
+		labt.setFont(lafont);
+		
 		
 		
 		tfExiDir = new JTextField();
@@ -195,7 +208,9 @@ public class EventView extends JPanel{
 		bDeleteEvt = new JButton("삭제");
 		bDeleteEvt.setFont(bfont);
 		bHome = new JButton("Home");
+		bHome.setFont(lafont);
 		bClear = new JButton("초기화");
+		bClear.setFont(lafont);
 		
 //붙이기
 		//시작시간 패널
