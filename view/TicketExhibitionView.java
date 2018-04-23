@@ -31,9 +31,8 @@ import model.TicketModel;
 import vo.Event;
 
 public class TicketExhibitionView extends JPanel implements ActionListener {
-	private Font font1 = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20); //중간 크기 폰트설정
-	private Font font2 = new Font("210 타임라인 R", Font.BOLD, 30); //대문 폰트
-	private Font font3 = new Font("포천 오성과 한음 Regular", Font.PLAIN, 15);
+	private Font font1 = new Font("Serif", Font.BOLD, 20); //중간 크기 폰트설정
+	private Font font2 = new Font("Serif", Font.BOLD, 30); //대문 폰트
 	JButton bDateOk, bGoNext, bHome; //날짜 확인 버튼 //결제 혹은 좌석선택 버튼 //초기화면 버튼
 	ButtonGroup bg = new ButtonGroup();//라디오 버튼의 중복 선택 방지를 위한 버튼 그룹
 	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList,taboPerValue; // 제목이 달린 보더 클래스
@@ -41,7 +40,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	 * 각각 타이틀,날짜선택,이벤트 선택, 인원 및 가격
 	 */
 	JPanel center_center_one_center, center_north; // 그냥 JPanel ... ㅋㅋ
-	String[] jTableTitle = { "성인", "어린이", "우대(노인,장애인)", "총계" }; //JTable 컬럼 제목
+	String[] jTableTitle = { "성인", "어린이", "우대(노인,장애인", "총계" }; //JTable 컬럼 제목
 
 	// 인원 및 가격 라벨
 	JLabel laKind, laPep, laCash, laAdult, laChild, laAdv, laTotal, laToPep, laToCash, laToAduC, laToChC, laToAdvC;
@@ -217,6 +216,8 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			try {
 				ArrayList forSql;
 				forSql = model.searchItems(title,"e",date);//sql 문을 통해서 얻어온 데이터들을 변수에 저장
+				System.out.println(forSql.get(2)+"두번째 확인");
+				System.out.println(forSql.get(3)+"두번째 확인");
 				ac.setTempList(forSql);   // forsql을 아트센터 (tempList)에 저장
 				ac.setTemp(forTableE);   // forTableE -> 전시 구성인원을 어레이리스트에 저장해서 전송~~~
 			} catch (Exception e) {
@@ -237,8 +238,11 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			try {
 				ArrayList forSql;
 				forSql = model.searchItems(title,"p",date);
-				ac.setTempList(forSql);// forsql을 아트센터 (tempList)에 저장
 				ac.setTemp(forTableP);// forTableP -> 공연 구성인원을 어레이리스트에 저장해서 전송~~~
+				System.out.println(">>영영번째");
+				ac.setTempList(forSql);// forsql을 아트센터 (tempList)에 저장
+				System.out.println(">>첫첫번째");
+				System.out.println(">>두두번째");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
@@ -419,7 +423,6 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 
 	
 	void addLayout() {
-		
 		exhiTbModel = new ExhibListTableModel();
 		tbExhiList = new JTable(exhiTbModel);
 		perfTbModel = new PerfListTableModel();
@@ -432,6 +435,8 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		bg.add(rbPerf);
 		rbExhibi.setSelected(true);
 		setLayout(new BorderLayout());
+		JPanel north = new JPanel();
+		north.add(new JPanel());
 		JPanel center = new JPanel();
 		center.setLayout(new BorderLayout());
 		// 센터 노스 생성후에 센터에 붙히기 , 센터 노스의 레이아웃 (보더)
@@ -448,9 +453,8 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		center_north.add(new JPanel());
 		center_north.add(new JPanel());
 		center_north.add(bGoNext = new JButton("결제"));
-		bGoNext.setFont(font3);
 		center_north.add(bHome = new JButton("Home"));
-		bHome.setFont(font3);
+
 		// 센터 센터 생성
 		JPanel center_center = new JPanel();
 		center.add(center_center, BorderLayout.CENTER);
@@ -536,6 +540,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		center_center_one_west_two_center.add(laPerAdvCash);
 		
 
+		add(north, BorderLayout.NORTH);
 		add(center, BorderLayout.CENTER);
 	}
 
