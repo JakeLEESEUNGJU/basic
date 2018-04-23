@@ -78,4 +78,9 @@ public class EmployeeModel {
 		
 		
 	}
+
+	public void login() {
+		
+		
+	}
 }

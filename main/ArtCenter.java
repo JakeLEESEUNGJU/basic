@@ -12,6 +12,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import view.ArtCenterView;
 import view.EmployeeView;
 import view.EventView;
+import view.LoginView;
 import view.ReceiptView;
 import view.SeatView;
 import view.TicketExhibitionView;
@@ -19,6 +20,8 @@ import view.TicketPerformanceView;
 
 public class ArtCenter  {
 
+	
+	LoginView login;
 	ArtCenterView artCenter;
 	TicketExhibitionView ticketExhibition;
 	TicketPerformanceView ticketPerformance;
@@ -27,10 +30,13 @@ public class ArtCenter  {
 	SeatView seat;
 	ReceiptView receipt;
 	CardLayout card;
+	
 	JButton btn = new JButton("확인");
 	JPanel background = new JPanel();
 	public ArrayList tempList, temp = null;
+	
 	JFrame main;
+	
 	public ArtCenter() {
 
 		
@@ -41,10 +47,12 @@ public class ArtCenter  {
 		event = new EventView(this);
 		seat = new SeatView(this);
 		receipt = new ReceiptView(this);
+		login = new LoginView(this);
 		tempList = new ArrayList<>();
 		temp = new ArrayList<>();
 		card = new CardLayout();
 		background.setLayout(card);
+		background.add("logincard", login);
 		background.add("main", artCenter);
 		background.add("exhibitioncard", ticketExhibition);
 		background.add("employeecard", employee);
@@ -53,7 +61,6 @@ public class ArtCenter  {
 		background.add("receiptcard", receipt);
 		main.add(background);
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		main.setSize(900, 950);
 		main.setVisible(true);
 
 		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,8 +72,8 @@ public class ArtCenter  {
 		card.show(background, text);
 	}
 
-	public void changeFrame() {
-		main.setSize(800, 800);
+	public void changeFrame(int width , int height) {
+		main.setSize(width	, height);
 	}
 
 	public void originalFrame() {
@@ -75,7 +82,6 @@ public class ArtCenter  {
 
 	public static void main(String[] args) {
 		
-//		[출처] [Swing] Look and Feel : basic|작성자 신찬
 
 
 		 try {
