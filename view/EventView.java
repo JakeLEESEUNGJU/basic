@@ -27,7 +27,7 @@ public class EventView extends JPanel{
 	JTextArea taEvtDetail;
 	JButton bSelectEvt, bInsertEvt, bModifyEvt, bDeleteEvt;
 	
-	JButton bHome;
+	JButton bHome, bClear;
 	
 	// 장소 combobox
 	JComboBox cbLocation = new JComboBox<>();
@@ -79,9 +79,14 @@ public class EventView extends JPanel{
 	}
 	
 	private void initStyle() {
-		
-		tfEvtNo.setEnabled(false);
-		
+		Calendar c = Calendar.getInstance();
+		tfEvtNo.setEditable(false);
+		cbStartDateY.setSelectedItem(c.get(Calendar.YEAR));// date 초기값 설정
+		cbStartDateM.setSelectedItem(c.get(Calendar.MONTH)+1);// date 초기값 설정
+//		cbStartDateD.setSelectedItem(c.get(Calendar.DATE));// date 초기값 설정
+		cbEndDateY.setSelectedItem(c.get(Calendar.YEAR));// date 초기값 설정
+		cbEndDateM.setSelectedItem(c.get(Calendar.MONTH)+1);// date 초기값 설정
+//		cbEndDateD.setSelectedItem(c.get(Calendar.DATE));// date 초기값 설정
 		
 	}
 
@@ -116,7 +121,6 @@ public class EventView extends JPanel{
 		
 		
 	}
-	
 	void setDayStart() {
 		//start
 		int year = (Integer) cbStartDateY.getSelectedItem(); 
@@ -146,7 +150,6 @@ public class EventView extends JPanel{
 			cbEndDateD.addItem(i);
 		}
 	}
-	
 
 	void addLayout() {
 
@@ -192,7 +195,7 @@ public class EventView extends JPanel{
 		bDeleteEvt = new JButton("삭제");
 		bDeleteEvt.setFont(bfont);
 		bHome = new JButton("Home");
-		
+		bClear = new JButton("초기화");
 		
 //붙이기
 		//시작시간 패널
@@ -212,26 +215,24 @@ public class EventView extends JPanel{
 		//시작기간 패널
 		pStartDate.setLayout(new FlowLayout());
 		pStartDate.add(cbStartDateY);
-//		pStartDate.add(new JLabel("년"));
 		pStartDate.add(cbStartDateM);
-//		pStartDate.add(new JLabel("월"));
 		pStartDate.add(cbStartDateD);
-//		pStartDate.add(new JLabel("일"));
 		
 		//종료기간패널
 		pEndDate.setLayout(new FlowLayout());
 		pEndDate.add(cbEndDateY);
-//		pEndDate.add(new JLabel("년"));
 		pEndDate.add(cbEndDateM);
-//		pEndDate.add(new JLabel("월"));
 		pEndDate.add(cbEndDateD);
-//		pEndDate.add(new JLabel("일"));
 		
 		// title 패널
 		JPanel ptitle = new JPanel();
 		ptitle.setLayout(new BorderLayout());
 		ptitle.setBorder(BorderFactory.createEmptyBorder(10,10,20,20));
-		ptitle.add(bHome,"East");
+		JPanel ptitle_b = new JPanel();
+		ptitle_b.setLayout(new FlowLayout());
+		ptitle_b.add(bClear);
+		ptitle_b.add(bHome);
+		ptitle.add(ptitle_b, "East");
 		
 		// textfield들 붙이는 패널 
 		
@@ -327,7 +328,6 @@ public class EventView extends JPanel{
 		add("Center", ptf);
 		add("South", pb);
 	}
-
 	void connectDB() {
 		try {
 			model = new EventModel();
@@ -346,6 +346,7 @@ public class EventView extends JPanel{
 		bModifyEvt.addActionListener(btnHandler);
 		bDeleteEvt.addActionListener(btnHandler);
 		bHome.addActionListener(btnHandler);
+		bClear.addActionListener(btnHandler);
 		rbExi.addActionListener(btnHandler);
 		rbPer.addActionListener(btnHandler);
 		cbStartDateY.addActionListener(btnHandler);
@@ -354,6 +355,8 @@ public class EventView extends JPanel{
 		cbEndDateY.addActionListener(btnHandler);
 		cbEndDateM.addActionListener(btnHandler);
 		cbEndDateD.addActionListener(btnHandler);
+		cbEndTimeH.addActionListener(btnHandler);
+		cbEndTimeM.addActionListener(btnHandler);
 		
 	}
 
@@ -362,20 +365,62 @@ public class EventView extends JPanel{
 			public void actionPerformed(ActionEvent ev) {
 				Object o = ev.getSource();
 				
+				//조회
 				if(o==bSelectEvt){
-					selectEvt();
-				} else if (o==bInsertEvt){
-					if(rbExi.isSelected()){
+					if(rbExi.isSelected()){ 
+						selectExi();
+						}else if(rbPer.isSelected()){
+							selectPer();
+						}else if((!rbExi.isSelected()) && (!rbPer.isSelected())){
+							JOptionPane.showMessageDialog(null, "전시 또는 공연을 선택해주세요");
+						}
+				} 
+				//입력
+				else if (o==bInsertEvt){
+					//전시선택시
+					if(rbExi.isSelected()){ 
+					  if(compareDate()==-1){ return; } 
+					  else if(prohibitExi()==-1){ return; }
 						insertExi();
-					}else if(rbPer.isSelected()){
+					//공연선택시
+					} else if(rbPer.isSelected()){
+						if(compareTime()==-1){ return; }
+						else if(prohibitPer()==-1){ return; }
 						insertPer();
+					} else if((!rbExi.isSelected()) && (!rbPer.isSelected())){
+						JOptionPane.showMessageDialog(null, "전시 또는 공연을 선택해주세요");
 					}
-				} else if (o==bModifyEvt){
-					modifyEvt();
-				} else if (o==bDeleteEvt){
-					deleteEvt();
-				} else if (o==bHome){
+				} 
+				//수정
+			else if (o == bModifyEvt) {
+				if (rbExi.isSelected()) {
+					if(compareDate()==-1){ return; } 
+					else if(prohibitExi()==-1){ return; }
+					modifyExi();
+				} else if (rbPer.isSelected()) {
+					if(compareTime()==-1){ return; }
+					else if(prohibitPer()==-1){ return; }
+					modifyPer();
+				} else if ((!rbExi.isSelected()) && (!rbPer.isSelected())) {
+					JOptionPane.showMessageDialog(null, "전시 또는 공연을 선택해주세요");
+				}
+			}
+				//삭제
+				else if (o==bDeleteEvt){
+					if(rbExi.isSelected()){ 
+						deleteExi();
+					}else if(rbPer.isSelected()){
+							deletePer();
+						}else if((!rbExi.isSelected()) && (!rbPer.isSelected())){
+							JOptionPane.showMessageDialog(null, "전시 또는 공연을 선택해주세요");
+						}
+				} 
+				
+				else if (o==bHome){
 					ac.movecard("main");
+					clear();
+				} else if(o==bClear){
+					clear();
 				} else if (o==rbExi){
 					choiceExi();
 				} else if (o==rbPer){
@@ -384,9 +429,11 @@ public class EventView extends JPanel{
 					setDayStart();
 				} else if (o==cbEndDateY||o==cbEndDateM){
 					setDayEnd();
-				}
+				} 
 			
 			}
+
+			
 
 			
 		}
@@ -394,20 +441,104 @@ public class EventView extends JPanel{
 	
 // 버튼 메소드들
 		
-	//조회
-	void selectEvt() {
-
+	//전시조회 -- 완성!!!>_<
+	void selectExi() {
+		String title = tfEvtTitle.getText();
+		Exhibition vo ;
+		ArrayList list = new ArrayList<>();
+		try {
+			list = model.selectExi(title);
+			vo = (Exhibition) list.get(0);
+			tfEvtNo.setText(String.valueOf(vo.getEvtNo()));
+			tfEvtTitle.setText(vo.getEvtTitle());
+			tfEvtPrice.setText(String.valueOf(vo.getEvtPrice()));
+			tfExiDir.setText(vo.getExiDir());
+			taEvtDetail.setText(vo.getEvtDetail() );
+			cbRating.setSelectedItem(vo.getEvtRating());
+			cbLocation.setSelectedItem(list.get(1));
+			
+			// 년, 월, 일 셋팅
+			cbStartDateY.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(0, 4))); 
+			cbStartDateM.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(5,7)));
+			cbStartDateD.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(8,10)));
+			cbEndDateY.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(0, 4))); 
+			cbEndDateM.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(5,7)));
+			cbEndDateD.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(8,10)));
+		
+			JOptionPane.showMessageDialog(null, "전시조회완료");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "전시조회실패");			
+			e.printStackTrace();
+		}
 	}
-	//전시입력
+	
+	//공연조회 -- 완성!!!>_<
+	void selectPer(){
+		String title = tfEvtTitle.getText();
+		Performance vo;
+		ArrayList list = new ArrayList<>();
+		
+		try {
+			list = model.selectPer(title);
+			vo = (Performance) list.get(0);
+			tfEvtNo.setText(String.valueOf(vo.getEvtNo()));
+			tfEvtTitle.setText(vo.getEvtTitle());
+			tfEvtPrice.setText(String.valueOf(vo.getEvtPrice()));
+			tfPerActor.setText(vo.getPerActor());
+			tfPerDir.setText(vo.getPerDir());
+			taEvtDetail.setText(vo.getEvtDetail() );
+			cbRating.setSelectedItem(vo.getEvtRating());
+			cbLocation.setSelectedItem(list.get(1));
+			
+			// 년, 월, 일 셋팅
+			cbStartDateY.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(0, 4))); 
+			cbStartDateM.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(5,7)));
+			cbStartDateD.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(8,10)));
+			cbEndDateY.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(0, 4))); 
+			cbEndDateM.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(5,7)));
+			cbEndDateD.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(8,10)));
+			
+			// 시간셋팅
+			// 시작시간
+			String startHour = ((String) list.get(2)).substring(0, 2);
+			String startMin = ((String) list.get(2)).substring(2);
+			if(startHour.charAt(0)=='0'){
+				startHour = ((String) list.get(2)).substring(1, 2);
+			} else if (startMin.charAt(0)=='0'){
+				startHour = ((String) list.get(2)).substring(3);
+			}
+			
+			cbStartTimeH.setSelectedItem(startHour);
+			cbStartTimeM.setSelectedItem(startMin);
+			//종료시간
+			String endHour = ((String) list.get(3)).substring(0, 2);
+			String endMin = ((String) list.get(3)).substring(2);
+			if(endHour.charAt(0)=='0'){
+				endHour = ((String) list.get(3)).substring(1, 2);
+			} else if (endMin.charAt(0)=='0'){
+				endHour = ((String) list.get(3)).substring(3);
+			}
+			
+			cbEndTimeH.setSelectedItem(endHour);
+			cbEndTimeM.setSelectedItem(endMin);
+			
+			
+			JOptionPane.showMessageDialog(null, "공연조회완료");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "공연조회실패" );
+			e.printStackTrace();
+		}
+	}
+	//전시입력 -- 완성!!!>_<
 	void insertExi() {
 		
 		Exhibition vo = new Exhibition();
-		String startDate=((String)cbStartDateY.getSelectedItem())+" "+
-						 ((String)cbStartDateM.getSelectedItem())+" "+
-						 ((String)cbStartDateD.getSelectedItem());
-		String endDate=((String)cbEndDateY.getSelectedItem())+" "+
-				 	   ((String)cbEndDateM.getSelectedItem())+" "+
-				 	   ((String)cbEndDateD.getSelectedItem());
+		String startDate=(cbStartDateY.getSelectedItem())+" "+
+						 (cbStartDateM.getSelectedItem())+" "+
+						 (cbStartDateD.getSelectedItem());
+		String endDate=(cbEndDateY.getSelectedItem())+" "+
+				 	   (cbEndDateM.getSelectedItem())+" "+
+				 	   (cbEndDateD.getSelectedItem());
 		
 		String loc = (String) cbLocation.getSelectedItem();
 		vo.setExiDir(tfExiDir.getText());
@@ -421,25 +552,12 @@ public class EventView extends JPanel{
 		try {
 			model.insertExi(vo, loc);
 			JOptionPane.showMessageDialog(null, "전시입력완료");
-			tfExiDir.setText(null);
-			tfEvtTitle.setText(null);
-			tfEvtPrice.setText(null);
-			cbRating.setSelectedIndex(0);
-			cbLocation.setSelectedIndex(0);
-			cbStartDateY.setSelectedIndex(0);
-			cbStartDateM.setSelectedIndex(0);
-			cbStartDateD.setSelectedIndex(0);
-			cbEndDateY.setSelectedIndex(0);
-			cbEndDateM.setSelectedIndex(0);
-			cbEndDateD.setSelectedIndex(0);
-
-			taEvtDetail.setText(null);
+			clear();
 		} catch (Exception e) {
 			System.out.println("전시입력실패");
 			e.printStackTrace();
 		}
 	}
-	
 	//공연입력
 	void insertPer(){
 		Performance vo = new Performance();
@@ -448,11 +566,11 @@ public class EventView extends JPanel{
 		String startDate=(cbStartDateY.getSelectedItem())+" "+
 				 		 (cbStartDateM.getSelectedItem())+" "+
 				 		 (cbStartDateD.getSelectedItem());
-		System.out.println(cbStartDateY.getSelectedItem() +" "+cbStartDateM.getSelectedItem() +" "+ cbStartDateD.getSelectedItem());
+		
 		String endDate=(cbEndDateY.getSelectedItem())+" "+
 		 	   		   (cbEndDateM.getSelectedItem())+" "+
 		 	   		   (cbEndDateD.getSelectedItem());
-		System.out.println(cbEndDateY.getSelectedItem() +" "+cbEndDateM.getSelectedItem() +" "+ cbEndDateD.getSelectedItem());
+		
 
 		String loc = (String) cbLocation.getSelectedItem();
 		vo.setPerActor(tfPerActor.getText());
@@ -470,22 +588,7 @@ public class EventView extends JPanel{
 		try {
 			model.insertPer(vo, loc);
 			JOptionPane.showMessageDialog(null, "공연입력완료");
-			tfPerActor.setText(null);
-			tfPerDir.setText(null);
-			cbStartTimeH.setSelectedIndex(0);
-			cbStartTimeM.setSelectedIndex(0);
-			cbEndTimeH.setSelectedIndex(0);
-			cbEndTimeM.setSelectedIndex(0);
-			tfEvtTitle.setText(null);
-			tfEvtPrice.setText(null);
-			cbRating.setSelectedIndex(0);
-			cbLocation.setSelectedIndex(0);
-			cbStartDateY.setSelectedIndex(0);
-			cbStartDateM.setSelectedIndex(0);
-			cbStartDateD.setSelectedIndex(0);
-			cbEndDateY.setSelectedIndex(0);
-			cbEndDateM.setSelectedIndex(0);
-			cbEndDateD.setSelectedIndex(0);
+			clear();
 		} catch (Exception e) {
 			System.out.println("공연입력실패");
 			e.printStackTrace();
@@ -493,19 +596,167 @@ public class EventView extends JPanel{
 		
 		
 	}
-	
-	//수정
-	void modifyEvt() {
-
-	}
-	//삭제
-	void deleteEvt() {
-
-	}
-
-	//초기화
-	void clear() {
+	//전시수정 
+	void modifyExi() {
 		
+		Exhibition vo = new Exhibition();
+		
+		String startDate = (cbStartDateY.getSelectedItem()) + " " +
+						   (cbStartDateM.getSelectedItem()) + " " + 
+						   (cbStartDateD.getSelectedItem());
+		String endDate = (cbEndDateY.getSelectedItem()) + " " + 
+						 (cbEndDateM.getSelectedItem()) + " " + 
+						 (cbEndDateD.getSelectedItem());
+		
+		String loc = (String) cbLocation.getSelectedItem();
+		vo.setEvtNo(Integer.parseInt(tfEvtNo.getText()));
+		vo.setExiDir(tfExiDir.getText());
+		vo.setEvtTitle(tfEvtTitle.getText());
+		vo.setEvtRating((String) cbRating.getSelectedItem());
+		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
+		vo.setEvtStart(startDate);
+		vo.setEvtEnd(endDate);
+		vo.setEvtDetail(taEvtDetail.getText());
+		
+		try {
+			model.modifyExi(vo, loc);
+			JOptionPane.showMessageDialog(null, "전시수정완료");
+			clear();
+		} catch (Exception e) {
+			System.out.println("전시수정실패");
+			e.printStackTrace();
+		}
+	}
+	//공연수정
+	void modifyPer(){
+		Performance vo = new Performance();
+		String startTime = (cbStartTimeH.getSelectedItem() +" "+ cbStartTimeM.getSelectedItem());
+		String endTime = (cbEndTimeH.getSelectedItem() +" "+ cbEndTimeM.getSelectedItem());
+		String startDate=(cbStartDateY.getSelectedItem())+" "+
+				 		 (cbStartDateM.getSelectedItem())+" "+
+				 		 (cbStartDateD.getSelectedItem());
+		
+		String endDate=(cbEndDateY.getSelectedItem())+" "+
+		 	   		   (cbEndDateM.getSelectedItem())+" "+
+		 	   		   (cbEndDateD.getSelectedItem());
+		
+
+		String loc = (String) cbLocation.getSelectedItem();
+		vo.setPerActor(tfPerActor.getText());
+		vo.setPerDir(tfPerDir.getText());
+		vo.setPerStart(startTime);
+		vo.setPerEnd(endTime);
+		vo.setEvtNo(Integer.parseInt(tfEvtNo.getText()));
+		vo.setEvtTitle(tfEvtTitle.getText());
+		vo.setEvtRating((String) cbRating.getSelectedItem());
+		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
+		vo.setEvtStart(startDate);
+		vo.setEvtEnd(endDate);
+		vo.setEvtDetail(taEvtDetail.getText());
+		
+		try {
+			model.modifyPer(vo, loc);
+			JOptionPane.showMessageDialog(null, "공연수정완료");
+			clear();
+			
+		} catch (Exception e) {
+			System.out.println("공연수정실패");
+			e.printStackTrace();
+		}
+	}
+	//전시삭제 -- 완성!!!>_<
+	void deleteExi() {
+		Exhibition vo = new Exhibition();
+
+		String startDate = (cbStartDateY.getSelectedItem()) + " " +
+						   (cbStartDateM.getSelectedItem()) + " " + 
+						   (cbStartDateD.getSelectedItem());
+		String endDate = (cbEndDateY.getSelectedItem()) + " " + 
+						 (cbEndDateM.getSelectedItem()) + " " + 
+						 (cbEndDateD.getSelectedItem());
+		vo.setEvtNo(Integer.parseInt(tfEvtNo.getText()));
+		vo.setEvtTitle(tfEvtTitle.getText());
+		vo.setEvtTitle(tfEvtTitle.getText());
+		vo.setEvtRating((String) cbRating.getSelectedItem());
+		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
+		vo.setEvtStart(startDate);
+		vo.setEvtEnd(endDate);
+		vo.setEvtDetail(taEvtDetail.getText());
+		
+		try {
+			model.deleteExi(vo);
+			JOptionPane.showMessageDialog(null, "전시삭제완료");
+			clear();
+			
+		} catch (Exception e) {
+			System.out.println("전시삭제실패");
+			e.printStackTrace();
+		}
+	}
+	//공연삭제 -- 완성!!!>_<
+	void deletePer(){
+		Performance vo = new Performance();
+		
+		String startTime = (cbStartTimeH.getSelectedItem() +" "+ cbStartTimeM.getSelectedItem());
+		String endTime = (cbEndTimeH.getSelectedItem() +" "+ cbEndTimeM.getSelectedItem());
+		String startDate=(cbStartDateY.getSelectedItem())+" "+
+				 		 (cbStartDateM.getSelectedItem())+" "+
+				 		 (cbStartDateD.getSelectedItem());
+		
+		String endDate=(cbEndDateY.getSelectedItem())+" "+
+		 	   		   (cbEndDateM.getSelectedItem())+" "+
+		 	   		   (cbEndDateD.getSelectedItem());
+		
+		vo.setEvtNo(Integer.parseInt(tfEvtNo.getText()));
+		vo.setPerActor(tfPerActor.getText());
+		vo.setPerDir(tfPerDir.getText());
+		vo.setPerStart(startTime);
+		vo.setPerEnd(endTime);
+		vo.setEvtTitle(tfEvtTitle.getText());
+		vo.setEvtRating((String) cbRating.getSelectedItem());
+		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
+		vo.setEvtStart(startDate);
+		vo.setEvtEnd(endDate);
+		vo.setEvtDetail(taEvtDetail.getText());
+		
+		try {
+			model.deletePer(vo);
+			JOptionPane.showMessageDialog(null, "공연삭제완료");
+			clear();
+		} catch (Exception e) {
+			System.out.println("공연삭제실패");
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+//초기화
+	void clear() {
+		rbExi.setSelected(false);
+		rbPer.setSelected(false);
+		
+		tfExiDir.setText(null);
+		cbLocation.setSelectedIndex(0);
+		tfPerActor.setText(null);
+		tfPerDir.setText(null);
+		
+		cbStartTimeH.setSelectedIndex(0);
+		cbStartTimeM.setSelectedIndex(0);
+		cbEndTimeH.setSelectedIndex(0);
+		cbEndTimeM.setSelectedIndex(0);
+		
+		tfEvtNo.setText(null);
+		tfEvtTitle.setText(null);
+		cbRating.setSelectedIndex(0);
+		tfEvtPrice.setText(null);
+		cbStartDateY.setSelectedIndex(0);
+		cbStartDateM.setSelectedIndex(0);
+		cbStartDateD.setSelectedIndex(0);
+		cbEndDateY.setSelectedIndex(0);
+		cbEndDateM.setSelectedIndex(0);
+		cbEndDateD.setSelectedIndex(0);
+		taEvtDetail.setText(null);
 	}
 	
 // radiobutton 선택시
@@ -554,7 +805,7 @@ public class EventView extends JPanel{
 	}
 	
 	// 장소명 배열에 받아오는 메소드
-	ArrayList setLocation(int flag){
+	ArrayList setLocation(int flag) {
 		ArrayList list = new ArrayList<>();
 		try {
 			list = model.setLocation(flag);
@@ -562,7 +813,303 @@ public class EventView extends JPanel{
 			System.out.println("장소명 조회 실패");
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
+	
+	
+	
+// 날짜 시작-종료 비교 메소드
+	private int compareDate() {
+	
+		String format1 = "%s%s%s";
+		String format2 = "%s%s%s";
+		
+		//시작일
+		if (cbStartDateM.getSelectedIndex() < 9 && cbStartDateD.getSelectedIndex() < 9){
+			format1="%s0%s0%s";
+		}else if(cbStartDateM.getSelectedIndex() < 9 && cbStartDateD.getSelectedIndex() >= 9 ){
+			format1="%s0%s%s";
+		}else if(cbStartDateM.getSelectedIndex() >= 9 && cbStartDateD.getSelectedIndex() < 9){
+			format1="%s%s0%s";
+		}
+		
+		//종료일
+		if (cbEndDateM.getSelectedIndex() < 9 && cbEndDateD.getSelectedIndex() < 9){
+			format2="%s0%s0%s";
+		}else if(cbEndDateM.getSelectedIndex() < 9 && cbEndDateD.getSelectedIndex() >= 9){
+			format2="%s0%s%s";
+		}else if(cbEndDateM.getSelectedIndex() >= 9 && cbEndDateD.getSelectedIndex() < 9 ){
+			format2="%s%s0%s";
+		}
+		
+		String startYear = String.format(format1, cbStartDateY.getSelectedItem(), 
+				cbStartDateM.getSelectedItem(), cbStartDateD.getSelectedItem());
+		
+		String endYear = String.format(format2, cbEndDateY.getSelectedItem(), 
+				cbEndDateM.getSelectedItem(), cbEndDateD.getSelectedItem());
+		
+		
+		if ((Integer.parseInt(endYear))-(Integer.parseInt(startYear)) < 0) {
+			JOptionPane.showMessageDialog(null, "날짜잘못입력");
+			return -1;
+		}
+		return 0;
+	}
+
+// 시간 시작-종료 비교 메소드
+	private int compareTime() {
+		String format1="%s%s";
+		String format2="%s%s";
+
+		// 시작시간설정
+		if (cbStartTimeH.getSelectedIndex() < 9 && cbStartTimeM.getSelectedIndex() < 9) {//시,분이 10미만
+			format1 = "0%s0%s";
+		} else if (cbStartTimeH.getSelectedIndex() < 9 && cbStartTimeM.getSelectedIndex() >= 9) {//시만 10미만
+			format1 = "0%s%s";
+		} else if (cbStartTimeH.getSelectedIndex() >= 9 && cbStartTimeM.getSelectedIndex() < 9) {//분만 10미만
+			format1 = "%s0%s";
+		}
+		// 종료시간설정
+		if (cbEndTimeH.getSelectedIndex() < 9 && cbEndTimeM.getSelectedIndex() < 9) {
+			format2 = "0%s0%s";
+		} else if (cbEndTimeH.getSelectedIndex() < 9 && cbEndTimeM.getSelectedIndex() >= 9) {
+			format2 = "0%s%s";
+		} else if (cbEndTimeH.getSelectedIndex() >= 9 && cbEndTimeM.getSelectedIndex() < 9) {
+			format2 = "%s0%s";
+		}
+		
+		String startTime = String.format(format1, cbStartTimeH.getSelectedItem(), cbStartTimeM.getSelectedItem());
+		String endTime = String.format(format2, cbEndTimeH.getSelectedItem(), cbEndTimeM.getSelectedItem());
+		
+		if ((Integer.parseInt(endTime))-(Integer.parseInt(startTime)) < 0) {
+			JOptionPane.showMessageDialog(null, "시간잘못입력");
+			return -1;
+		} 
+
+		return 0;
+
+	}
+	
+	
+// 전시 중복입력 금지 메소드
+	private int prohibitExi(){
+		
+		String loc = (String) cbLocation.getSelectedItem();
+		int evtNo = 0;
+		if(tfEvtNo.equals("")){
+			evtNo = Integer.parseInt(tfEvtNo.getText());
+		}		
+		ArrayList list1 = new ArrayList<>();
+		ArrayList list2 = new ArrayList<>();
+		
+		// 기존 입력된 데이터에서 시작일 얻어오기 
+		try {
+			list1 = model.searchStartDate(loc, evtNo);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "기존 입력된 데이터에서 시작일 얻어오기 실패");
+			e.printStackTrace();
+		}
+		// 기존 입력된 데이터에서 종료일 얻어오기 
+		try {
+			list2 = model.searchEndDate(loc, evtNo);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "기존 입력된 데이터에서 종료일 얻어오기 실패");
+			e.printStackTrace();
+		}
+		
+		String format1 = "%s%s%s";
+		String format2 = "%s%s%s";
+		
+		// 지금 입력한 데이터에서 시작일 얻어오기 
+		if (cbStartDateM.getSelectedIndex() < 9 && cbStartDateD.getSelectedIndex() < 9){
+			format1="%s0%s0%s";
+		}else if(cbStartDateM.getSelectedIndex() < 9 && cbStartDateD.getSelectedIndex() >= 9 ){
+			format1="%s0%s%s";
+		}else if(cbStartDateM.getSelectedIndex() >= 9 && cbStartDateD.getSelectedIndex() < 9){
+			format1="%s%s0%s";
+		}
+		
+		// 지금 입력한 데이터에서 종료일 얻어오기
+		if (cbEndDateM.getSelectedIndex() < 9 && cbEndDateD.getSelectedIndex() < 9){
+			format2="%s0%s0%s";
+		}else if(cbEndDateM.getSelectedIndex() < 9 && cbEndDateD.getSelectedIndex() >= 9){
+			format2="%s0%s%s";
+		}else if(cbEndDateM.getSelectedIndex() >= 9 && cbEndDateD.getSelectedIndex() < 9 ){
+			format2="%s%s0%s";
+		}
+		
+		String startYear = String.format(format1, cbStartDateY.getSelectedItem(), 
+				cbStartDateM.getSelectedItem(), cbStartDateD.getSelectedItem());
+		
+		String endYear = String.format(format2, cbEndDateY.getSelectedItem(), 
+				cbEndDateM.getSelectedItem(), cbEndDateD.getSelectedItem());
+		
+		int sy = Integer.parseInt(startYear);
+		int ey = Integer.parseInt(endYear);
+		
+		
+		// 중복제거 
+	/*	for (int i = 0; i < list1.size(); i++) {
+				int s = Integer.parseInt((String) list1.get(i)); //시작일
+			for (int j = 0; j < list2.size(); j++) {
+				int e = Integer.parseInt((String) list2.get(j)); //종료일
+				
+				if( (sy> s && sy < e) || (ey> s && ey < e) || (sy<s && ey >e)){
+					JOptionPane.showMessageDialog(null, "기간중복");
+					return -1;
+				}
+			}
+		}*/
+		
+		for (int i = 0; i < list1.size(); i++) {
+			int s = Integer.parseInt((String) list1.get(i)); //시작일
+			int e = Integer.parseInt((String) list2.get(i)); //종료일
+			
+			if( (sy>= s && sy <= e) || (ey>= s && ey <= e) || (sy<=s && ey >=e)){
+				JOptionPane.showMessageDialog(null, "기간중복");
+				return -1;
+			}
+		
+	}
+		
+		
+		
+		
+		return 0;
+		
+	}
+	
+	
+// 공연 중복입력 금지 메소드
+	private int prohibitPer(){
+		
+		String loc = (String) cbLocation.getSelectedItem();
+		int evtNo = 0;
+		if(tfEvtNo.equals("")){
+			evtNo = Integer.parseInt(tfEvtNo.getText());
+		}
+				
+		ArrayList list1 = new ArrayList<>();
+		ArrayList list2 = new ArrayList<>();
+		ArrayList list3 = new ArrayList<>();
+		ArrayList list4 = new ArrayList<>();
+		
+// 기간 얻어오기		
+		// 기존 입력된 데이터에서 시작일 얻어오기 
+		try {
+			list1 = model.searchStartDate(loc, evtNo);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "기존 입력된 데이터에서 시작일 얻어오기 실패");
+			e.printStackTrace();
+		}
+		// 기존 입력된 데이터에서 종료일 얻어오기 
+		try {
+			list2 = model.searchEndDate(loc, evtNo);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "기존 입력된 데이터에서 종료일 얻어오기 실패");
+			e.printStackTrace();
+		}
+		
+		String format1 = "%s%s%s";
+		String format2 = "%s%s%s";
+		
+		// 지금 입력한 데이터에서 시작일 얻어오기 
+		if (cbStartDateM.getSelectedIndex() < 9 && cbStartDateD.getSelectedIndex() < 9){
+			format1="%s0%s0%s";
+		}else if(cbStartDateM.getSelectedIndex() < 9 && cbStartDateD.getSelectedIndex() >= 9 ){
+			format1="%s0%s%s";
+		}else if(cbStartDateM.getSelectedIndex() >= 9 && cbStartDateD.getSelectedIndex() < 9){
+			format1="%s%s0%s";
+		}
+		
+		// 지금 입력한 데이터에서 종료일 얻어오기
+		if (cbEndDateM.getSelectedIndex() < 9 && cbEndDateD.getSelectedIndex() < 9){
+			format2="%s0%s0%s";
+		}else if(cbEndDateM.getSelectedIndex() < 9 && cbEndDateD.getSelectedIndex() >= 9){
+			format2="%s0%s%s";
+		}else if(cbEndDateM.getSelectedIndex() >= 9 && cbEndDateD.getSelectedIndex() < 9 ){
+			format2="%s%s0%s";
+		}
+		
+		String startYear = String.format(format1, cbStartDateY.getSelectedItem(), 
+				cbStartDateM.getSelectedItem(), cbStartDateD.getSelectedItem());
+		
+		String endYear = String.format(format2, cbEndDateY.getSelectedItem(), 
+				cbEndDateM.getSelectedItem(), cbEndDateD.getSelectedItem());
+		
+		int sy = Integer.parseInt(startYear);
+		int ey = Integer.parseInt(endYear);
+		
+		
+		
+// 시간 얻어오기
+		
+		// 입력된 장소와 같은 장소의 시간을 불러옴
+		
+		try {
+			list3 = model.searchStartTime(loc, evtNo);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "기존 입력된 데이터에서 시작시간 얻어오기 실패");
+			e.printStackTrace();
+		}
+
+		try {
+			list4 = model.searchEndTime(loc, evtNo);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "기존 입력된 데이터에서 종료시간 얻어오기 실패");
+			e.printStackTrace();
+		}
+		
+		String format3="%s%s";
+		String format4="%s%s";
+
+		// 시작시간설정
+		if (cbStartTimeH.getSelectedIndex() < 9 && cbStartTimeM.getSelectedIndex() < 9) {
+			format3 = "0%s0%s";
+		} else if (cbStartTimeH.getSelectedIndex() < 9 && cbStartTimeM.getSelectedIndex() >= 9) {
+			format3 = "0%s%s";
+		} else if (cbStartTimeH.getSelectedIndex() >= 9 && cbStartTimeM.getSelectedIndex() < 9) {
+			format3 = "%s0%s";
+		}
+		// 종료시간설정
+		if (cbEndTimeH.getSelectedIndex() < 9 && cbEndTimeM.getSelectedIndex() < 9) {
+			format4 = "0%s0%s";
+		} else if (cbEndTimeH.getSelectedIndex() < 9 && cbEndTimeM.getSelectedIndex() >= 9) {
+			format4 = "0%s%s";
+		} else if (cbEndTimeH.getSelectedIndex() >= 9 && cbEndTimeM.getSelectedIndex() < 9) {
+			format4 = "%s0%s";
+		}
+		
+		String startTime = String.format(format3, cbStartTimeH.getSelectedItem(), cbStartTimeM.getSelectedItem());
+		String endTime = String.format(format4, cbEndTimeH.getSelectedItem(), cbEndTimeM.getSelectedItem());
+		
+		int st = Integer.parseInt(startTime);
+		int et = Integer.parseInt(endTime);
+
+		
+// 중복제거 
+		
+		for (int i = 0; i < list1.size(); i++) {
+			int s = Integer.parseInt((String) list1.get(i)); // 기존데이터의 시작일
+			int e = Integer.parseInt((String) list2.get(i)); // 기존데이터의 종료일
+			int s1 = Integer.parseInt((String) list3.get(i)); // 기존데이터의 시작시간
+			int e1 = Integer.parseInt((String) list4.get(i)); // 기존데이터의 종료시간
+
+			if ((sy >= s && sy <= e) || (ey >= s && ey <= e) || (sy <= s && ey >= e)) { // 기간중복
+				// JOptionPane.showMessageDialog(null, "기간중복, 아직 시간중복아님");
+
+				if ((st >= s1 && st <= e1) || (et >= s1 && et <= e1) || (st <= s1 && et >= e1)) {// 시간중복
+					JOptionPane.showMessageDialog(null, "시간중복");
+					return -1;
+				}
+			}
+		}
+
+		
+		return 0;
+	}
+	
+	
+	
 }

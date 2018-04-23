@@ -21,12 +21,13 @@ import vo.Employee;
 
 
 public class EmployeeView extends JPanel{
-
-	JLabel laEmpNo, laEmpName, laEmpTel, laEmpEmail;
+	String[] empDept = {"개발부", "기획부", "인사부", "판매부"};
+	JComboBox cbEmpDept = new JComboBox<>(empDept);
+	JLabel laEmpNo, laEmpName, laEmpTel, laEmpEmail, laEmpDept;
 	JTextField tfEmpNo,tfEmpName, tfEmpTel, tfEmpEmail;
 	JButton bSelectEmp, bInsertEmp, bModifyEmp, bDeleteEmp;
 	
-	JButton bHome;
+	JButton bHome, bClear;
 	
 	EmployeeModel model;
 	ArtCenter ac;
@@ -61,6 +62,7 @@ public class EmployeeView extends JPanel{
 		laEmpName = new JLabel("이름", JLabel.CENTER);
 		laEmpTel = new JLabel("전화번호", JLabel.CENTER);
 		laEmpEmail = new JLabel("이메일", JLabel.CENTER);
+		laEmpDept = new JLabel("부서", JLabel.CENTER);
 		
 		bSelectEmp = new JButton("조회");
 		bSelectEmp.setFont(bfont);
@@ -72,115 +74,30 @@ public class EmployeeView extends JPanel{
 		bDeleteEmp.setFont(bfont);
 		
 		bHome = new JButton("Home");
-		bHome.setSize(6,6);
-		
-/**	
-		JPanel pAll = new JPanel();
-		pAll.setLayout(new GridBagLayout());
-		pAll.setBorder(new TitledBorder("사원관리"));
-		GridBagConstraints g = new GridBagConstraints();
-		g.weightx = 0.5;
-		g.weighty = 0.5;
-		g.insets = new Insets(5, 5, 5, 5);
-		g.fill = GridBagConstraints.BOTH;
-		
-		g.gridx = 0;			g.gridy = 0;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(new JLabel(""), g);
-		g.gridx = 1;			g.gridy = 0;		g.gridwidth = 1;		g.gridheight = 1;		
-//		pAll.add(laTitle, g);
-		g.gridx = 2;			g.gridy = 0;		g.gridwidth = 2;		g.gridheight = 1;	
-		pAll.add(new JLabel(""), g);
-		g.gridx = 4;			g.gridy = 0;		g.gridwidth = 1;		g.gridheight = 1;	
-		pAll.add(bHome, g);
-		g.gridx = 5;			g.gridy = 0;		g.gridwidth = 6;		g.gridheight = 1;		
-		pAll.add(new JLabel(""), g);
-		
-		g.gridx = 0;			g.gridy = 1;		g.gridwidth = 6;		g.gridheight = 1;		
-		pAll.add(new JLabel(""), g);
-		g.gridx = 1;			g.gridy = 2;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(laEmpNo, g);
-		g.gridx = 2;			g.gridy = 2;		g.gridwidth = 3;		g.gridheight = 1;		
-		pAll.add(tfEmpNo, g);
-		
-		g.gridx = 1;			g.gridy = 3;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(laEmpName, g);
-		g.gridx = 2;			g.gridy = 3;		g.gridwidth = 3;		g.gridheight = 1;		
-		pAll.add(tfEmpName, g);
-		
-		g.gridx = 1;			g.gridy = 4;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(laEmpTel, g);
-		g.gridx = 2;			g.gridy = 4;		g.gridwidth = 3;		g.gridheight = 1;		
-		pAll.add(tfEmpTel, g);
-		
-		g.gridx = 1;			g.gridy = 5;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(laEmpEmail, g);
-		g.gridx = 2;			g.gridy = 5;		g.gridwidth = 3;		g.gridheight = 1;		
-		pAll.add(tfEmpEmail, g);
-		
-		g.gridx = 1;			g.gridy = 6;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(bSelectEmp, g);
-		g.gridx = 2;			g.gridy = 6;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(bInsertEmp, g);
-		g.gridx = 3;			g.gridy = 6;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(bModifyEmp, g);
-		g.gridx = 4;			g.gridy = 6;		g.gridwidth = 1;		g.gridheight = 1;		
-		pAll.add(bDeleteEmp, g);
-		
-		g.gridx = 0;			g.gridy = 2;		g.gridwidth = 1;		g.gridheight = 6;		
-		pAll.add(new JLabel(""), g);
-		
-		
-		g.gridx = 5;			g.gridy = 2;		g.gridwidth = 1;		g.gridheight = 6;
-		pAll.add(new JLabel(""), g);
-		
-		
-		g.gridx = 1;			g.gridy = 7;		g.gridwidth = 4;		g.gridheight = 1;
-		pAll.add(new JLabel(""), g);
-		
-		// 전체 패널에 붙이기
-		setLayout(new BorderLayout());
-		add(pAll);
-
-*/
-		
-		
-
+		bClear = new JButton("초기화");
+//		bHome.setSize(6,6);
 	
 //붙이기
 		// title 패널
 		JPanel ptitle = new JPanel();
 		ptitle.setBorder(BorderFactory.createEmptyBorder(0,10,20,20));
 		ptitle.setLayout(new BorderLayout());
-		ptitle.add(bHome, "East");
+		JPanel ptitle_b = new JPanel();
+		ptitle_b.setLayout(new FlowLayout());
+		ptitle_b.add(bClear);
+		ptitle_b.add(bHome);
+		ptitle.add(ptitle_b, "East");
 		
 		// textfield들 붙이는 패널 
 		JPanel ptf_center = new JPanel();
 		ptf_center.setBorder(BorderFactory.createEmptyBorder(0,10,20,100));
-		ptf_center.setLayout(new GridLayout(4, 1, 15,15));
-		
-		/* 그리드 아님
-		JPanel pEmpNo = new JPanel();
-		pEmpNo.add(laEmpNo);
-		pEmpNo.add(tfEmpNo);
-		JPanel pEmpName = new JPanel();
-		pEmpName.add(laEmpName);
-		pEmpName.add(tfEmpName);
-		JPanel pEmpTel = new JPanel();
-		pEmpTel.add(laEmpTel);
-		pEmpTel.add(tfEmpTel);
-		JPanel pEmpEmail = new JPanel();
-		pEmpEmail.add(laEmpEmail);
-		pEmpEmail.add(tfEmpEmail);
-		
-		ptf_center.add(pEmpNo);
-		ptf_center.add(pEmpName);
-		ptf_center.add(pEmpTel);
-		ptf_center.add(pEmpEmail);
-		*/
+		ptf_center.setLayout(new GridLayout(5, 2, 15,15));
 		
 		// 그리드
 		ptf_center.add(laEmpNo);
 		ptf_center.add(tfEmpNo);
+		ptf_center.add(laEmpDept);
+		ptf_center.add(cbEmpDept);
 		ptf_center.add(laEmpName);
 		ptf_center.add(tfEmpName);
 		ptf_center.add(laEmpTel);
@@ -242,6 +159,7 @@ public class EmployeeView extends JPanel{
 		bModifyEmp.addActionListener(btnHandler);
 		bDeleteEmp.addActionListener(btnHandler);
 		bHome.addActionListener(btnHandler);
+		bClear.addActionListener(btnHandler);
 	}
 	
 	//버튼 이벤트 핸들러 클래스 
@@ -260,6 +178,9 @@ public class EmployeeView extends JPanel{
 			} else if (o==bHome){
 				ac.movecard("main");
 				ac.originalFrame();
+				clear();
+			} else if (o==bClear){
+				clear();
 			}
 		
 		}
@@ -283,7 +204,7 @@ public class EmployeeView extends JPanel{
 			tfEmpName.setText(vo.getEmpName());
 			tfEmpTel.setText(vo.getEmpTel());
 			tfEmpEmail.setText(vo.getEmpEmail());
-			
+			cbEmpDept.setSelectedItem(vo.getEmpDept());
 		} catch (Exception e) {
 			System.out.println("사원조회 실패");
 			e.printStackTrace();
@@ -299,18 +220,17 @@ public class EmployeeView extends JPanel{
 		vo.setEmpName(tfEmpName.getText());
 		vo.setEmpTel(tfEmpTel.getText());
 		vo.setEmpEmail(tfEmpEmail.getText());
-		
+		vo.setEmpDept(String.valueOf(cbEmpDept.getSelectedItem()));
 		try {
 			model.insertEmp(vo);
-			JOptionPane.showMessageDialog(null, "입력성공");
+			JOptionPane.showMessageDialog(null, "사원입력성공");
+			clear();
 		} catch (Exception e) {
-			System.out.println("사원입력실패");
+			JOptionPane.showMessageDialog(null, "사원입력실패:" + e.getMessage());
 			e.printStackTrace();
 		}
 		
-		tfEmpName.setText(null);
-		tfEmpTel.setText(null);
-		tfEmpEmail.setText(null);
+		
 		
 	}
 
@@ -321,14 +241,11 @@ public class EmployeeView extends JPanel{
 		vo.setEmpName(tfEmpName.getText());
 		vo.setEmpTel(tfEmpTel.getText());
 		vo.setEmpEmail(tfEmpEmail.getText());
-		
+		vo.setEmpDept(String.valueOf(cbEmpDept.getSelectedItem()));
 		try {
 			model.modifyEmp(vo);
 			JOptionPane.showMessageDialog(null, "수정완료");
-			tfEmpNo.setText(null);
-			tfEmpName.setText(null);
-			tfEmpTel.setText(null);
-			tfEmpEmail.setText(null);
+			clear();
 		} catch (Exception e) {
 			System.out.println("사원수정성공");
 			e.printStackTrace();
@@ -341,14 +258,11 @@ public class EmployeeView extends JPanel{
 		vo.setEmpName(tfEmpName.getText());
 		vo.setEmpTel(tfEmpTel.getText());
 		vo.setEmpEmail(tfEmpEmail.getText());
-		
+		vo.setEmpDept(String.valueOf(cbEmpDept.getSelectedItem()));
 		try {
 			model.deleteEmp(vo);
 			JOptionPane.showMessageDialog(null, "삭제성공");
-			tfEmpNo.setText(null);
-			tfEmpName.setText(null);
-			tfEmpTel.setText(null);
-			tfEmpEmail.setText(null);
+			clear();
 		} catch (Exception e) {
 			System.out.println("사원삭제실패");
 			e.printStackTrace();
@@ -358,7 +272,11 @@ public class EmployeeView extends JPanel{
 	
 //초기화
 	void clear() {
-
+		tfEmpNo.setText(null);
+		tfEmpName.setText(null);
+		tfEmpTel.setText(null);
+		tfEmpEmail.setText(null);
+		cbEmpDept.setSelectedIndex(0);
 	}
 	
 	
