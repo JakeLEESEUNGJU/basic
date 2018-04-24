@@ -424,11 +424,11 @@ public class EventView extends JPanel{
 				if (rbExi.isSelected()) {
 					if(compareDate()==-1){ return; } 
 					else if(prohibitExi()==-1){ return; }
-//					else if(modifyExi()==-1){return;}
+					else if(modifyExi()==-1){return;}
 				} else if (rbPer.isSelected()) {
 					if(compareTime()==-1){ return; }
 					else if(prohibitPer()==-1){ return; }
-//					else if(modifyPer()==-1){return;}
+					else if(modifyPer()==-1){return;}
 				} else if ((!rbExi.isSelected()) && (!rbPer.isSelected())) {
 					JOptionPane.showMessageDialog(null, "전시 또는 공연을 선택해주세요");
 				}
@@ -555,9 +555,8 @@ public class EventView extends JPanel{
 			if(endHour.charAt(0)=='0'){
 				endHour = ((String) list.get(3)).substring(1, 2);
 			} else if (endMin.charAt(0)=='0'){
-				endHour = ((String) list.get(3)).substring(3);
+				endMin = ((String) list.get(3)).substring(3);
 			}
-			
 			cbEndTimeH.setSelectedItem(endHour);
 			cbEndTimeM.setSelectedItem(endMin);
 			
@@ -627,7 +626,6 @@ public class EventView extends JPanel{
 		vo.setPerDir(tfPerDir.getText());
 		vo.setPerStart(startTime);
 		vo.setPerEnd(endTime);
-		
 		vo.setEvtTitle(tfEvtTitle.getText());
 		vo.setEvtRating((String) cbRating.getSelectedItem());
 		// 공연가격입력 -- null이거나 숫자만 있지 않으면 오류
@@ -1062,7 +1060,7 @@ public class EventView extends JPanel{
 		
 		String loc = (String) cbLocation.getSelectedItem();
 		int evtNo = 0;
-		if(tfEvtNo.equals("")){
+		if(!(tfEvtNo.equals(""))){
 			evtNo = Integer.parseInt(tfEvtNo.getText());
 		}
 				
