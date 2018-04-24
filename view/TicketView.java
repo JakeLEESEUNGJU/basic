@@ -195,7 +195,7 @@ public class TicketView extends JPanel implements ActionListener {
 												// 저장해서
 				// 전송~~~
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
+				JOptionPane.showMessageDialog(null, "제목 찾기 실패" );
 				e.printStackTrace();
 			}
 		} else if (rbPerf.isSelected()) {
@@ -218,7 +218,6 @@ public class TicketView extends JPanel implements ActionListener {
 				ac.setTempSql(forSql);// forsql을 아트센터 (tempList)에 저장
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
-				e.printStackTrace();
 			}
 		}
 	}
@@ -275,7 +274,6 @@ public class TicketView extends JPanel implements ActionListener {
 			} catch (Exception e) {
 
 				JOptionPane.showMessageDialog(null, "날짜검색 실패" + e.getMessage());
-				e.printStackTrace();
 			}
 		}
 	}
@@ -308,8 +306,7 @@ public class TicketView extends JPanel implements ActionListener {
 						+ (Integer.parseInt(tfAdv.getText())) + (Integer.parseInt(tfChild.getText()))));
 
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "이벤트를 선택하지 않았습니다.");
-				System.out.println(e.getMessage());
+				JOptionPane.showMessageDialog(null, "인원수를 숫자로 적어주세요. ");
 
 			}
 		} else if (rbPerf.isSelected()) {
@@ -330,8 +327,7 @@ public class TicketView extends JPanel implements ActionListener {
 				laToPep.setText(String.valueOf((Integer.parseInt(tfAdult.getText()))
 						+ (Integer.parseInt(tfAdv.getText())) + (Integer.parseInt(tfChild.getText()))));
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "이벤트를 선택하지 않았습니다.");
-				System.out.println(e.getMessage());
+				JOptionPane.showMessageDialog(null, "인원수를 숫자로 적어주세요.");
 			}
 		}
 	}
