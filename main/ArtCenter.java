@@ -34,7 +34,7 @@ public class ArtCenter {
 	public ArrayList tempList, temp = null;
 
 	JFrame main;
-
+	
 	public ArtCenter() {
 
 		main = new JFrame("ArtCenter");
@@ -123,12 +123,12 @@ public class ArtCenter {
 	public void setPeopleSeat(ArrayList itemp) {
 		temp.clear();
 		temp = itemp;
-		System.out.println(temp.get(4));
-		if(temp.get(4).equals("p")){
+		//System.out.println(temp.get(4));
+		if(temp.get(4).equals("p")){		//공연이면
 			temp.remove(4);
 			seat.setPersonCnt(temp);
 			receipt.settempList(temp);
-		}else if(temp.get(4).equals("e")){
+		}else if(temp.get(4).equals("e")){	//전시면
 			temp.remove(4);
 			receipt.settempList(temp);
 		}
@@ -145,5 +145,10 @@ public class ArtCenter {
 		ticket.tfAdv.setText("0");
 		ticket.tfChild.setText("0");
 		ticket.settotal();
+	}
+	
+
+	public ReceiptView getReceiptView(){
+		return receipt;
 	}
 }

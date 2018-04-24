@@ -33,6 +33,9 @@ public class SeatView extends JPanel implements ActionListener{
 	JPanel  p_center_center;		//JPanel 변수
 	SeatModel model;
 	String locVar ="";
+	int cnt;
+	
+	String seatStr;
 	
 	public SeatView() {
 	}
@@ -55,11 +58,13 @@ public class SeatView extends JPanel implements ActionListener{
 	//textarea에 쓸 문자열 받아오는 메서드
 	public void getTaString(String seatNum){
 		setTextArea(seatNum);
+		//ac.setSeatNum(seatNum);
+		this.seatStr = seatNum;
 	}
 	
 	// textarea에 텍스틑 쓰는 메서드
 	public void setTextArea(String str) {
-		taSeat.setText(locVar + "\n" + str);
+		taSeat.setText(locVar + "\n" +"총인원 " + cnt + "명: "+ str);
 	}
 
 	@Override
@@ -74,10 +79,12 @@ public class SeatView extends JPanel implements ActionListener{
 			}
 			if (hall.temp.length == cnt) {//선택한 좌석수와 인원수가 같을때 이동
 				ac.movecard("receiptcard");
+				ac.getReceiptView().setSeatNum(seatStr);
 			} else {
 				JOptionPane.showMessageDialog(null, "선택한 좌석수 확인하세요");
 			}
 
+			
 		} else if (evt == bBack) {//뒤로 버튼 클릭시
 			ac.movecard("ticketcard");
 
@@ -169,7 +176,7 @@ public class SeatView extends JPanel implements ActionListener{
 	
 	// 인원수 가져오기 아트센터에서 호출하는 메서드
 	public void setPersonCnt(ArrayList temp) { // temp(성인수 , 아동수, 우대수, 성인기준가격)정보 담긴 리스트
-		int cnt = 0; //성인, 아동, 우대 명수 더할 변수
+		cnt = 0; //성인, 아동, 우대 명수 더할 변수
 		for (int i = 0; i < temp.size() - 1; i++) {
 			cnt += Integer.parseInt(temp.get(i).toString());
 		}
@@ -188,5 +195,6 @@ public class SeatView extends JPanel implements ActionListener{
 	}
 
 
+	
 	
 }

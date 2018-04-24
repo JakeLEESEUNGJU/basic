@@ -19,13 +19,14 @@ public class Hall extends JPanel implements ActionListener {
 	JButton[][] seats; 										// 좌석버튼
 	int height, width; 										// 좌석 갯수 설정 변수 eventProc전용변수
 	SeatView parent; 										// 좌석선택화면 변수
-	int peopleCnt = 0;// 하드코딩 인터페이스(수정필요)*** 			//인원수
+	int peopleCnt = 0;										//인원수
 	int cnt = peopleCnt;										
-	String defaultText="";									//textarea에 뜨는 기본 문자열
-	StringBuffer choicedSeats = new StringBuffer(defaultText);// 선택한 좌석
+	String defaultText = "";								//textarea에 뜨는 기본 문자열
+	StringBuffer choicedSeats = new StringBuffer();			// 선택한 좌석
 	JButton[] temp; 										// 선택한 버튼 저장하는 배열
 	String[] soldSeatsArray;
-	String soldSeat ="";//이미 팔린 좌석 ***인터페이스 *** 수정해야함
+	String soldSeat = "";
+	String choicedSeat = "";
 
 	
 	public Hall() {
@@ -35,10 +36,9 @@ public class Hall extends JPanel implements ActionListener {
 		this.parent = parent;
 		this.peopleCnt = peopleCnt;
 		parent.getTaString("");
-		defaultText = "총인원 " + peopleCnt + "명: ";
+		//defaultText = "총인원 " + peopleCnt + "명: ";
 
-		// 하드코딩 인터페이스(수정필요)*** //인원수
-		temp = new JButton[peopleCnt];
+		temp = new JButton[peopleCnt]; //선택한 버튼 저장하는 배열생성
 	}
 
 	// 이미 예매된 좌석 enable 시키는 메서드
@@ -318,7 +318,7 @@ public class Hall extends JPanel implements ActionListener {
 							if (seats[i][j] == temp[l]) {// 같은버튼 누르면
 								temp[l] = null;
 								seats[i][j].setBackground(null);
-								choicedSeats = new StringBuffer(defaultText);
+								choicedSeats = new StringBuffer();
 								appendText(temp);
 								break END;
 							}
@@ -326,7 +326,7 @@ public class Hall extends JPanel implements ActionListener {
 						if (temp[k] == null) {// 비어있으면
 							temp[k] = seats[i][j];
 							seats[i][j].setBackground(Color.yellow);
-							choicedSeats = new StringBuffer(defaultText);
+							choicedSeats = new StringBuffer();
 							appendText(temp);
 							break;
 						}
@@ -335,8 +335,10 @@ public class Hall extends JPanel implements ActionListener {
 			}
 			
 		}
+		
 	}
 	
+
 	//디버깅용 temp배열 출력 메서드
 	void printTemp(JButton[] array){
 		for (int p = 0; p < array.length; p++) {

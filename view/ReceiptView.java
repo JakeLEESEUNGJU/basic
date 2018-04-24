@@ -22,6 +22,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
 import main.ArtCenter;
+import model.ReceiptModel;
+import model.SeatModel;
 
 public class ReceiptView extends JPanel implements ActionListener {
 	JLabel laTitle, laRating, laPayMethod, laTotal; //타이틀,등급,결제수단,총결제금액 Label
@@ -44,35 +46,29 @@ public class ReceiptView extends JPanel implements ActionListener {
 	String perStartTime ;						//공연 시작시간
 	String perFinishTime ;						//공연 끝날시간
 	
-	// 할인가격
-	int afterDiscountPrice = 0;
-	// 총가격
-	int totalPrice = 0;
-	// 성인가격
-	int price = 0; 
-	// 총인원
-	int peopleCnt = 0;
-	// 가격
-	int adultPrice;
+	int afterDiscountPrice = 0;// 할인가격
+	int totalPrice = 0;// 총가격
+	int price = 0; // 성인가격
+	int peopleCnt = 0;// 총인원
+	int adultPrice;// 가격
 	int childPrice;
 	int oldPrice ;
-	// 명수
-	int adultCnt = 0;
+	int adultCnt = 0;// 명수
 	int childCnt = 0;
 	int oldCnt = 0;
-	//총 가격
-	int totalAdultPrice = 0;
+	int totalAdultPrice = 0;//총 가격
 	int totalChildPrice = 0;
 	int totalOldPrice = 0;
-
 	ArrayList priceInfoList;
-	
-	// 인터페이스  arrayList : 인원별 가격정보 
-	ArrayList interfaceList; 
+	ArrayList interfaceList; // 인터페이스  arrayList : 인원별 가격정보 
 
+	ReceiptModel model;
+	int evtNo;
+	String seatNum;
+	
+	public int empNo;
 	
 	public ReceiptView() {
-		super();
 	}
 
 	public ReceiptView(ArtCenter ac) {
@@ -80,7 +76,13 @@ public class ReceiptView extends JPanel implements ActionListener {
 		addLayout();
 		eventProc();//이벤트는 생성자에서 호출되어야함 순서 꼬임 ***
 		connectDB();
-
+		
+	}
+	
+	public void setSeatNum(String seatNum){
+		this.seatNum = seatNum;
+		System.out.println("좌서기"  + seatNum);
+		setTextArea(taTicketInfo);
 	}
 
 	//테이블에 들어가는 데이터 arraylist 설정하는 메서드
@@ -166,7 +168,13 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 	//디비 연결하는 메서드
 	void connectDB() {
-
+		try {
+			model = new ReceiptModel();
+			System.out.println("영수증 DB 연결 성공");
+		} catch (Exception e) {
+			System.out.println("영수증 DB 연결 실패");
+			e.printStackTrace();
+		}
 	}
 
 	//엑션리스너 등록하는 메서드
@@ -177,7 +185,9 @@ public class ReceiptView extends JPanel implements ActionListener {
 		//버튼 액션리스너 등록
 		bPayment.addActionListener(this);
 		bCancel.addActionListener(this);
-		bBack.addActionListener(this);;
+		bBack.addActionListener(this);
+		
+		
 	}
 
 	@Override
@@ -279,9 +289,9 @@ public class ReceiptView extends JPanel implements ActionListener {
 		tbPriceInfo = new JTable(priceModel);
 		tbPriceInfo.setRowHeight(50);
 
-		laRating = new JLabel("회원 등급(그린:10%,블루:25%,골드:40%,싹틔우미:50%,최대동반2인)");
-		laPayMethod = new JLabel("결제 수단");
-		laTotal = new JLabel("총 결제금액");
+		laRating = new JLabel("<html><center>회원 등급</center><br>(그린:10%,블루:25%,골드:40%,싹틔우미:50%,최대동반2인)</br></html>",JLabel.CENTER);
+		laPayMethod = new JLabel("결제 수단",JLabel.CENTER);
+		laTotal = new JLabel("총 결제금액",JLabel.CENTER);
 		tfTotal = new JTextField(15);
 		tfTotal.setEditable(false);
 		cbGroup = new JCheckBox("단체 여부(10% 할인,20인 이상)");
@@ -313,19 +323,21 @@ public class ReceiptView extends JPanel implements ActionListener {
 		cbPayMethod.addItem("삼성페이");
 		cbPayMethod.addItem("상품권");
 
+		//위쪽
 		JPanel p_north = new JPanel();
 		p_north.setLayout(new BorderLayout());
 		p_north.add(laTitle);
-
+		//가운데
 		JPanel p_center = new JPanel();
 		p_center.setLayout(new BorderLayout());
-
+		//가운데의 위쪽
 		JPanel p_center_north = new JPanel();
 		p_center_north.setBorder(new TitledBorder("티켓 정보"));
 		p_center_north.add(taTicketInfo);// 행사 상세 정보 추가***
 		p_center_north.add(new JScrollPane(tbPriceInfo), BorderLayout.NORTH);
 		p_center.add(p_center_north, BorderLayout.NORTH);
 
+		//가운데의 아래쪽
 		JPanel p_center_south = new JPanel();
 		p_center_south.setBorder(new TitledBorder("결제 정보"));
 		p_center_south.setLayout(new GridLayout(5, 2));
@@ -335,14 +347,16 @@ public class ReceiptView extends JPanel implements ActionListener {
 		p_center_south.add(cbRating);
 		p_center_south.add(laPayMethod);
 		p_center_south.add(cbPayMethod);
-		p_center_south.add(new JLabel("할인 가격"));
+		p_center_south.add(new JLabel("할인 가격",JLabel.CENTER));
 		p_center_south.add(tfDiscount);
 		p_center_south.add(laTotal);
 		p_center_south.add(tfTotal);
 		p_center.add(p_center_south, BorderLayout.CENTER);
 
+		//아래쪽
 		JPanel p_south = new JPanel();
 		p_south.setLayout(new BorderLayout());
+		//아래쪽의 오른쪽
 		JPanel p_south_east = new JPanel();
 		p_south.add(p_south_east, BorderLayout.EAST);
 		p_south_east.add(bBack);
@@ -353,19 +367,17 @@ public class ReceiptView extends JPanel implements ActionListener {
 		this.add(p_north, BorderLayout.NORTH);
 		this.add(p_south, BorderLayout.SOUTH);
 		this.add(p_center, BorderLayout.CENTER);
-		//this.setSize(800, 900);
-		//this.setVisible(true);
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 	}
 	
 	void setTextArea(JTextArea ta){
 		ta.setText("");
 		ta.append("== Multicampus Arts Center ==\n");
+		String evtTitle = model.selectEvtName(evtNo);//행사번호로 행사이름 db조회
 		if(flag == "e"){
-			
 			ta.append("==   전시정보   ==\n");
 			ta.append("전시 제목 : ");
-			ta.append("select"+"\n");//**
+			ta.append(evtTitle+"\n");
 			ta.append("전시 위치 : ");
 			ta.append(exiLoc+"\n");
 			ta.append("관람일 : ");
@@ -373,15 +385,16 @@ public class ReceiptView extends JPanel implements ActionListener {
 		}else if(flag == "p"){
 			ta.append("==   공연정보   ==\n");
 			ta.append("공연 제목 : ");
-			ta.append("select"+"\n");//**
+			ta.append(evtTitle+"\n");
 			ta.append("공연 위치 : ");
 			ta.append(perLoc+"\n");
-			ta.append("선택한 좌석 : ");
-			ta.append("넘어오는 정보"+"\n");//**
+			ta.append("선택한 좌석 : ");			
+			ta.append(seatNum + "\n");//**
 			ta.append("관람일 : ");
 			ta.append(perDate+"\n");
 			ta.append("관람 시간 : ");
 			ta.append(perStartTime+" ~ "+perFinishTime);
+			
 		}
 	}
 
@@ -390,20 +403,16 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 		ArrayList data = new ArrayList();
 		String[] columnNames = { "구분", "인원", "가격", "총 가격" };
-
 		public int getColumnCount() {
 			return columnNames.length;
 		}
-
 		public int getRowCount() {
 			return data.size();
 		}
-
 		public Object getValueAt(int row, int col) {
 			ArrayList temp = (ArrayList) data.get(row);
 			return temp.get(col);
 		}
-
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
@@ -419,6 +428,8 @@ public class ReceiptView extends JPanel implements ActionListener {
 	
 	//공연 전시 정보가 넘어오는 메서드
 	public void setTempList(ArrayList temp){ //temp (공연번호,이벤트 번호,이벤트제목,위치,기준가격,시작시간,종료시간,관람일자,p/e구분)
+		
+		evtNo = Integer.parseInt(temp.get(1).toString());
 		if(temp.size() == 7){								//전시면
 			flag = temp.get(6).toString();
 			exiNo = Integer.parseInt(temp.get(1).toString());	 //전시번호
