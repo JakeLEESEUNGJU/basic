@@ -32,6 +32,19 @@ public class ReceiptView extends JPanel implements ActionListener {
 	JTable tbPriceInfo;								//인원,가격정보 보여주는 Table
 	priceTableModel priceModel;						//JTableModel
 	ArtCenter ac;									//아트센터 객체
+	String flag = null;								//전시인지 공연인지 구분하는 구분자 p or e(인터페이스)
+	JTextArea taTicketInfo;
+	//
+	int exiNo;		//전시번호
+	String exiLoc;//전시 위치
+	String exiDate;//전시 관람일자
+	
+	
+	int perNo ;//공연번호
+	String perLoc ;//공연 위치
+	String perDate ;//공연 관람일자
+	String perStartTime ;//공연 시작시간
+	String perFinishTime ;//공연 끝날시간
 	
 	// 할인가격
 	int afterDiscountPrice = 0;
@@ -64,7 +77,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		super();
 	}
 
-	public ReceiptView(ArtCenter ac) {// ArtCenter ac
+	public ReceiptView(ArtCenter ac) {
 		this.ac = ac;
 		addLayout();
 		eventProc();//이벤트는 생성자에서 호출되어야함 순서 꼬임 ***
@@ -190,13 +203,12 @@ public class ReceiptView extends JPanel implements ActionListener {
 			}
 
 		}else if(evt == bBack){//뒤로 버튼 클릭시
-			System.out.println(">>뒤로");
-			ac.movecard("exhibitioncard");
-			/*if(){//공연이면 좌석선택화면으로
+			if(flag == "p"){//공연이면 좌석선택화면으로
+				ac.movecard("seatcard");
+			}else if(flag == "e"){//전시면 전시선택화면으로
+				ac.movecard("exhibitioncard");
 				
-			}else if(){//전시면 전시선택화면으로
-				
-			}*/
+			}
 		} else if (evt == bCancel) {//예매 취소 버튼 클릭시
 			System.out.println(">>결제취소");
 			ac.movecard("main");
@@ -275,11 +287,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		tfTotal = new JTextField(15);
 		tfTotal.setEditable(false);
 		cbGroup = new JCheckBox("단체 여부(10% 할인,20인 이상)");
-		/*if (peopleCnt >= 20) {
-			cbGroup.setEnabled(true);
-		} else {
-			cbGroup.setEnabled(false);
-		}*/
+
 		tfDiscount =new JTextField();
 		tfDiscount.setEditable(false);
 		tfDiscount.setText("0");
@@ -287,6 +295,10 @@ public class ReceiptView extends JPanel implements ActionListener {
 		bBack = new JButton("<뒤로");
 		bPayment = new JButton("결제하기>");
 		bCancel = new JButton("예매 취소");
+		
+		taTicketInfo = new JTextArea(15,20);
+		//setTextArea(taTicketInfo);//*******
+		taTicketInfo.setEditable(false);
 
 		cbRating = new JComboBox<String>();
 		cbRating.addItem("==선택==");
@@ -313,7 +325,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 
 		JPanel p_center_north = new JPanel();
 		p_center_north.setBorder(new TitledBorder("티켓 정보"));
-		p_center_north.add(new JTextArea(10, 20));// 행사 상세 정보 추가***
+		p_center_north.add(taTicketInfo);// 행사 상세 정보 추가***
 		p_center_north.add(new JScrollPane(tbPriceInfo), BorderLayout.NORTH);
 		p_center.add(p_center_north, BorderLayout.NORTH);
 
@@ -348,6 +360,35 @@ public class ReceiptView extends JPanel implements ActionListener {
 		//this.setVisible(true);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	
+	void setTextArea(JTextArea ta){
+		System.out.println(flag+"!!!!!!!!!!!");
+		if(flag == "e"){
+			
+			ta.append("==Multicampus Arts Center==\n");
+			ta.append("==   전시정보   ==\n");
+			ta.append("전시 제목\n");
+			ta.append("select");
+			ta.append("전시 위치\n");
+			ta.append(exiLoc);
+			ta.append("관람일\n");
+			ta.append(exiDate);
+		}else if(flag == "p"){
+			
+			ta.append("==Multicampus Arts Center==\n");
+			ta.append("==   공연정보   ==\n");
+			ta.append("공연 제목\n");
+			ta.append("select");
+			ta.append("공연 위치\n");
+			ta.append(perLoc);
+			ta.append("예매한 좌석\n");
+			ta.append("넘어오는 정보");
+			ta.append("관람일\n");
+			ta.append(perDate);
+			ta.append("시작시간 종료시간\n");
+			ta.append(perStartTime+" ~ "+perFinishTime);
+		}
+	}
 
 	//테이블 모델 클래스
 	class priceTableModel extends AbstractTableModel {
@@ -376,13 +417,32 @@ public class ReceiptView extends JPanel implements ActionListener {
 	
 	//성인,아동,우대 인원수 정보가 담긴 arraylist가 넘어오는 메서드(인터페이스)
 	public void settempList(ArrayList temp){
-		getPriceInfo(temp); //price 정보 arraylist 설정하는 메서드 호출
-		drawtable(priceInfoList);//테이블 그리는 메서드 호출
+		getPriceInfo(temp);			 	//price 정보 arraylist 설정하는 메서드 호출
+		drawtable(priceInfoList);		//테이블 그리는 메서드 호출
 		tfTotal.setText(totalPrice + "");// 처음 총가격 텍스트필드에 띄우기
 	}
 	
-//	public static void main(String[] args) {
-//		ReceiptView view = new ReceiptView();
-//	}
+	//공연 전시 정보가 넘어오는 메서드
+	public void setTempList(ArrayList temp){ //temp (공연번호,이벤트 번호,이벤트제목,위치,기준가격,시작시간,종료시간,관람일자,p/e구분)
+		if(temp.size() == 7){				//전시면
+			flag = temp.get(6).toString();
+			exiNo = Integer.parseInt(temp.get(1).toString());		 //전시번호
+			String exiLoc = temp.get(3).toString(); 				//전시 위치
+			String exiDate = temp.get(5).toString();				//전시 관람일자
+			
+			
+		}else if(temp.size() == 9){			//공연이면
+			flag = temp.get(8).toString();
+			perNo = Integer.parseInt(temp.get(0).toString()); 		//공연번호
+			String perLoc = temp.get(3).toString(); 				//공연 위치
+			String perDate = temp.get(7).toString();				//공연 관람일자
+			String perStartTime = temp.get(5).toString(); 			//공연 시작시간
+			String perFinishTime = temp.get(6).toString();			//공연 끝날시간
+		}
+		
+		setTextArea(taTicketInfo);
+		
+		
+	}
 	
 }

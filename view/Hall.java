@@ -19,13 +19,13 @@ public class Hall extends JPanel implements ActionListener {
 	JButton[][] seats; 										// 좌석버튼
 	int height, width; 										// 좌석 갯수 설정 변수 eventProc전용변수
 	SeatView parent; 										// 좌석선택화면 변수
-	int peopleCnt = 0;// 하드코딩 인터페이스(수정필요)*** 				//인원수
+	int peopleCnt = 0;// 하드코딩 인터페이스(수정필요)*** 			//인원수
 	int cnt = peopleCnt;										
-	String defaultText="";		//textarea에 뜨는 기본 문자열
+	String defaultText="";									//textarea에 뜨는 기본 문자열
 	StringBuffer choicedSeats = new StringBuffer(defaultText);// 선택한 좌석
 	JButton[] temp; 										// 선택한 버튼 저장하는 배열
 	String[] soldSeatsArray;
-	String soldSeat ="A1 A2 A3";//이미 팔린 좌석 ***인터페이스 *** 수정해야함
+	String soldSeat ="";//이미 팔린 좌석 ***인터페이스 *** 수정해야함
 
 	
 	public Hall() {
@@ -34,6 +34,7 @@ public class Hall extends JPanel implements ActionListener {
 	public Hall(SeatView parent, int peopleCnt) {
 		this.parent = parent;
 		this.peopleCnt = peopleCnt;
+		parent.getTaString("");
 		defaultText = "총인원 " + peopleCnt + ": ";
 
 		// 하드코딩 인터페이스(수정필요)*** //인원수
@@ -44,11 +45,8 @@ public class Hall extends JPanel implements ActionListener {
 	void setSaledSeat(int w , int h) {
 		soldSeatsArray = soldSeat.split(" ");
 		for (int k = 0; k < soldSeatsArray.length; k++) {
-			//System.out.println(soldSeatsArray[k]);
-			//System.out.println(soldSeatsArray.length+"!");
 			for (int i = 0; i < h; i++) {
 				for (int j = 0; j < w; j++) {
-					//System.out.println(i+" "+j+" "+k);
 					if (seats[i][j].getText().equals(soldSeatsArray[k])) {
 						seats[i][j].setEnabled(false);
 					}
@@ -299,18 +297,6 @@ public class Hall extends JPanel implements ActionListener {
 	}
 
 	void eventProc(String hallType) {
-/*		switch (hallType) {
-		case "CharilPuth홀":
-			// 
-			break;
-		case "Ariana홀":
-			break;
-		case "Piggy홀":
-			break;
-		default:
-			
-
-		}*/
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				seats[i][j].addActionListener(this);

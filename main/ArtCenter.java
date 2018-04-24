@@ -112,9 +112,10 @@ public class ArtCenter {
 		tempList.clear();
 		tempList = temp;
 		if(tempList.get(6).equals("e")){
-			
+			receipt.setTempList(tempList);
 		}else if(tempList.get(8).equals("p")){
 			seat.setTempList(tempList);
+			receipt.setTempList(tempList);
 		}
 	}
 
