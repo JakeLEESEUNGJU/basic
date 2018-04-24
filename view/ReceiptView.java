@@ -252,9 +252,9 @@ public class ReceiptView extends JPanel implements ActionListener {
 				vo.setAdvCnt(oldCnt); //우대 인원
 				vo.setRecPrice(totalPrice); //결제 금액
 			}
-			//System.out.println(">>디비가기전");
-			//int result = model.insertRec(vo, flag);
-			//System.out.println(">>결과"+result);
+			System.out.println(">>디비가기전");
+			int result = model.insertRec(vo, flag);
+			System.out.println(">>결과"+result);
 			
 		}
 
@@ -464,7 +464,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		evtNo = Integer.parseInt(temp.get(1).toString());
 		if(temp.size() == 7){									//전시면
 			flag = temp.get(6).toString();
-			exiNo = Integer.parseInt(temp.get(1).toString());	 //전시번호
+			exiNo = Integer.parseInt(temp.get(0).toString());	 //전시번호
 			exiLoc = temp.get(3).toString(); 					//전시 위치
 			exiDate = temp.get(5).toString();					//전시 관람일자
 		}else if(temp.size() == 9){								//공연이면

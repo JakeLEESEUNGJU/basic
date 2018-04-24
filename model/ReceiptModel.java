@@ -45,11 +45,14 @@ public class ReceiptModel {
 			con.setAutoCommit(false);
 			
 			if(flag.equals("p")){//공연 결제이면
+				System.out.print(vo.getPerNo()+"//"+vo.getEmpNo()+"//"+vo.getSeeDate()+"//"+vo.getRecMethod()
+				+"//"+vo.getRecPrice()+"//"+vo.getRecSeat()+"//"+vo.getAdultCnt()+"//"+vo.getChildCnt()+"//"+vo.getAdvCnt()
+				+"//"+vo.getStartTime()+"//"+vo.getFinishTime());
 				
 			//INSERT SQL
 			String sql1 = "INSERT INTO receipt(REC_NO, PER_NO, EMP_NO, REC_DATE, REC_EVTDATE, "
 					+ "REC_PAY, REC_TOTAL, REC_SEAT, REC_ADULT, REC_CHILD, REC_ADV, REC_STARTTIME, REC_FINISHTIME,EXI_NO) "
-					+ "VALUES (seq_rec_no.nextval,?,?,sysdate,?,?,?,?,?,?,?,?,?,'0')";
+					+ " VALUES (seq_rec_no.nextval,?,?,sysdate,?,?,?,?,?,?,?,?,?,0)";
 			
 			System.out.println("sql1: "+sql1);
 			
@@ -78,7 +81,7 @@ public class ReceiptModel {
 			PreparedStatement ps2 = con.prepareStatement(sql2);
 			
 			ps2.setString(1, vo.getRecSeat());
-			ps2.setInt(1, vo.getPerNo());
+			ps2.setInt(2, vo.getPerNo());
 			
 			int result2 = ps2.executeUpdate();
 			
@@ -94,10 +97,14 @@ public class ReceiptModel {
 			
 			}else if(flag.equals("e")){//전시 결제이면
 				
+				System.out.println("INSERT INTO receipt(REC_NO, EXI_NO , EMP_NO, REC_DATE, REC_EVTDATE, "
+						+ "REC_PAY, REC_TOTAL,  REC_ADULT, REC_CHILD, REC_ADV, PER_NO) "
+						+ " VALUES (seq_rec_no.nextval,?,?,sysdate,?,?,?,?,?,?,0)");
+				
 				//INSERT SQL
-				String sql = "INSERT INTO receipt(REC_NO, EXI_NO,  EMP_NO, REC_DATE, REC_EVTDATE, "
-						+ "REC_PAY, REC_TOTAL,  REC_ADULT, REC_CHILD, REC_ADV,PER_NO) "
-						+ "VALUES (seq_rec_no.nextval,?,?,sysdate,?,?,?,?,?,?,'0')";
+				String sql = "INSERT INTO receipt(REC_NO, EXI_NO , EMP_NO, REC_DATE, REC_EVTDATE, "
+						+ "REC_PAY, REC_TOTAL,  REC_ADULT, REC_CHILD, REC_ADV, PER_NO) "
+						+ " VALUES (seq_rec_no.nextval,?,?,sysdate,?,?,?,?,?,?,0)";
 				
 				System.out.println("sql: "+sql);
 				PreparedStatement ps = con.prepareStatement(sql);
@@ -112,7 +119,7 @@ public class ReceiptModel {
 				ps.setInt(8, vo.getAdvCnt());
 		
 				int result = ps.executeUpdate();
-				
+				System.out.println("전송완료");
 				return result;
 			}
 			
