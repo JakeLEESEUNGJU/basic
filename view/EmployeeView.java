@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -33,7 +34,7 @@ public class EmployeeView extends JPanel{
 	
 	Font bfont, titlefont, lafont; // 폰트 객체들 
 	
-
+	
 	
 	public EmployeeView(ArtCenter ac) {
 		this.ac = ac;
@@ -176,9 +177,9 @@ public class EmployeeView extends JPanel{
 			if(o==bSelectEmp){
 				selectEmp();
 			} else if (o==bInsertEmp){
-				insertEmp();
+				if(insertEmp()==-1){return;}
 			} else if (o==bModifyEmp){
-				modifyEmp();
+				if(modifyEmp()==-1){return;}
 			} else if (o==bDeleteEmp){
 				deleteEmp();
 			} else if (o==bHome){
@@ -216,42 +217,77 @@ public class EmployeeView extends JPanel{
 		
 	}
 	//입력 -- 완성
-	void insertEmp() {
+	int insertEmp() {
 		Employee vo = new Employee();
-		
+		//사원이름입력 -- 한글이나 영문자만 들어있지 않으면 오류
+		if(tfEmpName.getText().equals("")||	!(Pattern.matches(" ^[가-힣]|[a-zA-Z]*$", tfEmpName.getText()))){
+			JOptionPane.showMessageDialog(null, "사원이름 잘못입력");
+			return -1;
+		}
 		vo.setEmpName(tfEmpName.getText());
+		//사원전화번호입력 --'01*' + 총 13자리 아니면 오류?
+		if(tfEmpTel.getText().equals("")|| !(Pattern.matches("^01(?:0|1|[6-9])(?:[0-9]{3}|[0-9]{4})[0-9]{4}$", tfEmpTel.getText()))){
+			JOptionPane.showMessageDialog(null, "사원 전화번호 잘못입력");
+			return -1;
+		}
 		vo.setEmpTel(tfEmpTel.getText());
+		//사원이메일입력 -- @없으면 오류
+		if(tfEmpEmail.getText().equals("")|| !(Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+$", tfEmpEmail.getText()))){
+			JOptionPane.showMessageDialog(null, "사원 이메일 잘못입력");
+			return -1;
+		}
 		vo.setEmpEmail(tfEmpEmail.getText());
+		//사원부서입력 
 		vo.setEmpDept(String.valueOf(cbEmpDept.getSelectedItem()));
 		try {
 			model.insertEmp(vo);
 			JOptionPane.showMessageDialog(null, "사원입력성공");
 			clear();
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "사원입력실패:" + e.getMessage());
-			e.printStackTrace();
+			return -1;
 		}
 		
-		
+		return 0;
 		
 	}
 
 	//수정 -- 완성
-	void modifyEmp() {
+	int modifyEmp() {
 		Employee vo = new Employee();
 		vo.setEmpNo(Integer.parseInt(tfEmpNo.getText()));
+		//사원이름입력 -- 한글이나 영문자만 들어있지 않으면 오류
+		if (tfEmpName.getText().equals("") || !(Pattern.matches(" ^[가-힣]|[a-zA-Z]*$", tfEmpName.getText()))) {
+			JOptionPane.showMessageDialog(null, "사원이름 잘못입력");
+			return -1;
+		}
 		vo.setEmpName(tfEmpName.getText());
+		//사원전화번호입력 --'01*' + 총 13자리 아니면 오류?
+		if (tfEmpTel.getText().equals("")
+				|| !(Pattern.matches("^01(?:0|1|[6-9])(?:[0-9]{3}|[0-9]{4})[0-9]{4}$", tfEmpTel.getText()))) {
+			JOptionPane.showMessageDialog(null, "사원 전화번호 잘못입력");
+			return -1;
+		}
 		vo.setEmpTel(tfEmpTel.getText());
+		//사원이메일입력 -- @없으면 오류
+		if (tfEmpEmail.getText().equals("")
+				|| !(Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+$", tfEmpEmail.getText()))) {
+			JOptionPane.showMessageDialog(null, "사원 이메일 잘못입력");
+			return -1;
+		}
 		vo.setEmpEmail(tfEmpEmail.getText());
 		vo.setEmpDept(String.valueOf(cbEmpDept.getSelectedItem()));
 		try {
 			model.modifyEmp(vo);
 			JOptionPane.showMessageDialog(null, "수정완료");
 			clear();
+			
 		} catch (Exception e) {
 			System.out.println("사원수정성공");
 			e.printStackTrace();
 		}
+		return 0;
 	}
 	
 	//삭제 -- 완성
