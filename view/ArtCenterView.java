@@ -52,7 +52,7 @@ public class ArtCenterView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object ev = e.getSource();
 		if (ev == bSalesMgr) {
-			ac.movecard("exhibitioncard");
+			ac.movecard("ticketcard");
 		} else if (ev == bEmpMgr) {
 			ac.movecard("employeecard");
 			ac.changeFrame(800,800);

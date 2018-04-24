@@ -37,7 +37,7 @@ public class TicketView extends JPanel implements ActionListener {
 	// 제목이 달린 보더 클래스 각각 타이틀,날짜선택,이벤트 선택, 인원 및 가격 //구성인원별 가격
 	JPanel center_center_one_center, center_north; // 그냥 JPanel ... ㅋㅋ
 	String[] jTableTitle = { "성인", "어린이", "우대(노인,장애인", "총계" }; // JTable 컬럼 제목
-
+	
 	// 인원 및 가격 라벨
 	JLabel laKind, laPep, laCash, laAdult, laChild, laAdv, laTotal, laToPep, laToCash, laToAduC, laToChC, laToAdvC;
 	// 구성원 텍스트필드
@@ -139,6 +139,9 @@ public class TicketView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
 		if (evt == bHome) {
+			tfAdult.setText("0");
+			tfAdv.setText("0");
+			tfChild.setText("0");
 			ac.movecard("main");
 		} else if (evt == bGoNext) {
 			try{
@@ -355,7 +358,7 @@ public class TicketView extends JPanel implements ActionListener {
 		}
 	}
 
-	void eventProc() {
+	public void eventProc() {
 		bGoNext.addActionListener(this);
 		bDateOk.addActionListener(this);
 		bHome.addActionListener(this);
@@ -396,7 +399,7 @@ public class TicketView extends JPanel implements ActionListener {
 
 	}
 
-	void addLayout() {
+	public void addLayout() {
 		exhiTbModel = new ExhibListTableModel();
 		tbExhiList = new JTable(exhiTbModel);
 		perfTbModel = new PerfListTableModel();

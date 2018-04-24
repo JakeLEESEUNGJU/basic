@@ -22,7 +22,7 @@ public class ArtCenter {
 
 	LoginView login;
 	ArtCenterView artCenter;
-	TicketView ticketExhibition;
+	TicketView ticket;
 	EmployeeView employee;
 	EventView event;
 	SeatView seat;
@@ -39,7 +39,7 @@ public class ArtCenter {
 
 		main = new JFrame("ArtCenter");
 		artCenter = new ArtCenterView(this);
-		ticketExhibition = new TicketView(this);
+		ticket = new TicketView(this);
 		employee = new EmployeeView(this);
 		event = new EventView(this);
 		seat = new SeatView(this);
@@ -51,7 +51,7 @@ public class ArtCenter {
 		background.setLayout(card);
 		background.add("logincard", login);
 		background.add("main", artCenter);
-		background.add("exhibitioncard", ticketExhibition);
+		background.add("ticketcard", ticket);
 		background.add("employeecard", employee);
 		background.add("eventcard", event);
 		background.add("seatcard", seat);
