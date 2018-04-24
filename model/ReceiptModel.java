@@ -42,9 +42,9 @@ public class ReceiptModel {
 	public int insertRec(Receipt vo, String flag){
 		
 		try {
-			con.setAutoCommit(false);
 			
 			if(flag.equals("p")){//공연 결제이면
+				con.setAutoCommit(false);
 				System.out.print(vo.getPerNo()+"//"+vo.getEmpNo()+"//"+vo.getSeeDate()+"//"+vo.getRecMethod()
 				+"//"+vo.getRecPrice()+"//"+vo.getRecSeat()+"//"+vo.getAdultCnt()+"//"+vo.getChildCnt()+"//"+vo.getAdvCnt()
 				+"//"+vo.getStartTime()+"//"+vo.getFinishTime());
