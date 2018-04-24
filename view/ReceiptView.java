@@ -24,6 +24,7 @@ import javax.swing.table.AbstractTableModel;
 import main.ArtCenter;
 import model.ReceiptModel;
 import model.SeatModel;
+import vo.Receipt;
 
 public class ReceiptView extends JPanel implements ActionListener {
 	JLabel laTitle, laRating, laPayMethod, laTotal; //타이틀,등급,결제수단,총결제금액 Label
@@ -46,27 +47,28 @@ public class ReceiptView extends JPanel implements ActionListener {
 	String perStartTime ;						//공연 시작시간
 	String perFinishTime ;						//공연 끝날시간
 	
-	int afterDiscountPrice = 0;// 할인가격
-	int totalPrice = 0;// 총가격
-	int price = 0; // 성인가격
-	int peopleCnt = 0;// 총인원
-	int adultPrice;// 가격
+	int afterDiscountPrice = 0;					// 할인가격
+	int totalPrice = 0;							// 총가격
+	int price = 0; 								// 성인가격
+	int peopleCnt = 0;							// 총인원
+	int adultPrice;								// 가격
 	int childPrice;
 	int oldPrice ;
-	int adultCnt = 0;// 명수
+	int adultCnt = 0;							// 명수
 	int childCnt = 0;
 	int oldCnt = 0;
-	int totalAdultPrice = 0;//총 가격
+	int totalAdultPrice = 0;					//인원별 총 가격
 	int totalChildPrice = 0;
 	int totalOldPrice = 0;
 	ArrayList priceInfoList;
-	ArrayList interfaceList; // 인터페이스  arrayList : 인원별 가격정보 
+	ArrayList interfaceList; 					// 인터페이스  arrayList : 인원별 가격정보 
 
-	ReceiptModel model;
-	int evtNo;
-	String seatNum;
+	ReceiptModel model; 						//ReceiptModel객체
+	int evtNo; 									//행사 번호
+	String seatNum; 							//공연 선택한 좌석
 	
-	public int empNo;
+	public int empNo;							//결제를 진행한 직원 번호(사번)
+	Receipt vo; 								//영수증 vo
 	
 	public ReceiptView() {
 	}
@@ -199,31 +201,61 @@ public class ReceiptView extends JPanel implements ActionListener {
 			setPriceByrating(cbRating.getSelectedItem().toString());
 			tfTotal.setText(afterDiscountPrice + "");
 			tfDiscount.setText(String.valueOf((totalPrice-afterDiscountPrice)));
-		} else if (evt == cbGroup) {		//단체 체크박스 선택시
+		} else if (evt == cbGroup) {								//단체 체크박스 선택시
 			cbRating.setEnabled(!cbGroup.isSelected());
 			if(cbGroup.isSelected()){
-				tfDiscount.setText(((int)(totalPrice*0.1)+""));//단체 10퍼 할인가격으로 셋팅
+				tfDiscount.setText(((int)(totalPrice*0.1)+""));		//단체 10퍼 할인가격으로 셋팅
 				tfTotal.setText((  (int)(totalPrice * 0.9)  ) + "");//단체 할인받은 가격으로 셋팅
 			}else{
-				tfDiscount.setText("0");//할인가격 0으로 셋팅
-				tfTotal.setText(((totalPrice)) + "");//총가격 원래 가격으로 셋팅
+				tfDiscount.setText("0");							//할인가격 0으로 셋팅
+				tfTotal.setText(((totalPrice)) + "");				//총가격 원래 가격으로 셋팅
 				
 			}
 
-		}else if(evt == bBack){//뒤로 버튼 클릭시
-			if(flag == "p"){//공연이면 좌석선택화면으로
+		}else if(evt == bBack){										//뒤로 버튼 클릭시
+			if(flag == "p"){										//공연이면 좌석선택화면으로
 				ac.movecard("seatcard");
-			}else if(flag == "e"){//전시면 전시선택화면으로
+			}else if(flag == "e"){									//전시면 전시선택화면으로
 				ac.movecard("ticketcard");
 				
 			}
-		} else if (evt == bCancel) {//예매 취소 버튼 클릭시
+		} else if (evt == bCancel) {								//예매 취소 버튼 클릭시
 			System.out.println(">>결제취소");
 			ac.movecard("main");
-		} else if (evt == bPayment) {//결제 버튼 클릭시
+		} else if (evt == bPayment) {								//결제 버튼 클릭시
 			System.out.println(">>결제하기");
 			JOptionPane.showMessageDialog(null, "결제 버튼 누름!");
 			// 결제메서드 호출 추가 ***
+			Receipt vo = new Receipt();
+			System.out.println(flag+">>>>>>>>>>>>>>>");
+			if(flag == "p"){//공연이면
+				System.out.println(flag+"1");
+				vo.setPerNo(perNo);//공연번호
+				vo.setEmpNo(empNo);// 직원번호
+				vo.setSeeDate(perDate);//관람일시
+				vo.setStartTime(perStartTime);//시작시간
+				vo.setFinishTime(perFinishTime);//종료시간
+				vo.setRecSeat(seatNum); //선택한 좌석
+				vo.setRecMethod(cbPayMethod.getSelectedItem().toString());//결제수단
+				vo.setAdultCnt(adultCnt);//성인인원
+				vo.setChildCnt(childCnt);//아동인원
+				vo.setAdvCnt(oldCnt); //우대 인원
+				vo.setRecPrice(totalPrice); //결제 금액
+			}else if(flag == "e"){//전시면
+				System.out.println(flag+"2");
+				vo.setExiNo(exiNo); //전시번호
+				vo.setEmpNo(empNo);// 직원번호
+				vo.setSeeDate(exiDate);//관람일시
+				vo.setRecMethod(cbPayMethod.getSelectedItem().toString());//결제수단
+				vo.setAdultCnt(adultCnt);//성인인원
+				vo.setChildCnt(childCnt);//아동인원
+				vo.setAdvCnt(oldCnt); //우대 인원
+				vo.setRecPrice(totalPrice); //결제 금액
+			}
+			//System.out.println(">>디비가기전");
+			//int result = model.insertRec(vo, flag);
+			//System.out.println(">>결과"+result);
+			
 		}
 
 	}
@@ -430,18 +462,18 @@ public class ReceiptView extends JPanel implements ActionListener {
 	public void setTempList(ArrayList temp){ //temp (공연번호,이벤트 번호,이벤트제목,위치,기준가격,시작시간,종료시간,관람일자,p/e구분)
 		
 		evtNo = Integer.parseInt(temp.get(1).toString());
-		if(temp.size() == 7){								//전시면
+		if(temp.size() == 7){									//전시면
 			flag = temp.get(6).toString();
 			exiNo = Integer.parseInt(temp.get(1).toString());	 //전시번호
-			exiLoc = temp.get(3).toString(); 				//전시 위치
-			exiDate = temp.get(5).toString();				//전시 관람일자
-		}else if(temp.size() == 9){							//공연이면
+			exiLoc = temp.get(3).toString(); 					//전시 위치
+			exiDate = temp.get(5).toString();					//전시 관람일자
+		}else if(temp.size() == 9){								//공연이면
 			flag = temp.get(8).toString();
 			perNo = Integer.parseInt(temp.get(0).toString()); 	//공연번호
-			perLoc = temp.get(3).toString(); 				//공연 위치
-			perDate = temp.get(7).toString();				//공연 관람일자
-			perStartTime = temp.get(5).toString(); 			//공연 시작시간
-			perFinishTime = temp.get(6).toString();			//공연 끝날시간
+			perLoc = temp.get(3).toString(); 					//공연 위치
+			perDate = temp.get(7).toString();					//공연 관람일자
+			perStartTime = temp.get(5).toString(); 				//공연 시작시간
+			perFinishTime = temp.get(6).toString();				//공연 끝날시간
 		}
 		setTextArea(taTicketInfo);
 	}
