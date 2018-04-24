@@ -29,8 +29,8 @@ import main.ArtCenter;
 import model.TicketModel;
 
 public class TicketView extends JPanel implements ActionListener {
-	private Font font1 = new Font("Serif", Font.BOLD, 20); // 중간 크기 폰트설정
-	private Font font2 = new Font("Serif", Font.BOLD, 30); // 대문 폰트
+	private Font font1 = new Font("포천 오성과 한음 Regular", Font.BOLD, 20); // 중간 크기 폰트설정
+	private Font font2 = new Font("210 타임라인 R", Font.BOLD, 30); // 대문 폰트
 	JButton bDateOk, bGoNext, bHome; // 날짜 확인 버튼 //결제 혹은 좌석선택 버튼 //초기화면 버튼
 	ButtonGroup bg = new ButtonGroup();// 라디오 버튼의 중복 선택 방지를 위한 버튼 그룹
 	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList, taboPerValue;
