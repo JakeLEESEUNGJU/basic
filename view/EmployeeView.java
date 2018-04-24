@@ -21,18 +21,17 @@ import vo.Employee;
 
 
 public class EmployeeView extends JPanel{
-	String[] empDept = {"개발부", "기획부", "인사부", "판매부"};
-	JComboBox cbEmpDept = new JComboBox<>(empDept);
-	JLabel laEmpNo, laEmpName, laEmpTel, laEmpEmail, laEmpDept;
-	JTextField tfEmpNo,tfEmpName, tfEmpTel, tfEmpEmail;
-	JButton bSelectEmp, bInsertEmp, bModifyEmp, bDeleteEmp;
+	String[] empDept = {"개발부", "기획부", "인사부", "판매부"}; // 부서콤보박스내용
+	JComboBox cbEmpDept = new JComboBox<>(empDept);// 부서콤보박스
+	JLabel laEmpNo, laEmpName, laEmpTel, laEmpEmail, laEmpDept; // 텍스트필드 옆 라벨들
+	JTextField tfEmpNo,tfEmpName, tfEmpTel, tfEmpEmail; // 사원정보입력 텍스트필드들
+	JButton bSelectEmp, bInsertEmp, bModifyEmp, bDeleteEmp; // 조회, 입력, 수정, 삭제 버튼 
 	
-	JButton bHome, bClear;
+	JButton bHome, bClear; // 홈버튼, 초기화버튼 	
+	EmployeeModel model; // 사원모델클래스 객체
+	ArtCenter ac; // 아트센터클래스객체
 	
-	EmployeeModel model;
-	ArtCenter ac;
-	
-	Font bfont, titlefont, lafont;
+	Font bfont, titlefont, lafont; // 폰트 객체들 
 	
 
 	
@@ -45,10 +44,11 @@ public class EmployeeView extends JPanel{
 		
 	}
 	
+// 사원번호 비활성화
 	private void initStyle() {
 		tfEmpNo.setEditable(false);
 	}
-
+// 레이아웃 등록 메소드
 	void addLayout() {
 		bfont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
 		titlefont = new Font("210 타임라인 R", Font.BOLD, 30);
@@ -145,7 +145,7 @@ public class EmployeeView extends JPanel{
 		add("Center", pAll);
 
 	}
-
+// 데이터베이스 연결 메소드
 	void connectDB() {
 		try {
 			model = new EmployeeModel();
@@ -156,10 +156,10 @@ public class EmployeeView extends JPanel{
 		}
 	}
 
+// 이벤트 등록 메소드
 	void eventProc() {
 		ButtonEventHandler btnHandler = new ButtonEventHandler();
 		
-		//이벤트 등록
 		bSelectEmp.addActionListener(btnHandler);
 		bInsertEmp.addActionListener(btnHandler);
 		bModifyEmp.addActionListener(btnHandler);
@@ -168,7 +168,7 @@ public class EmployeeView extends JPanel{
 		bClear.addActionListener(btnHandler);
 	}
 	
-	//버튼 이벤트 핸들러 클래스 
+//버튼 이벤트 핸들러 클래스 
 	class ButtonEventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 			Object o = ev.getSource();
@@ -193,10 +193,6 @@ public class EmployeeView extends JPanel{
 		
 	}
 
-	
-
-	
-	
 	
 // 버튼 메소드들 
 	
@@ -257,6 +253,7 @@ public class EmployeeView extends JPanel{
 			e.printStackTrace();
 		}
 	}
+	
 	//삭제 -- 완성
 	void deleteEmp() {
 		Employee vo = new Employee();

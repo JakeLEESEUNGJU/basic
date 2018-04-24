@@ -18,15 +18,18 @@ import vo.Performance;
 
 
 public class EventView extends JPanel{
-	ButtonGroup bg;
-	JRadioButton rbExi, rbPer;
+	ButtonGroup bg; // 라디오버튼 묶는 버튼그룹
+	JRadioButton rbExi, rbPer; // 전시, 공연 라디오버튼 
+	//텍스트필드 옆 라벨들 
 	JLabel laExiDir, laPerActor,laPerDir, laPerStart, laPerEnd, laLocation,
 			laEvtNo, laEvtTitle, laEvtPeriod, laEvtRating, laEvtPrice, laEvtDetail, labt;
-	JTextField tfExiDir, tfPerActor, tfPerDir, 
-			   tfEvtNo, tfEvtTitle, tfEvtPrice;
+	//이벤트정보 입력 텍스트필드
+	JTextField tfExiDir, tfPerActor, tfPerDir, tfEvtNo, tfEvtTitle, tfEvtPrice;
+	//설명 텍스트area
 	JTextArea taEvtDetail;
+	//행사조회, 입력 수정, 삭제 메소드 
 	JButton bSelectEvt, bInsertEvt, bModifyEvt, bDeleteEvt;
-	
+	//홈버튼, 초기화버튼 
 	JButton bHome, bClear;
 	
 	// 장소 combobox
@@ -51,21 +54,19 @@ public class EventView extends JPanel{
 	JComboBox cbStartDateM = new JComboBox<>();
 	JComboBox cbStartDateD = new JComboBox<>();
 	JPanel pStartDate = new JPanel();
-	
 	JComboBox cbEndDateY = new JComboBox<>();
 	JComboBox cbEndDateM = new JComboBox<>();
 	JComboBox cbEndDateD = new JComboBox<>();
 	JPanel pEndDate = new JPanel();
 	
+	// 월 선택시 일 콤보박스 생성위해 각 월별 마지막날 배열  
 	int[] lastDay = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 	
-	// 기간 combobox 끝 
-	
+	// 이벤트모델 객체
 	EventModel model;
-	
-	
+	// 아트센터 객체
 	ArtCenter ac;
-	
+	// 폰트객체들 
 	Font bfont, titlefont, lafont;
 	
 	
@@ -78,18 +79,20 @@ public class EventView extends JPanel{
 		eventProc();
 	}
 	
+	// 행사번호 비활성화, date초기값설정 
 	private void initStyle() {
 		Calendar c = Calendar.getInstance();
 		tfEvtNo.setEditable(false);
 		cbStartDateY.setSelectedItem(c.get(Calendar.YEAR));// date 초기값 설정
 		cbStartDateM.setSelectedItem(c.get(Calendar.MONTH)+1);// date 초기값 설정
-//		cbStartDateD.setSelectedItem(c.get(Calendar.DATE));// date 초기값 설정
+		cbStartDateD.setSelectedItem(c.get(Calendar.DATE));// date 초기값 설정
 		cbEndDateY.setSelectedItem(c.get(Calendar.YEAR));// date 초기값 설정
 		cbEndDateM.setSelectedItem(c.get(Calendar.MONTH)+1);// date 초기값 설정
-//		cbEndDateD.setSelectedItem(c.get(Calendar.DATE));// date 초기값 설정
+		cbEndDateD.setSelectedItem(c.get(Calendar.DATE));// date 초기값 설정
 		
 	}
-
+	
+	// 시간, 년, 월 콤보박스 리스트 생성
 	void setList() {
 		Calendar c = Calendar.getInstance();
 		int date = c.get(Calendar.DATE);
@@ -121,6 +124,7 @@ public class EventView extends JPanel{
 		
 		
 	}
+	// 시작일 콤보박스 리스트 생성
 	void setDayStart() {
 		//start
 		int year = (Integer) cbStartDateY.getSelectedItem(); 
@@ -136,6 +140,7 @@ public class EventView extends JPanel{
 		}
 
 	}
+	// 종료일 콤보박스 리스트 생성
 	void setDayEnd(){
 		// end
 		int year1 = (Integer) cbEndDateY.getSelectedItem();
@@ -150,7 +155,7 @@ public class EventView extends JPanel{
 			cbEndDateD.addItem(i);
 		}
 	}
-
+	//레이아아웃 붙이기 
 	void addLayout() {
 
 		bfont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
@@ -348,6 +353,7 @@ public class EventView extends JPanel{
 		add("Center", ptf);
 		add("South", pb);
 	}
+	// 데이터베이스 연결 
 	void connectDB() {
 		try {
 			model = new EventModel();
@@ -357,10 +363,11 @@ public class EventView extends JPanel{
 			e.printStackTrace();
 		}
 	}
+	
+	//이벤트 등록
 	void eventProc() {
 		ButtonEventHandler btnHandler = new ButtonEventHandler();
 		
-		//이벤트 등록
 		bSelectEvt.addActionListener(btnHandler);
 		bInsertEvt.addActionListener(btnHandler);
 		bModifyEvt.addActionListener(btnHandler);
@@ -435,19 +442,29 @@ public class EventView extends JPanel{
 							JOptionPane.showMessageDialog(null, "전시 또는 공연을 선택해주세요");
 						}
 				} 
-				
+				// 홈버튼 
 				else if (o==bHome){
 					ac.movecard("main");
 					clear();
-				} else if(o==bClear){
+				}
+				// 초기화버튼 
+				else if(o==bClear){
 					clear();
-				} else if (o==rbExi){
+				} 
+				// 전시라디오버튼 선택시 화면셋팅
+				else if (o==rbExi){
 					choiceExi();
-				} else if (o==rbPer){
+				}
+				// 공연라디오버튼 선택시 화면셋팅
+				else if (o==rbPer){
 					choicePer();
-				} else if (o==cbStartDateY||o==cbStartDateM){
+				} 
+				// 시작년도, 시작월 선택하면 시작일 셋팅됨 
+				else if (o==cbStartDateY||o==cbStartDateM){
 					setDayStart();
-				} else if (o==cbEndDateY||o==cbEndDateM){
+				} 
+				// 종료년도, 종료월 선택하면 종료일 셋팅됨 
+				else if (o==cbEndDateY||o==cbEndDateM){
 					setDayEnd();
 				} 
 			
@@ -510,7 +527,7 @@ public class EventView extends JPanel{
 			cbRating.setSelectedItem(vo.getEvtRating());
 			cbLocation.setSelectedItem(list.get(1));
 			
-			// 년, 월, 일 셋팅
+// 년, 월, 일 셋팅
 			cbStartDateY.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(0, 4))); 
 			cbStartDateM.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(5,7)));
 			cbStartDateD.setSelectedItem(Integer.parseInt(vo.getEvtStart().substring(8,10)));
@@ -518,7 +535,7 @@ public class EventView extends JPanel{
 //			cbEndDateM.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(5,7)));
 //			cbEndDateD.setSelectedItem(Integer.parseInt(vo.getEvtEnd().substring(8,10)));
 			
-			// 시간셋팅
+// 시간셋팅
 			// 시작시간
 			String startHour = ((String) list.get(2)).substring(0, 2);
 			String startMin = ((String) list.get(2)).substring(2);
@@ -530,6 +547,7 @@ public class EventView extends JPanel{
 			
 			cbStartTimeH.setSelectedItem(startHour);
 			cbStartTimeM.setSelectedItem(startMin);
+			
 			//종료시간
 			String endHour = ((String) list.get(3)).substring(0, 2);
 			String endMin = ((String) list.get(3)).substring(2);
@@ -549,6 +567,7 @@ public class EventView extends JPanel{
 			e.printStackTrace();
 		}
 	}
+	
 	//전시입력 -- 완성!!!>_<
 	void insertExi() {
 		
@@ -578,6 +597,7 @@ public class EventView extends JPanel{
 			e.printStackTrace();
 		}
 	}
+	
 	//공연입력
 	void insertPer(){
 		Performance vo = new Performance();
@@ -647,6 +667,7 @@ public class EventView extends JPanel{
 			e.printStackTrace();
 		}
 	}
+	
 	//공연수정
 	void modifyPer(){
 		Performance vo = new Performance();
