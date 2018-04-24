@@ -19,9 +19,8 @@ import view.SeatView;
 import view.TicketExhibitionView;
 import view.TicketPerformanceView;
 
-public class ArtCenter  {
+public class ArtCenter {
 
-	
 	LoginView login;
 	ArtCenterView artCenter;
 	TicketExhibitionView ticketExhibition;
@@ -31,16 +30,15 @@ public class ArtCenter  {
 	SeatView seat;
 	ReceiptView receipt;
 	CardLayout card;
-	
+
 	JButton btn = new JButton("확인");
 	JPanel background = new JPanel();
 	public ArrayList tempList, temp = null;
-	
+
 	JFrame main;
-	
+
 	public ArtCenter() {
 
-		
 		main = new JFrame("ArtCenter");
 		artCenter = new ArtCenterView(this);
 		ticketExhibition = new TicketExhibitionView(this);
@@ -51,7 +49,7 @@ public class ArtCenter  {
 		login = new LoginView(this);
 		tempList = new ArrayList<>();
 		temp = new ArrayList<>();
-		card = new CardLayout(15,10);
+		card = new CardLayout(15, 10);
 		background.setLayout(card);
 		background.add("logincard", login);
 		background.add("main", artCenter);
@@ -73,8 +71,8 @@ public class ArtCenter  {
 		card.show(background, text);
 	}
 
-	public void changeFrame(int width , int height) {
-		main.setSize(width	, height);
+	public void changeFrame(int width, int height) {
+		main.setSize(width, height);
 	}
 
 	public void originalFrame() {
@@ -82,69 +80,61 @@ public class ArtCenter  {
 	}
 
 	public static void main(String[] args) {
-		
 
+		try {
+			// Set System L&F
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			new ArtCenter();
+		} catch (UnsupportedLookAndFeelException e) {
+			// handle exception
 
-		 try {
-	            // Set System L&F
-	        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-	        new ArtCenter();
-	    } 
-	    catch (UnsupportedLookAndFeelException e) {
-	       // handle exception
-	    	
-	    	System.out.println(e.getMessage());
-	    	e.getStackTrace();
-	    }
-	    catch (ClassNotFoundException e) {
-	       // handle exception
-	    	System.out.println(e.getMessage());
-	    	e.getStackTrace();
-	    }
-	    catch (InstantiationException e) {
-	       // handle exception
-	    	System.out.println(e.getMessage());
-	    	e.getStackTrace();
-	    }
-	    catch (IllegalAccessException e) {
-	       // handle exception
-	    	System.out.println(e.getMessage());
-	    	e.getStackTrace();
-	    }
+			System.out.println(e.getMessage());
+			e.getStackTrace();
+		} catch (ClassNotFoundException e) {
+			// handle exception
+			System.out.println(e.getMessage());
+			e.getStackTrace();
+		} catch (InstantiationException e) {
+			// handle exception
+			System.out.println(e.getMessage());
+			e.getStackTrace();
+		} catch (IllegalAccessException e) {
+			// handle exception
+			System.out.println(e.getMessage());
+			e.getStackTrace();
+		}
 
-	
-		   
-	}
-
-	public ArrayList getTempList() {
-		return tempList;
 	}
 
 	/**
-	 * settemp메서드로 ArrayList 가져오기
+	 * setTempSql메서드로 ArrayList 가져오기
 	 * 
-	 * @param temp
 	 */
-	public void setTempList(ArrayList temp) {
+	public void setTempSql(ArrayList temp) {
 		tempList.clear();
 		tempList = temp;
-
-		seat.setTempList(tempList);
+		if(tempList.get(6).equals("e")){
+			
+		}else if(tempList.get(8).equals("p")){
+			seat.setTempList(tempList);
+		}
 	}
 
-	public ArrayList getTemp() {
-		
-		return temp;
-	}
-
-	public void setTemp(ArrayList itemp) {
+	//
+	public void setPeopleSeat(ArrayList itemp) {
 		temp.clear();
 		temp = itemp;
-		receipt.settempList(temp);
-		seat.setPersonCnt(temp);
-
+		System.out.println(temp.get(4));
+		if(temp.get(4).equals("p")){
+			temp.remove(4);
+			seat.setPersonCnt(temp);
+		}else if(temp.get(4).equals("e")){
+			temp.remove(4);
+			receipt.settempList(temp);
+		}
 	}
-	//직원DB에서 부서 이름을 가져오는 메서드
+
+	// 직원DB에서 부서 이름을 가져오는 메서드
 	public void empInfoSending(ArrayList<String> info) {
 		String dept = info.get(2);
 		artCenter.setbtn(dept);

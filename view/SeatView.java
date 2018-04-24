@@ -140,13 +140,7 @@ public class SeatView extends JPanel implements ActionListener{
 	
 	
 	public void setTempList(ArrayList temp){
-		//System.out.println( temp.get(3));
-		System.out.println(temp.get(2)+"세번째 확인");
-		System.out.println(temp.get(3)+"세번째 확인");
 		String locvar = temp.get(3).toString();
-		
-		System.out.println(">>>두번째");
-		System.out.println(locvar+"!");
 		getHall(locvar, p_center_center, cbc);
 
 	}
