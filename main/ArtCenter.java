@@ -138,5 +138,11 @@ public class ArtCenter {
 		String dept = info.get(2);
 		artCenter.setbtn(dept);
 	}
-
+	
+	public void goingHome(){
+		ticket.tfAdult.setText("0");
+		ticket.tfAdv.setText("0");
+		ticket.tfChild.setText("0");
+		ticket.settotal();
+	}
 }

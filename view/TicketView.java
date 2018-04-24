@@ -41,7 +41,7 @@ public class TicketView extends JPanel implements ActionListener {
 	// 인원 및 가격 라벨
 	JLabel laKind, laPep, laCash, laAdult, laChild, laAdv, laTotal, laToPep, laToCash, laToAduC, laToChC, laToAdvC;
 	// 구성원 텍스트필드
-	JTextField tfAdult, tfChild, tfAdv;
+	public JTextField tfAdult, tfChild, tfAdv;
 	// ( 성인 , 어린이 , 우대 ) 1인당 가격 표시할 라벨들
 	JLabel laPerAdu, laPerChild, laPerAdv, laPerAduCash, laPerChildCash, laPerAdvCash;
 
@@ -142,6 +142,7 @@ public class TicketView extends JPanel implements ActionListener {
 			tfAdult.setText("0");
 			tfAdv.setText("0");
 			tfChild.setText("0");
+			settotal();
 			ac.movecard("main");
 		} else if (evt == bGoNext) {
 			try{
@@ -282,7 +283,7 @@ public class TicketView extends JPanel implements ActionListener {
 		}
 	}
 
-	void settotal() {
+	public void settotal() {
 
 		int totalAdu = 0;
 		int totalAdv = 0;
