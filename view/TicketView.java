@@ -307,7 +307,6 @@ public class TicketView extends JPanel implements ActionListener {
 						+ (Integer.parseInt(tfAdv.getText())) + (Integer.parseInt(tfChild.getText()))));
 
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "올바른 선택이 아닙니다.");
 
 			}
 		} else if (rbPerf.isSelected()) {
@@ -328,7 +327,7 @@ public class TicketView extends JPanel implements ActionListener {
 				laToPep.setText(String.valueOf((Integer.parseInt(tfAdult.getText()))
 						+ (Integer.parseInt(tfAdv.getText())) + (Integer.parseInt(tfChild.getText()))));
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "올바른 선택이 아닙니다.");
+				
 			}
 		}
 	}
