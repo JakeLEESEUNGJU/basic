@@ -30,7 +30,8 @@ public class EventModel {
 				+ "e.evt_price, e.evt_detail, ex.exi_dir, l.loc_no "
 				+ "FROM event e, exhibition ex, location l "
 				+ "WHERE e.evt_no = ex.evt_no AND e.loc_no = l.loc_no "
-				+ "AND e.evt_title = '"+title+"'";
+				+ "AND e.evt_title = '"+title+"' "
+				+ "AND e.evt_flag='t'";
 		
 		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery(sql);
@@ -78,7 +79,8 @@ public class EventModel {
 				+ "p.per_actor, p.per_dir, p.per_start, p.per_end, l.loc_no "
 				+ "FROM event e, performance p, location l "
 				+ "WHERE e.evt_no = p.evt_no AND e.loc_no = l.loc_no "
-				+ "AND e.evt_title = '"+title+"'";
+				+ "AND e.evt_title = '"+title+"' "
+				+ "AND e.evt_flag='t'";
 		
 		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery(sql);
@@ -291,26 +293,16 @@ public class EventModel {
 	
 // 전시삭제메소드 -- 완성!!!>_<
 	public void deleteExi(Exhibition vo) throws Exception {
-		con.setAutoCommit(false);
 		
-		String sql1 = "DELETE FROM exhibition WHERE evt_no=?";
-		String sql2 = "DELETE FROM event WHERE evt_no=? ";
+		String sql1 = "UPDATE event SET evt_flag='f' WHERE evt_no=?";
 		
 		PreparedStatement ps1 = con.prepareStatement(sql1);
 		ps1.setInt(1, vo.getEvtNo());
-		PreparedStatement ps2 = con.prepareStatement(sql2);
-		ps2.setInt(1, vo.getEvtNo());
 		
-		int r1 = ps1.executeUpdate();
-		int r2 = ps2.executeUpdate();
+		ps1.executeUpdate();
 		
-		if(r1 != 1 || r2!= 1){
-			con.rollback();	
-		}
-		con.commit();
 		
 		ps1.close();
-		ps2.close();
 		
 		con.setAutoCommit(true);
 		
@@ -318,28 +310,15 @@ public class EventModel {
 	
 // 공연삭제메소드 -- 완성!!!>_<
 	public void deletePer(Performance vo) throws Exception{
-		con.setAutoCommit(false);
 
-		String sql1 = "DELETE FROM performance WHERE evt_no=?";
-		String sql2 = "DELETE FROM event WHERE evt_no=? ";
+		String sql1 = "UPDATE event SET evt_flag='f' WHERE evt_no=?";
 
 		PreparedStatement ps1 = con.prepareStatement(sql1);
 		ps1.setInt(1, vo.getEvtNo());
-		PreparedStatement ps2 = con.prepareStatement(sql2);
-		ps2.setInt(1, vo.getEvtNo());
-
-		int r1 = ps1.executeUpdate();
-		int r2 = ps2.executeUpdate();
-
-		if (r1 != 1 || r2 != 1) {
-			con.rollback();
-		}
-		con.commit();
+		ps1.executeUpdate();
 
 		ps1.close();
-		ps2.close();
 
-		con.setAutoCommit(true);
 	}
 
 	

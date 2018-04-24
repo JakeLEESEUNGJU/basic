@@ -201,7 +201,7 @@ public class EventView extends JPanel{
 		tfExiDir = new JTextField();
 		tfPerActor = new JTextField();
 		tfPerDir = new JTextField();
-		tfEvtNo = new JTextField();
+		tfEvtNo = new JTextField("");
 		tfEvtTitle = new JTextField();
 		tfEvtPrice = new JTextField();
 		taEvtDetail = new JTextArea(20,70);
@@ -506,7 +506,6 @@ public class EventView extends JPanel{
 			JOptionPane.showMessageDialog(null, "전시조회완료");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "전시조회실패");			
-			e.printStackTrace();
 		}
 	}
 	
@@ -564,7 +563,6 @@ public class EventView extends JPanel{
 			JOptionPane.showMessageDialog(null, "공연조회완료");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "공연조회실패" );
-			e.printStackTrace();
 		}
 	}
 	
@@ -600,7 +598,6 @@ public class EventView extends JPanel{
 			clear();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "전시입력실패:" + e.getMessage());
-			e.printStackTrace();
 			return -1;
 		}
 		
@@ -757,7 +754,6 @@ public class EventView extends JPanel{
 			
 		} catch (Exception e) {
 			System.out.println("전시삭제실패");
-			e.printStackTrace();
 		}
 	}
 	//공연삭제 -- 완성!!!>_<
@@ -792,7 +788,6 @@ public class EventView extends JPanel{
 			clear();
 		} catch (Exception e) {
 			System.out.println("공연삭제실패");
-			e.printStackTrace();
 		}
 		
 		
@@ -971,7 +966,7 @@ public class EventView extends JPanel{
 		
 		String loc = (String) cbLocation.getSelectedItem();
 		int evtNo = 0;
-		if(tfEvtNo.equals("")){
+		if(!(tfEvtNo.getText().equals(""))){
 			evtNo = Integer.parseInt(tfEvtNo.getText());
 		}		
 		ArrayList list1 = new ArrayList<>();
@@ -1060,7 +1055,7 @@ public class EventView extends JPanel{
 		
 		String loc = (String) cbLocation.getSelectedItem();
 		int evtNo = 0;
-		if(!(tfEvtNo.equals(""))){
+		if(!(tfEvtNo.getText().equals(""))){
 			evtNo = Integer.parseInt(tfEvtNo.getText());
 		}
 				
