@@ -258,7 +258,7 @@ public class EmployeeView extends JPanel{
 		Employee vo = new Employee();
 		vo.setEmpNo(Integer.parseInt(tfEmpNo.getText()));
 		//사원이름입력 -- 한글이나 영문자만 들어있지 않으면 오류
-		if (tfEmpName.getText().equals("") || !(Pattern.matches(" ^[가-힣]|[a-zA-Z]*$", tfEmpName.getText()))) {
+		if (tfEmpName.getText().equals("") || !(Pattern.matches("^[가-힣a-zA-Z]*$", tfEmpName.getText()))) {
 			JOptionPane.showMessageDialog(null, "사원이름 잘못입력");
 			return -1;
 		}
