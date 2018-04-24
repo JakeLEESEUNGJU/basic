@@ -272,7 +272,7 @@ public class EmployeeView extends JPanel{
 		vo.setEmpTel(tfEmpTel.getText());
 		//사원이메일입력 -- @없으면 오류
 		if (tfEmpEmail.getText().equals("")
-				|| !(Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+$", tfEmpEmail.getText()))) {
+				|| !(Pattern.matches("^[a-zA-Z0-9]+@artcenter.com$", tfEmpEmail.getText()))) {
 			JOptionPane.showMessageDialog(null, "사원 이메일 잘못입력");
 			return -1;
 		}
