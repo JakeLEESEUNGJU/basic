@@ -220,7 +220,7 @@ public class EmployeeView extends JPanel{
 	int insertEmp() {
 		Employee vo = new Employee();
 		//사원이름입력 -- 한글이나 영문자만 들어있지 않으면 오류
-		if(tfEmpName.getText().equals("")||	!(Pattern.matches(" ^[가-힣]|[a-zA-Z]*$", tfEmpName.getText()))){
+		if(tfEmpName.getText().equals("")||	!(Pattern.matches("^[가-힣a-zA-Z]*$", tfEmpName.getText()))){
 			JOptionPane.showMessageDialog(null, "사원이름 잘못입력");
 			return -1;
 		}
@@ -232,7 +232,7 @@ public class EmployeeView extends JPanel{
 		}
 		vo.setEmpTel(tfEmpTel.getText());
 		//사원이메일입력 -- @없으면 오류
-		if(tfEmpEmail.getText().equals("")|| !(Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+$", tfEmpEmail.getText()))){
+		if(tfEmpEmail.getText().equals("")|| !(Pattern.matches("^[a-zA-Z0-9]+@artcenter.com$", tfEmpEmail.getText()))){
 			JOptionPane.showMessageDialog(null, "사원 이메일 잘못입력");
 			return -1;
 		}
