@@ -49,10 +49,10 @@ public class LoginView extends JPanel implements ActionListener{
 		center.setLayout(new GridLayout(2, 3));
 		center.add(laID);
 		center.add(tfLog = new JTextField());
-		center.add(bOk);
+		center.add(bReset);
 		center.add(laPW);
 		center.add(tfPW = new JPasswordField());
-		center.add(bReset);
+		center.add(bOk);
 		
 		
 		
@@ -72,7 +72,8 @@ public class LoginView extends JPanel implements ActionListener{
 	void eventProc() {
 		bOk.addActionListener(this);
 		bReset.addActionListener(this);
-		
+		tfLog.addActionListener(this);
+		tfPW.addActionListener(this);
 	}
 
 	@Override
