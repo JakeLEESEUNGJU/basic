@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ public class SeatView extends JPanel implements ActionListener{
 	GridBagConstraints cbc;			//GridBagConstraints 변수
 	JPanel  p_center_center;		//JPanel 변수
 	SeatModel model;
+	String locVar ="";
 	
 	public SeatView() {
 	}
@@ -38,6 +40,7 @@ public class SeatView extends JPanel implements ActionListener{
 	public SeatView(ArtCenter ac) {
 		this.ac = ac;
 		addLayout();
+		
 		eventProc();
 		connectDB();
 	}
@@ -54,9 +57,9 @@ public class SeatView extends JPanel implements ActionListener{
 		setTextArea(seatNum);
 	}
 	
-	//textarea에 텍스틑 쓰는 메서드
-	public void setTextArea(String str){
-		taSeat.setText(str);
+	// textarea에 텍스틑 쓰는 메서드
+	public void setTextArea(String str) {
+		taSeat.setText(locVar + "\n" + str);
 	}
 
 	@Override
@@ -87,21 +90,33 @@ public class SeatView extends JPanel implements ActionListener{
 	//레이아웃 그리는 메서드
 	void addLayout() {
 		laTitle = new JLabel("판매관리-공연-세부-좌석선택");
+		Font font1 = new Font("201 타임라인 R",Font.BOLD,30);
+		laTitle.setFont(font1);
 		bBack = new JButton("<공연선택");
 		bCancel = new JButton("예매취소");
 		bNext = new JButton("결제>");
 		
-		taSeat = new JTextArea(10, 10);
+		taSeat = new JTextArea(5, 10);
+		Font font = new Font(null,Font.PLAIN,20);
+		taSeat.setFont(font);
 		taSeat.setEditable(false);
 		taSeat.setBackground(Color.LIGHT_GRAY);
 
 		//맨 위 판넬
 		JPanel p_north = new JPanel();
-		p_north.setLayout(new FlowLayout());
-		p_north.add(laTitle);
-		p_north.add(bBack);
-		p_north.add(bCancel);
-		p_north.add(bNext);
+		p_north.setLayout(new BorderLayout());
+		
+		JPanel p_north_west = new JPanel();
+		p_north_west.setLayout(new BorderLayout());
+		p_north_west.add(laTitle);
+		p_north.add(p_north_west, BorderLayout.WEST);
+		
+		JPanel p_north_east = new JPanel();
+		p_north_east.setLayout(new FlowLayout());
+		p_north_east.add(bBack);
+		p_north_east.add(bCancel);
+		p_north_east.add(bNext);
+		p_north.add(p_north_east, BorderLayout.EAST);
 
 		//가운데 판넬
 		JPanel p_center = new JPanel();
@@ -142,12 +157,13 @@ public class SeatView extends JPanel implements ActionListener{
 		}
 	}
 	
-	
+	//행사 정보 가져오는 메서드
 	public void setTempList(ArrayList temp){ //temp (공연번호,이벤트 번호,이벤트제목,위치,기준가격,시작시간,종료시간)
-		String locVar = temp.get(3).toString();//홀 위치 변수
+		locVar = temp.get(3).toString();//홀 위치 변수
 		int perNo = Integer.parseInt(temp.get(0).toString()); //공연 번호 변수
 		selectSoldSeats(perNo);
 		getHall(locVar, p_center_center, cbc);
+		taSeat.setText("");
 
 	}
 	
@@ -164,12 +180,10 @@ public class SeatView extends JPanel implements ActionListener{
 	
 	//이미 예약된 좌석 가져오는 메서드
 	void selectSoldSeats(int perNo){
-		//System.out.println("이미 팔린 좌석 조회 메서드 구현해!!");
 		String soldSeatStr = model.selectSoldSeat(perNo);
-		if(soldSeatStr.equals(null)){
+		if(soldSeatStr.equals(null)){//모델에서 조회한 좌석이 널값이면 공백으로 치환
 			soldSeatStr=" ";
 		}
-		
 		hall.soldSeat = soldSeatStr;
 	}
 

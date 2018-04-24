@@ -35,7 +35,7 @@ public class Hall extends JPanel implements ActionListener {
 		this.parent = parent;
 		this.peopleCnt = peopleCnt;
 		parent.getTaString("");
-		defaultText = "총인원 " + peopleCnt + ": ";
+		defaultText = "총인원 " + peopleCnt + "명: ";
 
 		// 하드코딩 인터페이스(수정필요)*** //인원수
 		temp = new JButton[peopleCnt];
