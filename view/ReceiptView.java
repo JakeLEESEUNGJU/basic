@@ -204,7 +204,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 			if(flag == "p"){//공연이면 좌석선택화면으로
 				ac.movecard("seatcard");
 			}else if(flag == "e"){//전시면 전시선택화면으로
-				ac.movecard("exhibitioncard");
+				ac.movecard("ticketcard");
 				
 			}
 		} else if (evt == bCancel) {//예매 취소 버튼 클릭시
