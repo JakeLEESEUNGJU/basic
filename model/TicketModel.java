@@ -19,7 +19,7 @@ public class TicketModel {
 		if (kind.equals("e")) {
 			String sql = "SELECT  e.EVT_TITLE title,l.LOC_MAP as map ,e.evt_price as price "
 					+ " FROM event e inner join location l " + " on e.loc_no = l.loc_no "
-					+ " where (to_date(?,'YYYY/MM/DD') between to_char(evt_Start,'YYYY/MM/DD') AND To_char(e.EVT_END,'YYYY/MM/DD') )and e.EVT_KIND=?";
+					+ " where (to_date(?,'YYYY/MM/DD') between to_char(evt_Start,'YYYY/MM/DD') AND To_char(e.EVT_END,'YYYY/MM/DD') )and e.EVT_KIND=? and e.evt_flag='t'";
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, date); // 1번째 물음표 날짜
 			st.setString(2, kind); // 2번째 물음표 타입
@@ -38,7 +38,7 @@ public class TicketModel {
 					+ " to_char(p.PER_START,'hh24:mi') as stime,to_char(p.PER_end,'hh24:mi') as etime "
 					+ " FROM event e inner join location l  on e.loc_no = l.loc_no inner join PERFORMANCE p "
 					+ " on e.evt_no = p.evt_no "
-					+ " where (to_date(?,'YYYY/MM/DD') between to_char(e.evt_Start,'YYYY/MM/DD') AND To_char(e.EVT_END,'YYYY/MM/DD') )and e.EVT_KIND=?";
+					+ " where (to_date(?,'YYYY/MM/DD') between to_char(e.evt_Start,'YYYY/MM/DD') AND To_char(e.EVT_END,'YYYY/MM/DD') )and e.EVT_KIND=? and e.evt_flag='t'";
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, date); // 날짜
 			st.setString(2, kind); // 타입
@@ -67,7 +67,7 @@ public class TicketModel {
 					+ " to_char(p.PER_START,'hh24:mi') as stime,to_char(p.PER_end,'hh24:mi') as endtime "
 					+ " FROM event e inner join location l "
 					+ " on e.loc_no = l.loc_no inner join PERFORMANCE p on e.evt_no = p.evt_no "
-					+ " where e.evt_title=?";
+					+ " where e.evt_title=? and e.evt_flag='t'";
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, title);
 			ResultSet result = st.executeQuery();
@@ -87,7 +87,7 @@ public class TicketModel {
 		} else if (kind.equals("e")) {
 			String sql = "SELECT ex.EXI_NO as exno, e.EVT_NO as eno, e.EVT_TITLE title,l.LOC_MAP as map ,e.evt_price as price "
 					+ " FROM event e inner join location l " + " on e.loc_no = l.loc_no inner join EXHIBITION ex "
-					+ " on e.evt_no = ex.evt_no " + " where e.evt_title=?";
+					+ " on e.evt_no = ex.evt_no " + " where e.evt_title=? and e.evt_flag='t'";
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, title);
 			ResultSet result = st.executeQuery();

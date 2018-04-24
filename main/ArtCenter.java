@@ -139,7 +139,8 @@ public class ArtCenter {
 		String dept = info.get(2);
 		artCenter.setbtn(dept);
 		if(dept.equals("개발부")||dept.equals("판매부")){
-			String empno = info.get(0);
+			int empno = Integer.parseInt(info.get(0));
+			receipt.empNo = empno;
 		}
 	}
 	
