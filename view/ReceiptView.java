@@ -34,17 +34,15 @@ public class ReceiptView extends JPanel implements ActionListener {
 	ArtCenter ac;									//아트센터 객체
 	String flag = null;								//전시인지 공연인지 구분하는 구분자 p or e(인터페이스)
 	JTextArea taTicketInfo;
-	//
-	int exiNo;		//전시번호
-	String exiLoc;//전시 위치
-	String exiDate;//전시 관람일자
-	
-	
-	int perNo ;//공연번호
-	String perLoc ;//공연 위치
-	String perDate ;//공연 관람일자
-	String perStartTime ;//공연 시작시간
-	String perFinishTime ;//공연 끝날시간
+												//이하 인터페이스 값들을 받는 변수
+	int exiNo;									//전시번호
+	String exiLoc;								//전시 위치
+	String exiDate;								//전시 관람일자
+	int perNo ;									//공연번호
+	String perLoc ;								//공연 위치
+	String perDate ;							//공연 관람일자
+	String perStartTime ;						//공연 시작시간
+	String perFinishTime ;						//공연 끝날시간
 	
 	// 할인가격
 	int afterDiscountPrice = 0;
@@ -297,7 +295,6 @@ public class ReceiptView extends JPanel implements ActionListener {
 		bCancel = new JButton("예매 취소");
 		
 		taTicketInfo = new JTextArea(15,20);
-		//setTextArea(taTicketInfo);//*******
 		taTicketInfo.setEditable(false);
 
 		cbRating = new JComboBox<String>();
@@ -362,30 +359,28 @@ public class ReceiptView extends JPanel implements ActionListener {
 	}
 	
 	void setTextArea(JTextArea ta){
-		System.out.println(flag+"!!!!!!!!!!!");
+		ta.setText("");
+		ta.append("== Multicampus Arts Center ==\n");
 		if(flag == "e"){
 			
-			ta.append("==Multicampus Arts Center==\n");
 			ta.append("==   전시정보   ==\n");
-			ta.append("전시 제목\n");
-			ta.append("select");
-			ta.append("전시 위치\n");
-			ta.append(exiLoc);
-			ta.append("관람일\n");
+			ta.append("전시 제목 : ");
+			ta.append("select"+"\n");//**
+			ta.append("전시 위치 : ");
+			ta.append(exiLoc+"\n");
+			ta.append("관람일 : ");
 			ta.append(exiDate);
 		}else if(flag == "p"){
-			
-			ta.append("==Multicampus Arts Center==\n");
 			ta.append("==   공연정보   ==\n");
-			ta.append("공연 제목\n");
-			ta.append("select");
-			ta.append("공연 위치\n");
-			ta.append(perLoc);
-			ta.append("예매한 좌석\n");
-			ta.append("넘어오는 정보");
-			ta.append("관람일\n");
-			ta.append(perDate);
-			ta.append("시작시간 종료시간\n");
+			ta.append("공연 제목 : ");
+			ta.append("select"+"\n");//**
+			ta.append("공연 위치 : ");
+			ta.append(perLoc+"\n");
+			ta.append("선택한 좌석 : ");
+			ta.append("넘어오는 정보"+"\n");//**
+			ta.append("관람일 : ");
+			ta.append(perDate+"\n");
+			ta.append("관람 시간 : ");
 			ta.append(perStartTime+" ~ "+perFinishTime);
 		}
 	}
@@ -424,25 +419,20 @@ public class ReceiptView extends JPanel implements ActionListener {
 	
 	//공연 전시 정보가 넘어오는 메서드
 	public void setTempList(ArrayList temp){ //temp (공연번호,이벤트 번호,이벤트제목,위치,기준가격,시작시간,종료시간,관람일자,p/e구분)
-		if(temp.size() == 7){				//전시면
+		if(temp.size() == 7){								//전시면
 			flag = temp.get(6).toString();
-			exiNo = Integer.parseInt(temp.get(1).toString());		 //전시번호
-			String exiLoc = temp.get(3).toString(); 				//전시 위치
-			String exiDate = temp.get(5).toString();				//전시 관람일자
-			
-			
-		}else if(temp.size() == 9){			//공연이면
+			exiNo = Integer.parseInt(temp.get(1).toString());	 //전시번호
+			exiLoc = temp.get(3).toString(); 				//전시 위치
+			exiDate = temp.get(5).toString();				//전시 관람일자
+		}else if(temp.size() == 9){							//공연이면
 			flag = temp.get(8).toString();
-			perNo = Integer.parseInt(temp.get(0).toString()); 		//공연번호
-			String perLoc = temp.get(3).toString(); 				//공연 위치
-			String perDate = temp.get(7).toString();				//공연 관람일자
-			String perStartTime = temp.get(5).toString(); 			//공연 시작시간
-			String perFinishTime = temp.get(6).toString();			//공연 끝날시간
+			perNo = Integer.parseInt(temp.get(0).toString()); 	//공연번호
+			perLoc = temp.get(3).toString(); 				//공연 위치
+			perDate = temp.get(7).toString();				//공연 관람일자
+			perStartTime = temp.get(5).toString(); 			//공연 시작시간
+			perFinishTime = temp.get(6).toString();			//공연 끝날시간
 		}
-		
 		setTextArea(taTicketInfo);
-		
-		
 	}
 	
 }
