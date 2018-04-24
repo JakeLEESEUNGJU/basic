@@ -16,15 +16,13 @@ import view.EventView;
 import view.LoginView;
 import view.ReceiptView;
 import view.SeatView;
-import view.TicketExhibitionView;
-import view.TicketPerformanceView;
+import view.TicketView;
 
 public class ArtCenter {
 
 	LoginView login;
 	ArtCenterView artCenter;
-	TicketExhibitionView ticketExhibition;
-	TicketPerformanceView ticketPerformance;
+	TicketView ticketExhibition;
 	EmployeeView employee;
 	EventView event;
 	SeatView seat;
@@ -41,7 +39,7 @@ public class ArtCenter {
 
 		main = new JFrame("ArtCenter");
 		artCenter = new ArtCenterView(this);
-		ticketExhibition = new TicketExhibitionView(this);
+		ticketExhibition = new TicketView(this);
 		employee = new EmployeeView(this);
 		event = new EventView(this);
 		seat = new SeatView(this);

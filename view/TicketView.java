@@ -28,12 +28,12 @@ import javax.swing.table.AbstractTableModel;
 import main.ArtCenter;
 import model.TicketModel;
 
-public class TicketExhibitionView extends JPanel implements ActionListener {
+public class TicketView extends JPanel implements ActionListener {
 	private Font font1 = new Font("Serif", Font.BOLD, 20); // 중간 크기 폰트설정
 	private Font font2 = new Font("Serif", Font.BOLD, 30); // 대문 폰트
 	JButton bDateOk, bGoNext, bHome; // 날짜 확인 버튼 //결제 혹은 좌석선택 버튼 //초기화면 버튼
 	ButtonGroup bg = new ButtonGroup();// 라디오 버튼의 중복 선택 방지를 위한 버튼 그룹
-	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList, taboPerValue; 
+	TitledBorder taboTitle, taboSelDate, taboSelEvt, taboInfoList, taboPerValue;
 	// 제목이 달린 보더 클래스 각각 타이틀,날짜선택,이벤트 선택, 인원 및 가격 //구성인원별 가격
 	JPanel center_center_one_center, center_north; // 그냥 JPanel ... ㅋㅋ
 	String[] jTableTitle = { "성인", "어린이", "우대(노인,장애인", "총계" }; // JTable 컬럼 제목
@@ -62,7 +62,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 	ArtCenter ac;
 	ArrayList<String> table;
 
-	public TicketExhibitionView(ArtCenter ac) {
+	public TicketView(ArtCenter ac) {
 
 		EtchedBorder eborder = new EtchedBorder();
 		laKind = new JLabel("구분", JLabel.CENTER);
@@ -141,25 +141,26 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		if (evt == bHome) {
 			ac.movecard("main");
 		} else if (evt == bGoNext) {
-			if (laToCash.equals("0")) {
-				JOptionPane.showMessageDialog(null, "전시와 인원을 선택해주세요. ");
+			try{
+			searchForSend();
+			if(laToPep.getText().equals("0")){
+				JOptionPane.showMessageDialog(null,"인원을 설정하지 않았습니다.");
 				return;
 			}
-			searchForSend();
 			if (rbExhibi.isSelected()) {
+				
 				ac.movecard("receiptcard");
-
 			} else if (rbPerf.isSelected()) {
 				ac.movecard("seatcard");
 			}
-		} else if (evt == tfAdult) {
+			//try문 끝
+			}catch(Exception ex ){
+				JOptionPane.showMessageDialog(null,"이벤트 설정 혹은 총가격 갱신이 되지 않았습니다. "+ ex.getMessage());
+			}
+		} else if (evt == tfAdult || evt == tfAdv || evt == tfChild) {
 			settotal();
 		} else if (evt == bDateOk) {
 			serchByDate();
-		} else if (evt == tfAdv) {
-			settotal();
-		} else if (evt == tfChild) {
-			settotal();
 		} else if (evt == rbExhibi) {
 			showFrame();
 		} else if (evt == rbPerf) {
@@ -189,8 +190,9 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 				forSql = model.searchItems(title, "e", date);
 				// sql 문을 통해서 얻어온 데이터들을 변수에 저장
 				ac.setTempSql(forSql); // forSql을 아트센터 (tempList)에 저장
-				ac.setPeopleSeat(forTableE); // forTableE -> 전시 구성인원을 어레이리스트에 저장해서
-										// 전송~~~
+				ac.setPeopleSeat(forTableE); // forTableE -> 전시 구성인원을 어레이리스트에
+												// 저장해서
+				// 전송~~~
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
 				e.printStackTrace();
@@ -209,8 +211,9 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			try {
 				ArrayList<String> forSql = new ArrayList<String>();
 				forSql = model.searchItems(title, "p", date);
-				ac.setPeopleSeat(forTableP);// forTableP -> 공연 구성인원을 어레이리스트에 저장해서
-										// 전송~~~
+				ac.setPeopleSeat(forTableP);// forTableP -> 공연 구성인원을 어레이리스트에
+											// 저장해서
+				// 전송~~~
 				ac.setTempSql(forSql);// forsql을 아트센터 (tempList)에 저장
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "제목 찾기 실패" + e.getMessage());
@@ -328,7 +331,6 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "이벤트를 선택하지 않았습니다.");
 				System.out.println(e.getMessage());
-
 			}
 		}
 	}
@@ -344,7 +346,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 		} else
 			lastDay[2] = 28;// lastDay[2] => 3번째 배열의 값을 28로 변경
 
-		int month = (int) cbM.getSelectedItem(); 
+		int month = (int) cbM.getSelectedItem();
 		// int month에 cbM 에 선택되어있는 값을 집어넣기
 		cbD.removeAllItems(); // cdD에 있는 아이템을 모두 지워주세요
 		for (int i = 1; i <= lastDay[month]; i++) {
@@ -374,7 +376,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 				laPerAduCash.setText(String.valueOf(price));
 				laPerAdvCash.setText(String.valueOf((int) (price * 0.5)));
 				laPerChildCash.setText(String.valueOf((int) (price * 0.75)));
-
+				settotal();
 			}
 
 		});
@@ -388,6 +390,7 @@ public class TicketExhibitionView extends JPanel implements ActionListener {
 				laPerAduCash.setText(String.valueOf(price));
 				laPerAdvCash.setText(String.valueOf((int) (price * 0.5)));
 				laPerChildCash.setText(String.valueOf((int) (price * 0.75)));
+				settotal();
 			}
 		});
 

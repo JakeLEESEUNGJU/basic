@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import main.ArtCenter;
@@ -22,8 +23,8 @@ public class LoginView extends JPanel implements ActionListener{
 	EmployeeModel model;
 	JLabel laID,laPW;
 	JButton bOk,bReset;
-	JTextField tfLog, tfPW;
-	
+	JTextField tfLog ;
+	JPasswordField tfPW;
 	
 	public LoginView(){
 		super();
@@ -50,9 +51,8 @@ public class LoginView extends JPanel implements ActionListener{
 		center.add(tfLog = new JTextField());
 		center.add(bOk);
 		center.add(laPW);
-		center.add(tfPW = new JTextField());
+		center.add(tfPW = new JPasswordField());
 		center.add(bReset);
-		
 		
 		
 		
@@ -108,7 +108,7 @@ public class LoginView extends JPanel implements ActionListener{
 			ac.movecard("main");
 			
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, "로그인 실패" + e.getMessage());
+			JOptionPane.showMessageDialog(null, "아이디 혹은 비밀번호를 확인해주세요.");
 		}
 	}
 		

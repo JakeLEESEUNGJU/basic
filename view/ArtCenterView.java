@@ -19,11 +19,13 @@ import main.ArtCenter;
 public class ArtCenterView extends JPanel implements ActionListener {
 
 	private Font font2 = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
-	JButton bSalesMgr, bEmpMgr, bEvtMgr;
+	JButton bSalesMgr, bEmpMgr, bEvtMgr , bLogOut;
 	ButtonGroup bg = new ButtonGroup();
 	JLabel laArt = new JLabel(new ImageIcon("src\\image\\newtitle.png"));
 	ArtCenter ac;
 	Font bfont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
+	
+	
 	public ArtCenterView(ArtCenter ac) {
 		this.ac = ac;
 		addLayout();
@@ -39,7 +41,7 @@ public class ArtCenterView extends JPanel implements ActionListener {
 		bSalesMgr.addActionListener(this);
 		bEmpMgr.addActionListener(this);
 		bEvtMgr.addActionListener(this);
-
+		bLogOut.addActionListener(this);
 	}
 
 	/**
@@ -56,6 +58,9 @@ public class ArtCenterView extends JPanel implements ActionListener {
 			ac.changeFrame(800,800);
 		} else if (ev == bEvtMgr) {
 			ac.movecard("eventcard");
+		} else if (ev == bLogOut)	{
+			ac.movecard("logincard");
+			ac.changeFrame(500, 150);
 		}
 
 	}
@@ -143,8 +148,10 @@ public class ArtCenterView extends JPanel implements ActionListener {
 		add(new JPanel(), BorderLayout.WEST);
 		add(new JPanel(), BorderLayout.EAST);
 		add(new JPanel(), BorderLayout.NORTH);
-		add(new JPanel(), BorderLayout.SOUTH);
-		
+		JPanel south = new JPanel();
+		add(south, BorderLayout.SOUTH);
+		south.setLayout(new BorderLayout());
+		south.add((bLogOut = new JButton("로그아웃")),BorderLayout.EAST);
 
 	}
 
@@ -152,7 +159,7 @@ public class ArtCenterView extends JPanel implements ActionListener {
 
 	}
 
-	public void setbtn(String dept) {
+	public void setbtn(String dept) { //들어오는 아이디의 부서에 따라 보여주는 창이 다름
 		if (dept.equals("개발부")){
 			bSalesMgr.setEnabled(true);
 			bSalesMgr.setVisible(true);
