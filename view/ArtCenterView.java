@@ -175,8 +175,8 @@ public class ArtCenterView extends JPanel implements ActionListener {
 			bEmpMgr.setEnabled(false);
 			bEmpMgr.setVisible(false);
 		}else if(dept.equals("인사부")){
-			bSalesMgr.setEnabled(true);
-			bSalesMgr.setVisible(true);
+			bSalesMgr.setEnabled(false);
+			bSalesMgr.setVisible(false);
 			bEvtMgr.setEnabled(false);
 			bEvtMgr.setVisible(false);
 			bEmpMgr.setEnabled(true);

@@ -135,9 +135,12 @@ public class ArtCenter {
 	}
 
 	// 직원DB에서 부서 이름을 가져오는 메서드
-	public void empInfoSending(ArrayList<String> info) {
+	public void empInfoSending(ArrayList<String> info) { //0:empno , 1: empname, 2:deptname
 		String dept = info.get(2);
 		artCenter.setbtn(dept);
+		if(dept.equals("개발부")||dept.equals("판매부")){
+			String empno = info.get(0);
+		}
 	}
 	
 	public void goingHome(){
