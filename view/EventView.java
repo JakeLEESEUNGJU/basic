@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -408,12 +409,12 @@ public class EventView extends JPanel{
 					if(rbExi.isSelected()){ 
 					  if(compareDate()==-1){ return; } 
 					  else if(prohibitExi()==-1){ return; }
-						insertExi();
+					  else if(insertExi()==-1){return;}
 					//공연선택시
 					} else if(rbPer.isSelected()){
 						if(compareTime()==-1){ return; }
 						else if(prohibitPer()==-1){ return; }
-						insertPer();
+						else if(insertPer()==-1){return;}
 					} else if((!rbExi.isSelected()) && (!rbPer.isSelected())){
 						JOptionPane.showMessageDialog(null, "전시 또는 공연을 선택해주세요");
 					}
@@ -423,11 +424,11 @@ public class EventView extends JPanel{
 				if (rbExi.isSelected()) {
 					if(compareDate()==-1){ return; } 
 					else if(prohibitExi()==-1){ return; }
-					modifyExi();
+//					else if(modifyExi()==-1){return;}
 				} else if (rbPer.isSelected()) {
 					if(compareTime()==-1){ return; }
 					else if(prohibitPer()==-1){ return; }
-					modifyPer();
+//					else if(modifyPer()==-1){return;}
 				} else if ((!rbExi.isSelected()) && (!rbPer.isSelected())) {
 					JOptionPane.showMessageDialog(null, "전시 또는 공연을 선택해주세요");
 				}
@@ -569,7 +570,7 @@ public class EventView extends JPanel{
 	}
 	
 	//전시입력 -- 완성!!!>_<
-	void insertExi() {
+	int insertExi() {
 		
 		Exhibition vo = new Exhibition();
 		String startDate=(cbStartDateY.getSelectedItem())+" "+
@@ -583,7 +584,13 @@ public class EventView extends JPanel{
 		vo.setExiDir(tfExiDir.getText());
 		vo.setEvtTitle(tfEvtTitle.getText());
 		vo.setEvtRating((String) cbRating.getSelectedItem());
+		// 전시가격입력 -- null이거나 숫자만 있지 않으면 오류
+		if (tfEvtPrice.getText().equals("") || !(Pattern.matches("^[0-9]*$", tfEvtPrice.getText()))) {
+			JOptionPane.showMessageDialog(null, "전시가격 잘못입력");
+			return -1;
+		}
 		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
+		
 		vo.setEvtStart(startDate);
 		vo.setEvtEnd(endDate);
 		vo.setEvtDetail(taEvtDetail.getText());
@@ -593,13 +600,16 @@ public class EventView extends JPanel{
 			JOptionPane.showMessageDialog(null, "전시입력완료");
 			clear();
 		} catch (Exception e) {
-			System.out.println("전시입력실패");
+			JOptionPane.showMessageDialog(null, "전시입력실패:" + e.getMessage());
 			e.printStackTrace();
+			return -1;
 		}
+		
+		return 0;
 	}
 	
 	//공연입력
-	void insertPer(){
+	int insertPer(){
 		Performance vo = new Performance();
 		String startTime = (cbStartTimeH.getSelectedItem() +" "+ cbStartTimeM.getSelectedItem());
 		String endTime = (cbEndTimeH.getSelectedItem() +" "+ cbEndTimeM.getSelectedItem());
@@ -620,6 +630,11 @@ public class EventView extends JPanel{
 		
 		vo.setEvtTitle(tfEvtTitle.getText());
 		vo.setEvtRating((String) cbRating.getSelectedItem());
+		// 공연가격입력 -- null이거나 숫자만 있지 않으면 오류
+		if (tfEvtPrice.getText().equals("") || !(Pattern.matches("^[0-9]*$", tfEvtPrice.getText()))) {
+			JOptionPane.showMessageDialog(null, "전시가격 잘못입력");
+			return -1;
+		}
 		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
 		vo.setEvtStart(startDate);
 		vo.setEvtEnd(startDate);
@@ -630,14 +645,14 @@ public class EventView extends JPanel{
 			JOptionPane.showMessageDialog(null, "공연입력완료");
 			clear();
 		} catch (Exception e) {
-			System.out.println("공연입력실패");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "공연입력실패:" + e.getMessage());
+			return -1;
 		}
 		
-		
+		return 0;
 	}
 	//전시수정 
-	void modifyExi() {
+	int modifyExi() {
 		
 		Exhibition vo = new Exhibition();
 		
@@ -653,6 +668,11 @@ public class EventView extends JPanel{
 		vo.setExiDir(tfExiDir.getText());
 		vo.setEvtTitle(tfEvtTitle.getText());
 		vo.setEvtRating((String) cbRating.getSelectedItem());
+		// 전시가격입력 -- null이거나 숫자만 있지 않으면 오류
+		if (tfEvtPrice.getText().equals("") || !(Pattern.matches("^[0-9]*$", tfEvtPrice.getText()))) {
+			JOptionPane.showMessageDialog(null, "전시가격 잘못입력");
+			return -1;
+		}
 		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
 		vo.setEvtStart(startDate);
 		vo.setEvtEnd(endDate);
@@ -663,13 +683,15 @@ public class EventView extends JPanel{
 			JOptionPane.showMessageDialog(null, "전시수정완료");
 			clear();
 		} catch (Exception e) {
-			System.out.println("전시수정실패");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "전시수정실패: "+e.getMessage());
+			return -1;
 		}
+		
+		return 0;
 	}
 	
 	//공연수정
-	void modifyPer(){
+	int modifyPer(){
 		Performance vo = new Performance();
 		String startTime = (cbStartTimeH.getSelectedItem() +" "+ cbStartTimeM.getSelectedItem());
 		String endTime = (cbEndTimeH.getSelectedItem() +" "+ cbEndTimeM.getSelectedItem());
@@ -690,6 +712,11 @@ public class EventView extends JPanel{
 		vo.setEvtNo(Integer.parseInt(tfEvtNo.getText()));
 		vo.setEvtTitle(tfEvtTitle.getText());
 		vo.setEvtRating((String) cbRating.getSelectedItem());
+		// 전시가격입력 -- null이거나 숫자만 있지 않으면 오류
+		if (tfEvtPrice.getText().equals("") || !(Pattern.matches("^[0-9]*$", tfEvtPrice.getText()))) {
+			JOptionPane.showMessageDialog(null, "전시가격 잘못입력");
+			return -1;
+		}
 		vo.setEvtPrice(Integer.parseInt(tfEvtPrice.getText()));
 		vo.setEvtStart(startDate);
 		vo.setEvtEnd(startDate);
@@ -701,9 +728,10 @@ public class EventView extends JPanel{
 			clear();
 			
 		} catch (Exception e) {
-			System.out.println("공연수정실패");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "공연수정실패:"+e.getMessage());
+			return -1;
 		}
+		return 0;
 	}
 	//전시삭제 -- 완성!!!>_<
 	void deleteExi() {
