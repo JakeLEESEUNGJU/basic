@@ -127,6 +127,7 @@ public class ArtCenter {
 		if(temp.get(4).equals("p")){
 			temp.remove(4);
 			seat.setPersonCnt(temp);
+			receipt.settempList(temp);
 		}else if(temp.get(4).equals("e")){
 			temp.remove(4);
 			receipt.settempList(temp);

@@ -79,7 +79,7 @@ public class SeatView extends JPanel implements ActionListener{
 			}
 
 		} else if (evt == bBack) {//뒤로 버튼 클릭시
-			ac.movecard("exhibitioncard");
+			ac.movecard("ticketcard");
 
 		}else if(evt == bCancel){//예매취소 버튼 클릭시
 			ac.movecard("main");
