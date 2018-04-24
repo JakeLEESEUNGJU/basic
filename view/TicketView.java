@@ -139,10 +139,7 @@ public class TicketView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
 		if (evt == bHome) {
-			tfAdult.setText("0");
-			tfAdv.setText("0");
-			tfChild.setText("0");
-			settotal();
+			ac.goingHome();
 			ac.movecard("main");
 		} else if (evt == bGoNext) {
 			try{
