@@ -332,7 +332,9 @@ public class EventModel {
 	public ArrayList searchStartDate(String loc, int evtNo) throws Exception {
 
 		String sql = "SELECT to_char(evt_start,'YYYYMMDD') evt_start FROM event " + "WHERE loc_no = "
-				+ "(select loc_no from location where loc_map = '" + loc + "') " + "AND evt_no <> ?"
+				+ "(select loc_no from location where loc_map = '" + loc + "') " 
+				+ "AND evt_no <> ? "
+				+ "AND evt_flag = 't' "
 				+ "ORDER BY evt_no";
 
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -357,7 +359,9 @@ public class EventModel {
 	public ArrayList searchEndDate(String loc, int evtNo) throws Exception {
 
 		String sql = "SELECT to_char(evt_end,'YYYYMMDD') evt_end FROM event " + "WHERE loc_no = "
-				+ "(select loc_no from location where loc_map = '" + loc + "') " + "AND evt_no <> ?"
+				+ "(select loc_no from location where loc_map = '" + loc + "') " 
+				+ "AND evt_no <> ? "
+				+ "AND evt_flag = 't' "
 				+ "ORDER BY evt_no";
 
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -382,7 +386,9 @@ public class EventModel {
 	public ArrayList searchStartTime(String loc, int evtNo) throws Exception {
 		String sql = "SELECT to_char(p.per_start, 'hh24mi') per_start " + "FROM performance p, event e, location l "
 				+ "WHERE (l.loc_no = e.loc_no) AND (e.evt_no = p.evt_no) " + "AND l.loc_map = '" + loc + "' "
-				+ "AND e.evt_no <> ? " + "ORDER BY e.evt_no";
+				+ "AND e.evt_no <> ? "
+				+ "AND evt_flag = 't' " 
+				+ "ORDER BY e.evt_no";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, evtNo);
@@ -406,7 +412,9 @@ public class EventModel {
 	public ArrayList searchEndTime(String loc, int evtNo) throws Exception {
 		String sql = "SELECT to_char(p.per_end, 'hh24mi') per_end " + "FROM performance p, event e, location l "
 				+ "WHERE (l.loc_no = e.loc_no) AND (e.evt_no = p.evt_no) " + "AND l.loc_map = '" + loc + "' "
-				+ "AND e.evt_no <> ? " + "ORDER BY e.evt_no";
+				+ "AND e.evt_no <> ? "
+				+ "AND evt_flag = 't' " 
+				+ "ORDER BY e.evt_no";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, evtNo);
