@@ -327,7 +327,7 @@ public class TicketView extends JPanel implements ActionListener {
 				laToPep.setText(String.valueOf((Integer.parseInt(tfAdult.getText()))
 						+ (Integer.parseInt(tfAdv.getText())) + (Integer.parseInt(tfChild.getText()))));
 			} catch (Exception e) {
-				
+
 			}
 		}
 	}
@@ -360,8 +360,8 @@ public class TicketView extends JPanel implements ActionListener {
 		tfAdult.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(tfAdult.getText().equals("0")){
-				tfAdult.setText("");
+				if (tfAdult.getText().equals("0")) {
+					tfAdult.setText("");
 				}
 			}
 		});
@@ -369,8 +369,8 @@ public class TicketView extends JPanel implements ActionListener {
 		tfChild.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(tfChild.getText().equals("0")){
-				tfChild.setText("");
+				if (tfChild.getText().equals("0")) {
+					tfChild.setText("");
 				}
 			}
 		});
@@ -378,8 +378,8 @@ public class TicketView extends JPanel implements ActionListener {
 		tfAdv.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(tfAdv.getText().equals("0")){
-				tfAdv.setText("");
+				if (tfAdv.getText().equals("0")) {
+					tfAdv.setText("");
 				}
 			}
 		});
@@ -539,9 +539,9 @@ public class TicketView extends JPanel implements ActionListener {
 	void connectDB() {
 		try {
 			model = new TicketModel();
-			System.out.println("티켓 뷰(DB 연결 성공)");
+			// System.out.println("티켓 뷰(DB 연결 성공)");
 		} catch (Exception e) {
-			System.out.println("티켓 DB 연결 ");
+			// System.out.println("티켓 DB 연결 ");
 			e.printStackTrace();
 		}
 	}
@@ -552,12 +552,6 @@ class ExhibListTableModel extends AbstractTableModel { // 전시 테이블 모�
 
 	ArrayList data = new ArrayList();
 	String[] columnNames = { "제목", "장소", "가격" };
-
-	// =============================================================
-	// 1. 기본적인 TabelModel 만들기
-	// 아래 세 함수는 TabelModel 인터페이스의 추상함수인데
-	// AbstractTabelModel에서 구현되지 않았기에...
-	// 반드시 사용자 구현 필수!!!!
 
 	public int getColumnCount() {
 		return columnNames.length;

@@ -64,9 +64,9 @@ public class LoginView extends JPanel implements ActionListener {
 	void connectDB() {
 		try {
 			model = new EmployeeModel();
-			System.out.println("로그인 창 (DB 연결 성공)");
+			// System.out.println("로그인 창 (DB 연결 성공)");
 		} catch (Exception e) {
-			System.out.println("로그인 창 DB 연결 실패");
+			// System.out.println("로그인 창 DB 연결 실패");
 			e.printStackTrace();
 		}
 	}
@@ -78,7 +78,7 @@ public class LoginView extends JPanel implements ActionListener {
 		tfLog.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(tfLog.getText().equals("User_Email")){
+				if (tfLog.getText().equals("User_Email")) {
 					tfLog.setText("");
 				}
 			}
@@ -88,8 +88,8 @@ public class LoginView extends JPanel implements ActionListener {
 		tfPW.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(tfPW.getText().equals("Password")){
-				tfPW.setText("");
+				if (tfPW.getText().equals("Password")) {
+					tfPW.setText("");
 				}
 			}
 		});

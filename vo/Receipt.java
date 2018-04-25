@@ -20,7 +20,6 @@ public class Receipt {
 	
 	public Receipt() {
 		super();
-		System.out.println("Receipt 들어옴");
 	}
 
 

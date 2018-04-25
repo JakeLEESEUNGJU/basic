@@ -12,12 +12,12 @@ public class SeatModel {
 	public SeatModel() throws Exception {
 		con = DBCon.getConnection();
 	}
-	
+
 	// 이미 예약된 좌석 검색
 	public String selectSoldSeat(int perNo) {
 		String sql = "SELECT per_ready FROM performance WHERE per_no=" + perNo;
 		String seat = null;
-		System.out.println(sql);
+		//System.out.println(sql);
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);

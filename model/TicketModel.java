@@ -12,6 +12,7 @@ public class TicketModel {
 	public TicketModel() throws Exception {
 		con = DBCon.getConnection();
 	}
+
 	// 날짜,이벤트 타입 받아와서 데이터 검색
 	public ArrayList<Object> selectByDate(String date, String kind) throws Exception {
 		ArrayList<Object> tableList = new ArrayList<Object>();
@@ -59,7 +60,7 @@ public class TicketModel {
 		return tableList;
 	}
 
-	// 제목 , 이벤트 종류(무엇을 리턴하는지 구분하기 위해사용) , 날짜 받아옴  ] -> 카디널리티 한개만 반환
+	// 제목 , 이벤트 종류(무엇을 리턴하는지 구분하기 위해사용) , 날짜 받아옴 ] -> 카디널리티 한개만 반환
 	public ArrayList<String> searchItems(String title, String kind, String date) throws Exception {
 		ArrayList<String> itemList = new ArrayList<String>();
 		if (kind.equals("p")) {

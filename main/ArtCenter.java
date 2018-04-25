@@ -34,7 +34,7 @@ public class ArtCenter {
 	public ArrayList tempList, temp = null;
 
 	JFrame main;
-	
+
 	public ArtCenter() {
 
 		main = new JFrame("ArtCenter");
@@ -65,7 +65,6 @@ public class ArtCenter {
 	}
 
 	public void movecard(String text) {
-		System.out.println("받아따");
 		card.show(background, text);
 	}
 
@@ -111,9 +110,9 @@ public class ArtCenter {
 	public void setTempSql(ArrayList temp) {
 		tempList.clear();
 		tempList = temp;
-		if(tempList.get(6).equals("e")){
+		if (tempList.get(6).equals("e")) {
 			receipt.setTempList(tempList);
-		}else if(tempList.get(8).equals("p")){
+		} else if (tempList.get(8).equals("p")) {
 			seat.setTempList(tempList);
 			receipt.setTempList(tempList);
 		}
@@ -123,36 +122,37 @@ public class ArtCenter {
 	public void setPeopleSeat(ArrayList itemp) {
 		temp.clear();
 		temp = itemp;
-		//System.out.println(temp.get(4));
-		if(temp.get(4).equals("p")){		//공연이면
+		// System.out.println(temp.get(4));
+		if (temp.get(4).equals("p")) { // 공연이면
 			temp.remove(4);
 			seat.setPersonCnt(temp);
 			receipt.settempList(temp);
-		}else if(temp.get(4).equals("e")){	//전시면
+		} else if (temp.get(4).equals("e")) { // 전시면
 			temp.remove(4);
 			receipt.settempList(temp);
 		}
 	}
 
 	// 직원DB에서 부서 이름을 가져오는 메서드
-	public void empInfoSending(ArrayList<String> info) { //0:empno , 1: empname, 2:deptname
+	public void empInfoSending(ArrayList<String> info) { // 0:empno , 1:
+															// empname,
+															// 2:deptname
 		String dept = info.get(2);
 		artCenter.setbtn(dept);
-		if(dept.equals("개발부")||dept.equals("판매부")){
+		if (dept.equals("개발부") || dept.equals("판매부")) {
 			int empno = Integer.parseInt(info.get(0));
 			receipt.empNo = empno;
 		}
 	}
-	
-	public void goingHome(){
+
+	public void goingHome() {
 		ticket.tfAdult.setText("0");
 		ticket.tfAdv.setText("0");
 		ticket.tfChild.setText("0");
 		ticket.settotal();
 	}
-	
 
-	public ReceiptView getReceiptView(){
+	public ReceiptView getReceiptView() {
 		return receipt;
 	}
 }

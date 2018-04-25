@@ -31,11 +31,10 @@ public class SeatView extends JPanel implements ActionListener{
 	Hall hall ;						// 좌석 객체
 	GridBagConstraints cbc;			//GridBagConstraints 변수
 	JPanel  p_center_center;		//JPanel 변수
-	SeatModel model;
-	String locVar ="";
-	int cnt;
-	
-	String seatStr;
+	SeatModel model;				//seatModel 객체
+	String locVar ="";				//장소 변수
+	int cnt;						//좌석수 변수
+	String seatStr;					//선택한 좌석 문자열
 	
 	public SeatView() {
 	}
@@ -70,14 +69,14 @@ public class SeatView extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
-		if (evt == bNext) {//다음 버튼 클릭시
+		if (evt == bNext) {								//다음 버튼 클릭시
 			int cnt = 0;
 			for (int i = 0; i < hall.temp.length; i++) {
 				if (hall.temp[i] != null) {
 					cnt++;
 				}
 			}
-			if (hall.temp.length == cnt) {//선택한 좌석수와 인원수가 같을때 이동
+			if (hall.temp.length == cnt) {				//선택한 좌석수와 인원수가 같을때 이동
 				ac.movecard("receiptcard");
 				ac.getReceiptView().setSeatNum(seatStr);
 			} else {
@@ -85,10 +84,11 @@ public class SeatView extends JPanel implements ActionListener{
 			}
 
 			
-		} else if (evt == bBack) {//뒤로 버튼 클릭시
+		} else if (evt == bBack) {						//뒤로 버튼 클릭시
 			ac.movecard("ticketcard");
 
-		}else if(evt == bCancel){//예매취소 버튼 클릭시
+		}else if(evt == bCancel){						//예매취소 버튼 클릭시
+			ac.goingHome();								//예매 취소시 초기화
 			ac.movecard("main");
 		}
 		
@@ -97,7 +97,7 @@ public class SeatView extends JPanel implements ActionListener{
 	//레이아웃 그리는 메서드
 	void addLayout() {
 		laTitle = new JLabel("판매관리-공연-세부-좌석선택");
-		Font font1 = new Font("201 타임라인 R",Font.BOLD,30);
+		Font font1 = new Font("210 타임라인 R" ,Font.BOLD,30);
 		laTitle.setFont(font1);
 		bBack = new JButton("<공연선택");
 		bCancel = new JButton("예매취소");
@@ -157,16 +157,16 @@ public class SeatView extends JPanel implements ActionListener{
 	void connectDB() {
 		try {
 			model = new SeatModel();
-			System.out.println("seat DB 연결 성공");
+			//System.out.println("seat DB 연결 성공");
 		} catch (Exception e) {
-			System.out.println("seat DB 연결 실패");
+			//System.out.println("seat DB 연결 실패");
 			e.printStackTrace();
 		}
 	}
 	
 	//행사 정보 가져오는 메서드
-	public void setTempList(ArrayList temp){ //temp (공연번호,이벤트 번호,이벤트제목,위치,기준가격,시작시간,종료시간)
-		locVar = temp.get(3).toString();//홀 위치 변수
+	public void setTempList(ArrayList temp){ 				//temp (공연번호,이벤트 번호,이벤트제목,위치,기준가격,시작시간,종료시간)
+		locVar = temp.get(3).toString();					//홀 위치 변수
 		int perNo = Integer.parseInt(temp.get(0).toString()); //공연 번호 변수
 		selectSoldSeats(perNo);
 		getHall(locVar, p_center_center, cbc);
@@ -175,7 +175,7 @@ public class SeatView extends JPanel implements ActionListener{
 	}
 	
 	// 인원수 가져오기 아트센터에서 호출하는 메서드
-	public void setPersonCnt(ArrayList temp) { // temp(성인수 , 아동수, 우대수, 성인기준가격)정보 담긴 리스트
+	public void setPersonCnt(ArrayList temp) { 				// temp(성인수 , 아동수, 우대수, 성인기준가격)정보 담긴 리스트
 		cnt = 0; //성인, 아동, 우대 명수 더할 변수
 		for (int i = 0; i < temp.size() - 1; i++) {
 			cnt += Integer.parseInt(temp.get(i).toString());
@@ -188,7 +188,7 @@ public class SeatView extends JPanel implements ActionListener{
 	//이미 예약된 좌석 가져오는 메서드
 	void selectSoldSeats(int perNo){
 		String soldSeatStr = model.selectSoldSeat(perNo);
-		if(soldSeatStr.equals(null)){//모델에서 조회한 좌석이 널값이면 공백으로 치환
+		if(soldSeatStr.equals(null)){						//모델에서 조회한 좌석이 널값이면 공백으로 치환
 			soldSeatStr=" ";
 		}
 		hall.soldSeat = soldSeatStr;

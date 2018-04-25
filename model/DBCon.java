@@ -14,7 +14,6 @@ public class DBCon {
 		String pass = "art";
 
 		con = DriverManager.getConnection(url, user, pass);
-		System.out.println("성공");
 
 	}
 

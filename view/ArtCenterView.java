@@ -19,13 +19,12 @@ import main.ArtCenter;
 public class ArtCenterView extends JPanel implements ActionListener {
 
 	private Font font2 = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
-	JButton bSalesMgr, bEmpMgr, bEvtMgr , bLogOut;
+	JButton bSalesMgr, bEmpMgr, bEvtMgr, bLogOut;
 	ButtonGroup bg = new ButtonGroup();
 	JLabel laArt = new JLabel(new ImageIcon("src\\image\\newtitle.png"));
 	ArtCenter ac;
 	Font bfont = new Font("포천 오성과 한음 Regular", Font.PLAIN, 20);
-	
-	
+
 	public ArtCenterView(ArtCenter ac) {
 		this.ac = ac;
 		addLayout();
@@ -55,10 +54,10 @@ public class ArtCenterView extends JPanel implements ActionListener {
 			ac.movecard("ticketcard");
 		} else if (ev == bEmpMgr) {
 			ac.movecard("employeecard");
-			ac.changeFrame(800,800);
+			ac.changeFrame(800, 800);
 		} else if (ev == bEvtMgr) {
 			ac.movecard("eventcard");
-		} else if (ev == bLogOut)	{
+		} else if (ev == bLogOut) {
 			ac.movecard("logincard");
 			ac.changeFrame(500, 150);
 		}
@@ -151,7 +150,7 @@ public class ArtCenterView extends JPanel implements ActionListener {
 		JPanel south = new JPanel();
 		add(south, BorderLayout.SOUTH);
 		south.setLayout(new BorderLayout());
-		south.add((bLogOut = new JButton("로그아웃")),BorderLayout.EAST);
+		south.add((bLogOut = new JButton("로그아웃")), BorderLayout.EAST);
 
 	}
 
@@ -159,38 +158,38 @@ public class ArtCenterView extends JPanel implements ActionListener {
 
 	}
 
-	public void setbtn(String dept) { //들어오는 아이디의 부서에 따라 보여주는 창이 다름
-		if (dept.equals("개발부")){
+	public void setbtn(String dept) { // 들어오는 아이디의 부서에 따라 보여주는 창이 다름
+		if (dept.equals("개발부")) {
 			bSalesMgr.setEnabled(true);
 			bSalesMgr.setVisible(true);
 			bEvtMgr.setEnabled(true);
 			bEvtMgr.setVisible(true);
 			bEmpMgr.setEnabled(true);
 			bEmpMgr.setVisible(true);
-		}else if(dept.equals("판매부")){
+		} else if (dept.equals("판매부")) {
 			bSalesMgr.setEnabled(true);
 			bSalesMgr.setVisible(true);
 			bEvtMgr.setEnabled(false);
 			bEvtMgr.setVisible(false);
 			bEmpMgr.setEnabled(false);
 			bEmpMgr.setVisible(false);
-		}else if(dept.equals("인사부")){
+		} else if (dept.equals("인사부")) {
 			bSalesMgr.setEnabled(false);
 			bSalesMgr.setVisible(false);
 			bEvtMgr.setEnabled(false);
 			bEvtMgr.setVisible(false);
 			bEmpMgr.setEnabled(true);
 			bEmpMgr.setVisible(true);
-		}else if(dept.equals("기획부")){
+		} else if (dept.equals("기획부")) {
 			bSalesMgr.setEnabled(false);
 			bSalesMgr.setVisible(false);
 			bEvtMgr.setEnabled(true);
 			bEvtMgr.setVisible(true);
 			bEmpMgr.setEnabled(false);
 			bEmpMgr.setVisible(false);
-			
+
 		}
-			
+
 	}
 
 }
