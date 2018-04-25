@@ -77,7 +77,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 	public ReceiptView(ArtCenter ac) {
 		this.ac = ac;
 		addLayout();
-		eventProc();//이벤트는 생성자에서 호출되어야함 순서 꼬임 ***
+		eventProc();
 		connectDB();
 		
 	}
@@ -256,7 +256,9 @@ public class ReceiptView extends JPanel implements ActionListener {
 				int result = model.insertRec(vo, flag);
 				if (result > 0) {								//insert db성공시
 					JOptionPane.showMessageDialog(null, "결제 되었습니다.");
-				//	ac.goingHome();		
+					ac.goingHome();		
+					cbPayMethod.setSelectedIndex(0);
+					cbRating.setSelectedIndex(0);
 					ac.movecard("main");
 				}else{											//db실패시
 					JOptionPane.showMessageDialog(null, "결제 오류");
@@ -271,29 +273,31 @@ public class ReceiptView extends JPanel implements ActionListener {
 	void setPriceByrating(String rating) {
 		switch (rating) {
 		case "그린":
-			if (adultCnt > 1) {
+			/*if (adultCnt > 1) {
 				afterDiscountPrice = (int) (adultPrice * 2 * 0.9 + adultPrice * (adultCnt - 2) + childPrice * childCnt
 						+ oldPrice * oldCnt);
 			} else {
 				afterDiscountPrice = (int) (adultPrice * adultCnt * 0.9 + childPrice * childCnt + oldPrice * oldCnt);
-			}
-			
+			}*/
+			afterDiscountPrice = (int)(totalPrice*0.9);
 			break;
 		case "블루":
-			if (adultCnt > 1) {
+	/*		if (adultCnt > 1) {
 				afterDiscountPrice = (int) (adultPrice * 2 * 0.75 + adultPrice * (adultCnt - 2) + childPrice * childCnt
 						+ oldPrice * oldCnt);
 			} else {
 				afterDiscountPrice = (int) (adultPrice * adultCnt * 0.75 + childPrice * childCnt + oldPrice * oldCnt);
-			}
+			}*/
+			afterDiscountPrice = (int)(totalPrice*0.75);
 			break;
 		case "골드":
-			if (adultCnt > 1) {
+			/*if (adultCnt > 1) {
 				afterDiscountPrice = (int) (adultPrice * 2 * 0.6 + adultPrice * (adultCnt - 2) + childPrice * childCnt
 						+ oldPrice * oldCnt);
 			} else {
 				afterDiscountPrice = (int) (adultPrice * adultCnt * 0.6 + childPrice * childCnt + oldPrice * oldCnt);
-			}
+			}*/
+			afterDiscountPrice = (int)(totalPrice*0.6);
 			break;
 
 		/*
@@ -301,12 +305,13 @@ public class ReceiptView extends JPanel implements ActionListener {
 		 */
 
 		case "싹틔우미":
-			if (adultCnt > 1) {
+			/*if (adultCnt > 1) {
 				afterDiscountPrice = (int) (adultPrice * 2 * 0.5 + adultPrice * (adultCnt - 2) + childPrice * childCnt
 						+ oldPrice * oldCnt);
 			} else {
 				afterDiscountPrice = (int) (adultPrice * adultCnt * 0.5 + childPrice * childCnt + oldPrice * oldCnt);
-			}
+			}*/
+			afterDiscountPrice = (int)(totalPrice*0.5);
 			break;
 		default:
 			afterDiscountPrice = totalPrice;
@@ -330,7 +335,7 @@ public class ReceiptView extends JPanel implements ActionListener {
 		tbPriceInfo = new JTable(priceModel);
 		tbPriceInfo.setRowHeight(50);
 
-		laRating = new JLabel("<html><center>회원 등급</center><br>(그린:10%,블루:25%,골드:40%,싹틔우미:50%,최대동반2인)</br></html>",JLabel.CENTER);
+		laRating = new JLabel("<html><center>회원 등급</center><br>(그린:10%,블루:25%,골드:40%,싹틔우미:50%)</br></html>",JLabel.CENTER);//,최대동반2인 
 		laPayMethod = new JLabel("결제 수단",JLabel.CENTER);
 		laTotal = new JLabel("총 결제금액",JLabel.CENTER);
 		tfTotal = new JTextField(15);
@@ -373,19 +378,14 @@ public class ReceiptView extends JPanel implements ActionListener {
 		p_center.setLayout(new BorderLayout());
 		//가운데의 위쪽
 		JPanel p_center_north = new JPanel();
-		TitledBorder tb1 = new TitledBorder("티켓 정보");
-		Font font2 = new Font("포천 오성과 한음 Regular", Font.BOLD, 20);
-		tb1.setTitleFont(font2);
-		p_center_north.setBorder(tb1);
+		p_center_north.setBorder(new TitledBorder("티켓 정보"));
 		p_center_north.add(taTicketInfo);// 행사 상세 정보 추가***
 		p_center_north.add(new JScrollPane(tbPriceInfo), BorderLayout.NORTH);
 		p_center.add(p_center_north, BorderLayout.NORTH);
 
 		//가운데의 아래쪽
 		JPanel p_center_south = new JPanel();
-		TitledBorder tb2 = new TitledBorder("결제 정보");
-		tb2.setTitleFont(font2);
-		p_center_south.setBorder(tb2);
+		p_center_south.setBorder(new TitledBorder("결제 정보"));
 		p_center_south.setLayout(new GridLayout(5, 2));
 		p_center_south.add(new JLabel(""));
 		p_center_south.add(cbGroup);
